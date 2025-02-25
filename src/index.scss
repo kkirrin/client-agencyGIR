@@ -1,28 +1,42 @@
 @import './mixins.scss';
 
 :root {
-    color-scheme: light dark;
-  
-    --font-family: "Roboto", sans-serif;
-  
-    /* переменные панели */
-    --main: #1F2433;
-    --white: #FFFFFF;
-    --blue: #063462;
-    --gray: #9FA9BC;
-    --light-blue: #C9D5FF;
-    --light-green: #D4F4C6;
-    --light-yellow: #FFEED4;
-    --light-pink: #FFD5D5;
-  
-    /* текст шрифтов */
-    --text-white: var(--white);
-    --text-black: var(--black);
+  color-scheme: light dark;
 
-    /* переменные медиа*/
-    --min-width: 768px;
-    --max-width: 1440px;
-  }
+  --font-family: "Roboto", sans-serif;
+
+  /* переменные панели */
+  --main: #1F2433;
+  --white: #FFFFFF;
+  --blue: #063462;
+  --gray: #9FA9BC;
+  --light-blue: #C9D5FF;
+  --light-green: #D4F4C6;
+  --light-yellow: #FFEED4;
+  --light-pink: #FFD5D5;
+
+  /* текст шрифтов */
+  --text-white: var(--white);
+  --text-black: var(--black);
+
+  /* переменные медиа*/
+  --min-width: 768px;
+  --max-width: 1440px;
+}
+
+#root {
+  max-width: 1480px;
+}
+
+.relative {
+  position: relative;
+}
+
+.container {
+  max-width: 1480px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
 
 
 @font-face {
@@ -74,6 +88,9 @@ body {
   scroll-behavior: smooth;
   font-family: var(--font-family);
   color: var(--main);
+
+  margin: 0;
+  padding: 0;
 }
 
 
