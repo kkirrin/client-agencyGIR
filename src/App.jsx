@@ -1,13 +1,14 @@
+import { Loading } from './components';
 
-import { Loading } from './components'
-
-function App() {
-
+function App({ children }) {
   return (
-    <>
+    <div className='page-wrapper'>
       <Loading />
-    </>
-  );
+      <main>
+        {children}
+      </main>
+    </div>
+  )
 }
 
-export default App;
+export default App

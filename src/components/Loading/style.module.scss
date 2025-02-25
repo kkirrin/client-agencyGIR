@@ -2,13 +2,15 @@
 
 
 .main_bg {
-    background-image: url('../../../public/bg.png');
+    position: relative;
+
+    background-image: url('/bg.png');
     background-repeat: no-repeat;
-    height: 100vh;
+    background-size: cover;
+
+    height: 100%;
     width: 100%;
 }
-
-
 
 
 .info_text {
@@ -30,6 +32,7 @@
         font-size: 16px;
     }
 }
+
 .title {
     @include adaptiv-value("font-size", 150, 80);
 
@@ -55,12 +58,17 @@
 }
 
 .loader {
+    margin-top: 50px;
     border: 16px solid #788899;
     border-radius: 50%;
     border-top: 16px solid #FFFFFF;
     width: 120px;
     height: 120px;
     animation: spin 2s linear infinite;
+}
+
+.volna img{
+    width: 100%;
 }
 
 @keyframes spin {

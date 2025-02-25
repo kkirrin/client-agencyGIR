@@ -11,6 +11,10 @@ const Loading = () => {
         <h2 className={styles.title}>Морской порт</h2>
         <div className={styles.loader}></div>
       </div>
+      
+      <div className={styles.volna}>
+            <img src='/volna.png' alt='' />
+        </div>
     </section>
   );
 };
