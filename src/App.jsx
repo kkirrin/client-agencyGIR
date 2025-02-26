@@ -26,7 +26,7 @@ function App() {
             {
               "id": 163,
               "title": "АО Находкинский морской торговый порт (УТ-1)",
-              "slugtest",
+              "slug": "test",
               "img_s": {
                 "id": 33,
                 "documentId": "pv47xam4t39u1xqoxasqrqwo",
