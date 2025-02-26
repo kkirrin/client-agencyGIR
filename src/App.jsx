@@ -11,35 +11,96 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Иммитация загрузки
-      await delay(2000);  
+      // Имитация загрузки
+      await delay(2000);
 
       // Моковые данные
-      const mockData = [
-        { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)', description: 'Description 1' },
-        { id: 2, name: 'АО "Находкинский морской торговый порт" (ГУТ-2)', description: 'Description 2' },
-        { id: 3, name: 'АО "Порт Вера"', description: 'Description 3' },
-        { id: 4, name: 'ООО "Морской Порт "Суходол"', description: '' },
-        { id: 5, name: 'Дробильные установки', description: '' },
-        { id: 6, name: 'Техника', description: '' },
-      ];
+      const mockData = {
+        "data": {
+          "id": 11,
+          "documentId": "yxon55d950jiowczmrhysc4x",
+          "createdAt": "2025-01-29T23:41:41.342Z",
+          "updatedAt": "2025-02-04T00:12:38.701Z",
+          "publishedAt": "2025-02-04T00:12:38.777Z",
+          "speczializaczii": [
+            {
+              "id": 163,
+              "title": "АО Находкинский морской торговый порт (УТ-1)",
+              "slugtest",
+              "img_s": {
+                "id": 33,
+                "documentId": "pv47xam4t39u1xqoxasqrqwo",
+                "url": "/uploads/spec_1_4efe76f5b1.png"
+              }
+            },
+            {
+              "id": 164,
+              "title": "АО Находкинский морской торговый порт (ГУТ-2)",
+              "slug": "test",
+              "img_s": {
+                "id": 32,
+                "documentId": "gkm97lbgw912orolqcet13jy",
+                "url": "/uploads/image_2131e0cfce.png"
+              }
+            },
+            {
+              "id": 165,
+              "title": "АО Порт Вера",
+              "slug": "test",
+              "img_s": {
+                "id": 32,
+                "documentId": "gkm97lbgw912orolqcet13jy",
+                "url": "/uploads/image_2131e0cfce.png"
+              }
+            },
+            {
+              "id": 166,
+              "title": "ООО Морской Порт Суходол",
+              "slug": "test",
+              "img_s": {
+                "id": 32,
+                "documentId": "gkm97lbgw912orolqcet13jy",
+                "url": "/uploads/image_2131e0cfce.png"
+              }
+            },
+            {
+              "id": 167,
+              "title": "Дробильные установки",
+              "slug": "test",
+              "img_s": {
+                "id": 32,
+                "documentId": "gkm97lbgw912orolqcet13jy",
+                "url": "/uploads/image_2131e0cfce.png"
+              }
+            },
+            {
+              "id": 168,
+              "title": "Техника",
+              "slug": "test",
+              "img_s": {
+                "id": 32,
+                "documentId": "gkm97lbgw912orolqcet13jy",
+                "url": "/uploads/image_2131e0cfce.png"
+              }
+            }
+          ]
+        }
+      };
 
       setData(mockData);
-      setDataLoading(false); 
+      setDataLoading(false);
     };
-
     fetchData();
   }, []);
 
   return (
     <div className='page-wrapper'>
-      {/* Suspense пригодится когда будет асинхронный запрос, или нет хз */}
       <Suspense fallback={<Loading />}>
         <main>
-          {dataLoading ? (  
+          {dataLoading ? (
             <Loading />
           ) : (
-            <MainComponent data={data} /> 
+            <MainComponent data={data} />
           )}
         </main>
       </Suspense>
@@ -48,3 +109,4 @@ function App() {
 }
 
 export default App;
+
