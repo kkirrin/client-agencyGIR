@@ -1,2 +1,14 @@
 @import '../../mixins.scss';
 
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top_wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
