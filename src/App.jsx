@@ -22,65 +22,65 @@ function App() {
           "createdAt": "2025-01-29T23:41:41.342Z",
           "updatedAt": "2025-02-04T00:12:38.701Z",
           "publishedAt": "2025-02-04T00:12:38.777Z",
-          "speczializaczii": [
+          "objects": [
             {
-              "id": 163,
+              "id": 1,
               "title": "АО Находкинский морской торговый порт (УТ-1)",
               "slug": "test",
               "img_s": {
                 "id": 33,
                 "documentId": "pv47xam4t39u1xqoxasqrqwo",
-                "url": "/uploads/spec_1_4efe76f5b1.png"
+                "url": "/tech!.png"
               }
             },
             {
-              "id": 164,
+              "id": 2,
               "title": "АО Находкинский морской торговый порт (ГУТ-2)",
               "slug": "test",
               "img_s": {
                 "id": 32,
                 "documentId": "gkm97lbgw912orolqcet13jy",
-                "url": "/uploads/image_2131e0cfce.png"
+                "url": "/tech2.png"
               }
             },
             {
-              "id": 165,
+              "id": 3,
               "title": "АО Порт Вера",
               "slug": "test",
               "img_s": {
                 "id": 32,
                 "documentId": "gkm97lbgw912orolqcet13jy",
-                "url": "/uploads/image_2131e0cfce.png"
+                "url": "/tech3.png"
               }
             },
             {
-              "id": 166,
+              "id": 4,
               "title": "ООО Морской Порт Суходол",
               "slug": "test",
               "img_s": {
                 "id": 32,
                 "documentId": "gkm97lbgw912orolqcet13jy",
-                "url": "/uploads/image_2131e0cfce.png"
+                "url": "/tech4.png"
               }
             },
             {
-              "id": 167,
+              "id": 5,
               "title": "Дробильные установки",
               "slug": "test",
               "img_s": {
                 "id": 32,
                 "documentId": "gkm97lbgw912orolqcet13jy",
-                "url": "/uploads/image_2131e0cfce.png"
+                "url": "/tech5.png"
               }
             },
             {
-              "id": 168,
+              "id": 6,
               "title": "Техника",
               "slug": "test",
               "img_s": {
                 "id": 32,
                 "documentId": "gkm97lbgw912orolqcet13jy",
-                "url": "/uploads/image_2131e0cfce.png"
+                "url": "/tech6.png"
               }
             }
           ]
