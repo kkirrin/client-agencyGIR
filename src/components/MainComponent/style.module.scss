@@ -21,6 +21,10 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .item_img {
