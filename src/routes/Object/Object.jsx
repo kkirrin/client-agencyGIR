@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
+import { AddWorkerBtn } from '../../components';
 
 const Object = () => {
   const { id } = useParams();
@@ -47,7 +48,9 @@ const Object = () => {
 
         <div className={styles.table}></div>
 
-        <div className={styles.add_workers}></div>
+        <div className={styles.add_workers}>
+          <AddWorkerBtn />
+        </div>
       </div>
     </section>
   );
