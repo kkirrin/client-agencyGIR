@@ -19,3 +19,34 @@
     @include adaptiv-value("font-size", 20, 15);
     color: var(--main);
 }
+
+.title_table {
+    font-weight: 500;
+}
+
+.table_header {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 20px;
+
+    background-color: var(--main);
+    border-radius: 20px;
+
+    color: var(--white);
+}
+
+.day_list {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 150px;
+}
+
+.day_item {
+    font-weight: 500;
+    
+}
+
+.time_list {
+    display: flex;
+}
