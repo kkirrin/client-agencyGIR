@@ -1,16 +1,26 @@
 @import '../../mixins.scss';
 
+.main_section {
+    margin-top: 50px;
+}
+
 
 .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    margin-top: 0px;
 }
 
 .top_wrapper {
     display: flex;
     gap: 30px;
     align-items: center;
+}
+
+.table {
+    margin-top: 10px;
 }
 
 .name_object {
@@ -21,17 +31,34 @@
 }
 
 .title_table {
+    position: absolute;
+    top: 35%;
+    left: 1%;
     font-weight: 500;
+}
+
+.wrapper_day {
+    position: relative;
+    background-color: var(--main);
+    padding: 20px;
+    border-radius: 20px;
+
+
+}
+.wrapper_time {
+    background-color: var(--gray);
+    padding: 20px;
+    border-radius: 20px;
+
+
 }
 
 .table_header {
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
 
-    background-color: var(--main);
-    border-radius: 20px;
 
     color: var(--white);
 }
@@ -39,7 +66,13 @@
 .day_list {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 150px;
+    // gap: 150px;
+
+    width: 100%;
+}
+
+.item_table {
+    margin-left: 50%;
 }
 
 .day_item {
@@ -49,4 +82,22 @@
 
 .time_list {
     display: flex;
+}
+
+.workers_list {
+    margin-top: 10px;
+}
+
+.pagination {
+    position: absolute;
+    top: 35%;
+    right: 10%;
+
+    display: flex;
+    gap: 10px;
+}
+
+.time_item {
+    display: flex;
+    gap: 5px;
 }

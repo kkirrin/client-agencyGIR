@@ -12,12 +12,18 @@ const Object = () => {
   const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
   const numDays = daysInMonth(2, 2025); 
   const days = Array.from({ length: numDays }, (_, i) => i + 1);
-  const daysPerPage = 6;
+  const daysPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
 
   const startIndex = currentPage * daysPerPage;
   const endIndex = Math.min(startIndex + daysPerPage, days.length);
   const displayedDays = days.slice(startIndex, endIndex);
+
+  const [ workers, setWorkers ] = useState([]);
+
+  const handleAddWorker = () => {
+    setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
+  }
 
   const handleNext = () => {
     if (endIndex < days.length) {
@@ -44,32 +50,49 @@ const Object = () => {
 
         <div className={styles.table}>
           <div className={styles.table_header}>
-            <p className={styles.title_table}>ФИО/должность</p>
-            <ul className={styles.day_list}>
+            <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
+              <p className={styles.title_table}>ФИО/должность</p>
               {displayedDays.map((day) => (
-                <li key={day}>
+                <li className={styles.item_table} key={day}>
                   <div>{day}</div>
-                  <div>День<br/>Ночь</div> 
+                </li>
+              ))}
+
+              <div className={styles.pagination}> 
+                <button onClick={handlePrevious} disabled={currentPage === 0}>
+                  <img style={{ rotate: '-180deg'}} src='/next.svg' alt='next' />
+                </button>
+                
+                <button onClick={handleNext} disabled={endIndex >= days.length}>
+                    <img src='/next.svg' alt='next' />
+                </button>
+              </div>
+            </ul>
+
+            <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
+
+              {displayedDays.map((day) => (
+                <li className={styles.item_table} key={day}>
+                  <div className={styles.time_item}>День / Ночь</div> 
                 </li>
               ))}
             </ul>
-
-             <div className={styles.pagination}> 
-              <button onClick={handlePrevious} disabled={currentPage === 0}>
-                <img style={{ rotate: '-180deg'}} src='/next.svg' alt='next' />
-              </button>
-              
-              <button onClick={handleNext} disabled={endIndex >= days.length}>
-                  <img src='/next.svg' alt='next' />
-              </button>
-             
-             
-            </div>
           </div>
         </div>
 
+        <div className={styles.workers_list}>
+          {workers.map((worker) => (
+            <div key={worker.id}> 
+              <p>{worker.name}</p>
+              <button onClick={() => {}}>
+                <img src='/edit.svg' alt='' /> 
+              </button>
+            </div>
+          ))}
+        </div>
+
         <div className={styles.add_workers}>
-          <AddWorkerBtn />
+          <AddWorkerBtn onAddWorker={handleAddWorker} />
         </div>
       </div>
     </section>

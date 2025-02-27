@@ -1,6 +1,10 @@
 @import '../../mixins.scss';
 
 
+.main_section {
+    margin-top: 50px;
+}
+
 .title {
     font-weight: 900;
     color: var(--white);
@@ -22,6 +26,8 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
 
+    margin-top: 30px;
+
     @media screen and (max-width: 600px) {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -35,7 +41,6 @@
 .item {
     display: flex;
     flex-direction: column;
-    gap: 18px;
     background-color: var(--white);
     border-radius: 14px;
     
@@ -51,4 +56,6 @@
     font-weight: 700;
     color: var(--main);
     @include adaptiv-value("font-size", 20, 16);
+
+    margin-top: 20px;
 }
