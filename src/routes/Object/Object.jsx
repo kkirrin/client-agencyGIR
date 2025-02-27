@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
-import { AddWorkerBtn } from '../../components';
+import { AddWorkerBtn, ComponentDate, ComponentSearch } from '../../components';
+
 
 const Object = () => {
   const { id } = useParams();
+
 
   // Вероятно, по этому id будет снова запрос, пока данные замокаю
   const mockData = {
@@ -37,12 +39,12 @@ const Object = () => {
     <section className={styles.main_section}>
       <div className="container">
         <div className={styles.top}>
-          <p>{object.name}</p>
+          <p className={styles.name_object}>{object.name}</p>
           
 
           <div className={styles.top_wrapper}>
-            <input placeholder='Поиск' />
-            Календарь
+            <ComponentSearch />
+            <ComponentDate />
           </div>
         </div>
 

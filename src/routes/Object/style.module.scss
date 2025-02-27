@@ -12,3 +12,10 @@
     gap: 30px;
     align-items: center;
 }
+
+.name_object {
+    font-weight: 700;
+    text-transform: uppercase;
+    @include adaptiv-value("font-size", 20, 15);
+    color: var(--main);
+}
