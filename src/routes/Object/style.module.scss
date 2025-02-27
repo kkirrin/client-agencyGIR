@@ -100,4 +100,9 @@
 .time_item {
     display: flex;
     gap: 5px;
+    width: 100%;
+    background-color: var(--white);
+    color: var(--main);
+    padding: 5px;
+    border-radius: 20px;
 }
