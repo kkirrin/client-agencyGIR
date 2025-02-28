@@ -12,6 +12,7 @@
   --gray: #9FA9BC;
   --light-gray: #E8ECF4;
   --light-blue: #C9D5FF;
+  --dark-gray: #687182;
   --another-gray: #BAC4D8;
   --light-green: #D4F4C6;
   --light-yellow: #FFEED4;
@@ -43,6 +44,13 @@
   max-width: 1480px;
   padding: 0 20px;
   margin: 0 auto;
+}
+
+
+.border_top_gray {
+  height: 100%;
+  background-color: var(--another-gray);
+  width: 1px;
 }
 
 
@@ -108,6 +116,9 @@ body {
     background-color: #ffffff;
   }
 }
+
+
+
 
 
 /* Reset and base styles  */

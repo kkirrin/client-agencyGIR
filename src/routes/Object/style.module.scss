@@ -79,7 +79,12 @@
 
 .item_table {
     // margin-left: 50%;
+    display: flex;
+    gap: 10px;
+    width: 100%;
 }
+
+
 
 .day_item {
     font-weight: 500;
@@ -92,6 +97,72 @@
 
 .workers_list {
     margin-top: 10px;
+}
+
+.item_data {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.workers_item_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    border-radius: 10px;
+    border: 1px solid var(--another-gray);
+
+    padding: 25px;
+    margin-top: 10px;    
+    margin-bottom: 10px;    
+
+}
+
+.sum {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 15px 20px;
+    background-color: var(--main);
+    border-radius: 10px;
+
+    margin-top: 20px;
+}
+
+.sum_detail {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sum_detail p:first-child {
+    color: var(--dark-gray);
+}
+
+.sum_detail p:last-of-type {
+    color: var(--white);
+}
+
+.sum_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sum_month {
+    color: var(--dark-gray);
+}
+
+
+.sum_text {
+    color: var(--white);
 }
 
 .pagination {
@@ -119,12 +190,10 @@
     display: flex;
     flex-direction: row;
     gap: 50px;
-    border: 1px solid var(--another-gray);
-    padding: 25px;
 
-    border-radius: 10px;
+    height: 200px;
+    
 
-    margin-bottom: 10px;
 }
 
 .worker_data {
