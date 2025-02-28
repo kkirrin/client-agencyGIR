@@ -140,7 +140,7 @@ const Object = () => {
                   </div>
                 ))}
 
-                <button onClick={() => {}}>
+                <button className={styles.edit} onClick={() => {}}>
                   <img src='/edit.svg' alt='' /> 
                 </button>
               </div>

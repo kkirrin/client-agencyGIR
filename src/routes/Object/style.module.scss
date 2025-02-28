@@ -189,7 +189,7 @@
 .workers_item {
     display: flex;
     flex-direction: row;
-    gap: 50px;
+    gap: 30px;
 
     height: 200px;
     
@@ -200,4 +200,8 @@
     display: flex;
     flex-direction: row;
     gap: 40px;
+}
+
+.edit {
+    width: 100%;
 }
