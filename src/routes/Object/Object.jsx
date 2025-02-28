@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
-import { AddWorkerBtn, ComponentDate, ComponentSearch } from '../../components';
+import { AddWorkerBtn, ComponentDate, ComponentSearch, AddPopupWorker } from '../../components';
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
@@ -19,6 +19,10 @@ const Object = () => {
   const endIndex = Math.min(startIndex + daysPerPage, days.length);
   const displayedDays = days.slice(startIndex, endIndex);
 
+  const [popupActive, setPopupActive] = useState(false);
+  const [opened, setOpened] = useState(false);
+  
+
   const [ workers, setWorkers ] = useState([]);
 
   const handleAddWorker = () => {
@@ -35,6 +39,10 @@ const Object = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  const handleClick = () => {
+    setPopupActive(true);
   };
 
   return (
@@ -140,9 +148,13 @@ const Object = () => {
                   </div>
                 ))}
 
-                <button className={styles.edit} onClick={() => {}}>
+                <a
+                  href="#popup"
+                  className={styles.edit} 
+                  onClick={handleClick}
+                >
                   <img src='/edit.svg' alt='' /> 
-                </button>
+                </a>
               </div>
 
               <div className={styles.sum}>
@@ -204,6 +216,8 @@ const Object = () => {
           <AddWorkerBtn onAddWorker={handleAddWorker} />
         </div>
       </div>
+
+      <AddPopupWorker active={popupActive} setActive={setPopupActive} />
     </section>
   );
 };
