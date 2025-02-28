@@ -51,7 +51,7 @@ const Object = () => {
         <div className={styles.table}>
           <div className={styles.table_header}>
             <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-              <p className={styles.title_table}>ФИО/должность</p>
+              {/* <p className={styles.title_table}>ФИО/должность</p> */}
               {displayedDays.map((day) => (
                 <li className={styles.item_table} key={day}>
                   <div>{day}</div>
@@ -73,7 +73,7 @@ const Object = () => {
 
               {displayedDays.map((day) => (
                 <li className={styles.item_table} key={day}>
-                  <div className={styles.time_item}><img src='/sun.svg' alt='' /><p style={{ color: '#F2B174'}}>День</p> | <img src='/moon.svg' alt='' /><p style={{ color: '#1F2433sun'}}>Ночь</p></div> 
+                  <div className={styles.time_item}><img src='/moon.svg' alt='' /><p style={{ color: '#1F2433sun'}}>Ночь</p> | <img src='/sun.svg' alt='' /><p style={{ color: '#F2B174'}}>День</p></div> 
                 </li>
               ))}
             </ul>
@@ -82,8 +82,17 @@ const Object = () => {
 
         <div className={styles.workers_list}>
           {workers.map((worker) => (
-            <div key={worker.id}> 
-              <p>{worker.name}</p>
+            <div className={styles.workers_item} key={worker.id}> 
+              <div className={styles.worker_data}>
+                <p>{worker.name}</p>
+                <p>Тоннаж</p>
+              </div>
+
+              {displayedDays.map((day) => (
+                <p className={styles.item_table} key={day}>
+                  Тут будут данные
+                </p>
+              ))}
               <button onClick={() => {}}>
                 <img src='/edit.svg' alt='' /> 
               </button>

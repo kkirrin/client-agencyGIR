@@ -6,6 +6,7 @@ import styles from './style.module.scss';
 
 const useWorkerStore = create(
   persist(
+    
     (set) => ({
       workers: [],
       addWorker: (newWorker) => set((state) => ({ workers: [...state.workers, newWorker] })),

@@ -20,6 +20,8 @@
 }
 
 .table {
+    position: sticky;
+    top: 0;
     margin-top: 10px;
 }
 
@@ -41,14 +43,14 @@
     position: relative;
     background-color: var(--main);
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
 
 
 }
 .wrapper_time {
     background-color: var(--gray);
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
 
 
 }
@@ -66,13 +68,17 @@
 .day_list {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+
+    text-align: center;
+    gap: 30px;
+
     // gap: 150px;
 
     width: 100%;
 }
 
 .item_table {
-    margin-left: 50%;
+    // margin-left: 50%;
 }
 
 .day_item {
@@ -99,10 +105,30 @@
 
 .time_item {
     display: flex;
+    justify-content: center;
     gap: 5px;
     width: 100%;
     background-color: var(--white);
     color: var(--main);
     padding: 5px;
-    border-radius: 20px;
+    border-radius: 10px;
+}
+
+
+.workers_item {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    border: 1px solid var(--another-gray);
+    padding: 25px;
+
+    border-radius: 10px;
+
+    margin-bottom: 10px;
+}
+
+.worker_data {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
 }
