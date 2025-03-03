@@ -8,7 +8,7 @@ import {
     ComponentSearch, 
     AddPopupContent, 
     CheckNoteBtn, 
-  NoteBody
+    NoteBody
 }
   from '../../components';
 

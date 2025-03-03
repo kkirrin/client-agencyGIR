@@ -85,11 +85,12 @@ export default function ComponentTech({ handleClickBtn, items }) {
                 )
             })}
            
-
-             <AddMoreBtn 
-                onHandleClick={handleClickBtn} 
-                title={'Добавить еще'}
-            />
+            <div style={{ height: '40px'}}>
+                <AddMoreBtn 
+                    onHandleClick={handleClickBtn} 
+                    title={'Добавить еще'}
+                />
+            </div>
 
         </>
     )
