@@ -1,4 +1,4 @@
-import { Form } from '..';
+import { Form } from '../../components';
 import styles from './style.module.scss';
 
 export default function AddPopupContent({ active, setActive, title }) {
@@ -34,9 +34,9 @@ export default function AddPopupContent({ active, setActive, title }) {
                         </svg>
                     </button>
 
-                    <div className={styles.popup__form}>
-                        {title}
-                    </div>
+                    <Form
+                        title={title}
+                    />
                 </div>
             </div>
         </div>
