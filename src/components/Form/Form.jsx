@@ -1,13 +1,13 @@
 import styles from './style.module.scss';
 
-import { BtnSave, ComponentDate, CustomInput } from '../../components';
+import { AddWorkerBtn, BtnSave, ComponentDate, CustomInput } from '../../components';
 
 export default function Form({ title, forWhat }) {
     return (
         <form
             action=""
         >
-            <div>
+            <div className={styles.form_wrapper}>
                 <div className={styles.form_header}>
                     <div>
                         <h2 className={styles.form_title}>
@@ -316,8 +316,9 @@ export default function Form({ title, forWhat }) {
                         </div>
                     </>
                 )}
-                
             </div>
+
+            <AddWorkerBtn />
         </form>
     )
 }
