@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
 
 import { 
-    AddWorkerBtn, 
+    AddMoreBtn, 
     ComponentDate, 
     ComponentSearch, 
     AddPopupContent, 
@@ -219,7 +219,10 @@ const Object = () => {
         </div>
 
         <div className={styles.add_workers}>
-          <AddWorkerBtn onAddWorker={handleAddWorker} />
+          <AddMoreBtn 
+            onHandleClick={handleAddWorker} 
+            title={'Добавить сотрудника'}
+          />
         </div>
       </div>
 

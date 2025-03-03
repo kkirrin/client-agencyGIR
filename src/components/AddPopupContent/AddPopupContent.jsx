@@ -36,7 +36,7 @@ export default function AddPopupContent({ active, setActive, title }) {
 
                     <Form
                         title={title}
-                        forWhat={'tech'}
+                        forWhat={'people'}
                     />
                 </div>
             </div>
