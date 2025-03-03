@@ -1,0 +1,10 @@
+.custom_input {
+    width: 100%;
+    background-color: var(--another-gray);
+
+    border-radius: 6px;
+}
+
+.custom_input::placeholder {
+    color: var(--gray);
+}

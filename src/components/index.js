@@ -1,4 +1,5 @@
 export { default as Form } from './Form/Form';
+export { default as BtnSave } from './BtnSave/BtnSave';
 export { default as Loading } from './Loading/Loading';
 export { default as CustomInput } from './CustomInput/CustomInput';
 export { default as NoteBody } from './NotePopupBody/NotePopupBody';

@@ -1,5 +1,11 @@
-export default function CustomInput() {
+import styles from './style.module.scss';
+
+export default function CustomInput({ placeholder, type }) {
     return (
-        <input type="text" placeholder="Enter your text here" />
+        <input
+            className={styles.cutom_input}
+            type={type}
+            placeholder={placeholder}
+        />
     )
 }
