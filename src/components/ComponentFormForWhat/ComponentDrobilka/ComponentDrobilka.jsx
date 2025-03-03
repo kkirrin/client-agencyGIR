@@ -2,7 +2,7 @@ import styles from './style.module.scss';
 
 import {CustomInput, ComponentDate, AddMoreBtn } from '../../../components';
 
-export default function ComponentDrobilka({ handleClickBtn }) {
+export default function ComponentDrobilka({ handleClickBtn, items }) {
     return (
         <>
             <div className={styles.form_content}>
@@ -73,38 +73,46 @@ export default function ComponentDrobilka({ handleClickBtn }) {
                 </div>
             </div>
 
-            <div className={styles.data_container}>
-                <div className={styles.data}>
-                    <p>Данные</p>
-                    <div className={styles.data_wrapper}>
-                        <div className={styles.data_item}>
-                            <input type="checkbox" />
-                            <p>Ремонт/ТО</p>
+
+            {items.map((item, idx) => {
+                return (
+                    <div id='repeatable' className='flex' key={idx}>
+                        <div className={styles.data_container}>
+                            <div className={styles.data}>
+                                <p>Данные</p>
+                                <div className={styles.data_wrapper}>
+                                    <div className={styles.data_item}>
+                                        <input type="checkbox" />
+                                        <p>Ремонт/ТО</p>
+                                    </div>
+
+                                    <div className={styles.data_item}>
+                                        <input type="checkbox" />
+                                        <p>Отсутствие угля (О/У)</p>
+                                    </div>
+
+                                    <div className={styles.data_item}>
+                                        <input type="checkbox" />
+                                        <p>Запас</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div className={styles.data}>
+                                <p style={{ marginBottom: '10px' }}>Тоннаж </p> 
+                                <CustomInput placeholder='Введите тн. '/>                                
+                            </div>
                         </div>
 
-                        <div className={styles.data_item}>
-                            <input type="checkbox" />
-                            <p>Отсутствие угля (О/У)</p>
+                        <div className={styles.note}>
+                            <p>Примечание</p>
+                            <CustomInput placeholder="Введите примечание" />
                         </div>
-
-                        <div className={styles.data_item}>
-                            <input type="checkbox" />
-                            <p>Запас</p>
-                        </div>
-
                     </div>
-                </div>
-
-                <div className={styles.data}>
-                    <p style={{ marginBottom: '10px' }}>Тоннаж </p> 
-                    <CustomInput placeholder='Введите тн. '/>                                
-                </div>
-            </div>
-
-            <div className={styles.note}>
-                <p>Примечание</p>
-                <CustomInput placeholder="Введите примечание" />
-            </div>
+                )
+            })}
+         
 
 
             <AddMoreBtn 

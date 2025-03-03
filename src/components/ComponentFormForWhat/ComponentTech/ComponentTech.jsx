@@ -2,7 +2,7 @@ import styles from './style.module.scss';
 
 import { CustomInput, ComponentDate, AddMoreBtn } from '../../../components';
 
-export default function ComponentTech({ handleClickBtn }) {
+export default function ComponentTech({ handleClickBtn, items }) {
     return (
         <>
             <div className={styles.wrapper_name}>
@@ -48,35 +48,43 @@ export default function ComponentTech({ handleClickBtn }) {
                 </div>
             </div>
 
-            <div className={styles.data}>
-                <p>Данные</p>
-                <div className={styles.data_wrapper}>
-                    <div className={styles.data_item}>
-                        <input type="checkbox" />
-                        <p>Ремонт/ТО</p>
-                    </div>
+            {items.map((item, idx) => {
+                return (
+                    <div id='repeatable' className='flex' key={idx}>
+                        <div className={styles.data}>
+                            <p>Данные</p>
+                            <div className={styles.data_wrapper}>
+                                <div className={styles.data_item}>
+                                    <input type="checkbox" />
+                                    <p>Ремонт/ТО</p>
+                                </div>
 
-                    <div className={styles.data_item}>
-                        <input type="checkbox" />
-                        <p>Отсутствие угля (О/У)</p>
-                    </div>
+                                <div className={styles.data_item}>
+                                    <input type="checkbox" />
+                                    <p>Отсутствие угля (О/У)</p>
+                                </div>
 
-                    <div className={styles.data_item}>
-                        <input type="checkbox" />
-                        <p>Запас</p>
-                    </div>
+                                <div className={styles.data_item}>
+                                    <input type="checkbox" />
+                                    <p>Запас</p>
+                                </div>
 
-                    <div className={styles.data_item}>
-                        <input type="checkbox" />
-                        <p>Запас</p>
-                    </div>
-                </div>
-            </div>
+                                <div className={styles.data_item}>
+                                    <input type="checkbox" />
+                                    <p>Запас</p>
+                                </div>
+                            </div>
+                        </div>
 
-            <div className={styles.note}>
-                <p>Примечание</p>
-                <CustomInput placeholder="Введите примечание" />
-            </div>
+                        <div className={styles.note}>
+                            <p>Примечание</p>
+                            <CustomInput placeholder="Введите примечание" />
+                        </div>
+                        
+                    </div>
+                )
+            })}
+           
 
              <AddMoreBtn 
                 onHandleClick={handleClickBtn} 
