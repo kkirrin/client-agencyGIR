@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 
-import {CustomInput, ComponentDate, AddMoreBtn } from '../../../components';
+import {CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox } from '../../../components';
 
 export default function ComponentDrobilka({ handleClickBtn, items }) {
     return (
@@ -81,21 +81,9 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
                             <div className={styles.data}>
                                 <p>Данные</p>
                                 <div className={styles.data_wrapper}>
-                                    <div className={styles.data_item}>
-                                        <input type="checkbox" />
-                                        <p>Ремонт/ТО</p>
-                                    </div>
-
-                                    <div className={styles.data_item}>
-                                        <input type="checkbox" />
-                                        <p>Отсутствие угля (О/У)</p>
-                                    </div>
-
-                                    <div className={styles.data_item}>
-                                        <input type="checkbox" />
-                                        <p>Запас</p>
-                                    </div>
-
+                                    <CustomCheckBox label={"Ремонт/ТО<"} checkboxId={'checkbox1'} />
+                                    <CustomCheckBox label={"Отсутствие угля (О/У)"} checkboxId={'checkbox2'} />
+                                    <CustomCheckBox label={"Запас"} checkboxId={'checkbox3'} />
                                 </div>
                             </div>
 
@@ -115,10 +103,12 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
          
 
 
-            <AddMoreBtn 
-                onHandleClick={handleClickBtn} 
-                title={'Добавить еще'}
-            />
+            <div style={{ height: '40px', marginTop: '20px'}}>
+                <AddMoreBtn 
+                    onHandleClick={handleClickBtn} 
+                    title={'Добавить еще'}
+                />
+            </div>
         </>
     )
 }
