@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
-import { AddWorkerBtn, ComponentDate, ComponentSearch, AddPopupWorker } from '../../components';
+import { AddWorkerBtn, ComponentDate, ComponentSearch, AddPopupWorker, CheckNoteBtn, NoteBody } from '../../components';
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
@@ -20,7 +20,7 @@ const Object = () => {
   const displayedDays = days.slice(startIndex, endIndex);
 
   const [popupActive, setPopupActive] = useState(false);
-  const [opened, setOpened] = useState(false);
+  const [noteBodyActive, setNoteBodyActive] = useState(false);
   
 
   const [ workers, setWorkers ] = useState([]);
@@ -44,6 +44,10 @@ const Object = () => {
   const handleClick = () => {
     setPopupActive(true);
   };
+
+  const handleClickNote = () => {
+    setNoteBodyActive(true);
+  }
 
   return (
     <section className={styles.main_section}>
@@ -122,11 +126,7 @@ const Object = () => {
                         </p>
                       </div>
 
-                      <div>
-                        <p>
-                          Примечание
-                        </p>
-                      </div>
+                      <CheckNoteBtn handleClick={handleClickNote} />
                     </div>
                     <div className='border_top_gray'>
 
@@ -138,11 +138,8 @@ const Object = () => {
                         </p>
                       </div>
   
-                      <div>
-                        <p>
-                          Примечание
-                        </p>
-                      </div>
+                      <CheckNoteBtn handleClick={handleClickNote} />
+
                     </div>
 
                   </div>
@@ -218,6 +215,8 @@ const Object = () => {
       </div>
 
       <AddPopupWorker active={popupActive} setActive={setPopupActive} />
+      <NoteBody active={noteBodyActive} setActive={setNoteBodyActive} />
+      
     </section>
   );
 };
