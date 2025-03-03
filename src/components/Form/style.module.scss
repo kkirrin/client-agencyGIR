@@ -42,7 +42,7 @@
 }
 
 .form_title_content {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 
@@ -76,6 +76,105 @@
 .date_content {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 10px;
     align-items: start;
+
+    width: 400px;
+    border: 1px solid var(--another-gray);
+}
+
+.date_content p {
+    font-weight: 500;
+}
+
+.smena_content p {
+    font-weight: 500;
+}
+
+.smena_content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    gap: 10px;
+}
+
+.smena_btns {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.smena_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    padding: 12px;
+    
+    border-radius: 6px;
+    min-width: 110px;
+}
+
+.night {
+    border: 1px solid var(--main);
+    color: var(--main);
+}
+
+.day {
+    border: 1px solid var(--yellow);
+    color: var(--yellow);
+}
+
+.data {
+    margin-top: 15px;
+}
+
+.data p {
+    text-align: start;
+    font-weight: 500;
+}
+
+
+.data_wrapper {
+    display: flex;
+    gap: 18px;
+
+    margin-top: 20px;
+}
+
+.data_item {
+    display: flex;
+    gap: 10px;
+}
+
+.data_item input {
+    border: 1px solid var(--another-gray);
+    background-color: var(--another-gray);
+    border-radius: 6px;
+}
+
+.data_item p {
+    color: var(--another-gray);
+}
+
+.note {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+
+    margin-top: 15px;
+    
+    border-bottom: 1px solid var(--another-gray);
+    padding-bottom: 20px;
+}
+
+.note p {
+    font-weight: 500;
+    
+
 }
