@@ -1,7 +1,7 @@
-import { Form } from '../../components';
+import { Form } from '..';
 import styles from './style.module.scss';
 
-export default function AddPopupWorker({ active, setActive }) {
+export default function AddPopupContent({ active, setActive, title }) {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
@@ -34,11 +34,9 @@ export default function AddPopupWorker({ active, setActive }) {
                         </svg>
                     </button>
 
-                    {/* <Form
-                        title="получите расчет стоимости"
-                        subtitle="Оставьте контакты и квалифицированные специалисты за 5 минут рассчитают цену"
-                    /> */}
-
+                    <div className={styles.popup__form}>
+                        {title}
+                    </div>
                 </div>
             </div>
         </div>

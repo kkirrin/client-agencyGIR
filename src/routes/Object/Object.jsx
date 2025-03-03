@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
-import { AddWorkerBtn, ComponentDate, ComponentSearch, AddPopupWorker, CheckNoteBtn, NoteBody } from '../../components';
+
+import { 
+    AddWorkerBtn, 
+    ComponentDate, 
+    ComponentSearch, 
+    AddPopupContent, 
+    CheckNoteBtn, 
+  NoteBody
+}
+  from '../../components';
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
@@ -214,8 +223,16 @@ const Object = () => {
         </div>
       </div>
 
-      <AddPopupWorker active={popupActive} setActive={setPopupActive} />
-      <NoteBody active={noteBodyActive} setActive={setNoteBodyActive} />
+      <AddPopupContent 
+        active={popupActive} 
+        setActive={setPopupActive} 
+        title={'Сотрудник'} 
+      />
+      
+      <NoteBody 
+        active={noteBodyActive} 
+        setActive={setNoteBodyActive} 
+      />
       
     </section>
   );
