@@ -24,58 +24,40 @@ export default function Form({ title, forWhat }) {
 
                 
                 {forWhat === 'tech' ? (
-                        <div className={styles.form_content}>
-                            <p>Тоннаж месяц</p>
-                            <div className={styles.wrapper_input}>
-                                <div>
-                                    <label htmlFor="">Тоннаж выставили</label>
-                                    <CustomInput placeholder="Введите тн." />
-                                </div>
-
-                                <div>
-                                    <label htmlFor="">Ост. Порт</label>
-                                    <CustomInput placeholder="Введите тн." />
-                                </div>
-
-                                <div>
-                                    <label htmlFor="">Ост. ГиР</label>
-                                    <CustomInput placeholder="Введите тн." />
-                                </div>
-                            </div>
-                        </div>
+                         <div></div>
                 ) 
                     : (
                         <div className={styles.form_content}>
-                            <p>Тоннаж месяц</p>
+                            <p className={styles.form_title_content}>Тоннаж месяц</p>
                             <div className={styles.wrapper_input}>
                                 <div>
                                     <label 
-                                        htmlFor=""
-                                        style={{ textAlign: 'start' }}
+                                        htmlFor="1"
+                                        style={{ textAlign: 'start', fontWeight: 'medium' }}
                                     >
                                         Тоннаж выставили
                                     </label>
-                                    <CustomInput placeholder="Введите тн." />
+                                    <CustomInput id={1} placeholder="Введите тн." />
                                 </div>
 
                                 <div>
                                     <label 
-                                        htmlFor=""
-                                        style={{ textAlign: 'start' }}
+                                        htmlFor="2"
+                                        style={{ textAlign: 'start', fontWeight: 'medium' }}
                                     >
                                         Ост. Порт
                                     </label>
-                                    <CustomInput placeholder="Введите тн." />
+                                    <CustomInput id={2} placeholder="Введите тн." />
                                 </div>
 
                                 <div>
                                     <label 
-                                        htmlFor=""
-                                        style={{ textAlign: 'start' }}
+                                        htmlFor="3"
+                                        style={{ textAlign: 'start', fontWeight: 'medium' }}
                                     >
                                         Ост. ГиР
                                     </label>
-                                    <CustomInput placeholder="Введите тн." />
+                                    <CustomInput id={3} placeholder="Введите тн." />
                                 </div>
                             </div>
                         </div>
