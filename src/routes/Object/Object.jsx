@@ -14,6 +14,8 @@ import {
 }
   from '../../components';
 
+import useDateStore from '../../store/CalendarStore';
+
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
@@ -33,8 +35,7 @@ const Object = () => {
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
   
-
-  const [ workers, setWorkers ] = useState([]);
+  const [workers, setWorkers] = useState([]);
 
   const handleAddWorker = () => {
     setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
