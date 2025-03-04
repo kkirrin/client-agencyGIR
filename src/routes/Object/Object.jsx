@@ -73,7 +73,8 @@ const Object = () => {
             <ComponentSearch />
             <ComponentDate />
 
-            Текущая дата из store: {date}
+            {console.log(date)};
+            Текущая дата из store: {`${date}`}
           </div>
         </div>
 

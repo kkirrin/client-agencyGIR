@@ -12,7 +12,7 @@ export default function ComponentDate() {
     const { date, updateDate } = useDateStore(); 
     const [startDate, setStartDate] = useState(new Date()); 
 
-    console.log(date);
+    console.log(typeof(date));
     const handleDateChange = (date) => {
         console.log(date);
 
