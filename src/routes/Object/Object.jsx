@@ -37,7 +37,7 @@ const Object = () => {
   
   const [workers, setWorkers] = useState([]);
 
-  const { date, updateDate } = useDateStore(); 
+  const { date } = useDateStore(); 
 
 
   const handleAddWorker = () => {
@@ -74,7 +74,7 @@ const Object = () => {
             <ComponentDate />
 
             {console.log(date)};
-            Текущая дата из store: {`${date}`}
+            Текущая дата из store: {`${date.toLocaleDateString()}`}
           </div>
         </div>
 

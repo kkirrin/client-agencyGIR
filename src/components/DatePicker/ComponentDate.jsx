@@ -2,23 +2,28 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import { registerLocale } from 'react-datepicker';
-
-import { useState } from 'react'; 
+import { useEffect, useState } from 'react'; 
 import useDateStore from '../../store/CalendarStore';
 
 registerLocale('ru', ru); 
 
 export default function ComponentDate() {
     const { date, updateDate } = useDateStore(); 
-    const [startDate, setStartDate] = useState(new Date()); 
+    const [startDate, setStartDate] = useState(date);
 
-    console.log(typeof(date));
-    const handleDateChange = (date) => {
-        console.log(date);
+    useEffect(() => {
+        setStartDate(date); 
+    }, [date]);
 
-        setStartDate(date);
-        updateDate(date);
+    const handleDateChange = (selectedDate) => {
+        console.log('Выбранная дата: ', selectedDate)
+        setStartDate(selectedDate);
+        updateDate(selectedDate); 
     }
+
+    useEffect(() => {
+        console.log('Текущая дата из store: ', date);
+    }, [date]); 
 
     return (
         <>
@@ -29,7 +34,7 @@ export default function ComponentDate() {
                 onChange={handleDateChange}
                 dateFormat="MMMM y"
                 locale="ru" 
-                // customInput={<CustomInputDate />}
+                shouldCloseOnSelect={false}
             />
         </>
     );

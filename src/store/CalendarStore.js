@@ -1,10 +1,9 @@
 import { create } from 'zustand';
 
 const useDateStore = create((set) => ({
-  // Изначальное состояние – текущая дата
   date: new Date(),
-  // Функция для обновления даты
-    updateDate: () => set({ date: new Date('MMMM y') }),
+  updateDate: (newDate) => set({ date: newDate }),
 }));
 
 export default useDateStore;
+
