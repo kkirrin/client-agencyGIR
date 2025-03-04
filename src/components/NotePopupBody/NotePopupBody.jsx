@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 
-export default function NoteBody({ active, setActive }) {
+export default function NoteBody({ active, setActive, data }) {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
@@ -32,7 +32,10 @@ export default function NoteBody({ active, setActive }) {
                             <rect x="4.21094" y="3" width="21.8033" height="0.726776" rx="0.363388" transform="rotate(45 4.21094 3)" fill="#2a3a57" />
                         </svg>
                     </button>
-                    Че смотришь
+                    <div>
+
+                        {data}
+                    </div>
                 </div>
             </div>
         </div>

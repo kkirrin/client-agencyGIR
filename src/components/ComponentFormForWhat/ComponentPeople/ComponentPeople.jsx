@@ -1,8 +1,9 @@
 import styles from './style.module.scss';
 
-import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox } from '../../../components';
+import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
 
-export default function ComponentPeople({ handleClickBtn, items }) {
+export default function ComponentPeople({ handleClickBtn, items, handleTimeChange }) {
+
     return (
         <>
             <div>
@@ -76,14 +77,7 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                                 <div className={styles.smena_content}>
                                     <p>Смена</p>
                                     <div className={styles.smena_btns}>
-                                        <button className={`${styles.smena_btn} ${styles.day}`}>
-                                            <img src={'/sun.svg'} alt='' />
-                                            <p>День</p>
-                                        </button>
-                                        <button className={`${styles.smena_btn} ${styles.night}`}>
-                                            <img src={'/moon.svg'} alt='' />
-                                            <p>Ночь</p>
-                                        </button>
+                                        <ChooseTimeBtn onClick={handleTimeChange} />
                                     </div>
                                 </div>
                             </div>

@@ -1,8 +1,8 @@
 import styles from './style.module.scss';
 
-import {CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox } from '../../../components';
+import {CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
 
-export default function ComponentDrobilka({ handleClickBtn, items }) {
+export default function ComponentDrobilka({ handleClickBtn, items, handleTimeChange }) {
     return (
         <>
             <div className={styles.form_content}>
@@ -60,18 +60,10 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
 
                 <div className={styles.smena_content}>
                     <p>Смена</p>
-                    <div className={styles.smena_btns}>
-                        <button className={`${styles.smena_btn} ${styles.day}`}>
-                            <img src={'/sun.svg'} alt='' />
-                            <p>День</p>
-                        </button>
-                        <button className={`${styles.smena_btn} ${styles.night}`}>
-                            <img src={'/moon.svg'} alt='' />
-                            <p>Ночь</p>
-                        </button>
-                    </div>
+                    <ChooseTimeBtn />
                 </div>
             </div>
+                    
 
 
             {items.map((item, idx) => {

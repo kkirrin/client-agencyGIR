@@ -1,0 +1,26 @@
+.smena_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    padding: 12px;
+    
+    border-radius: 6px;
+    min-width: 110px;
+}
+
+.night {
+    border: 1px solid var(--main);
+    color: var(--main);
+}
+
+.day {
+    border: 1px solid var(--yellow);
+    color: var(--yellow);
+}
+
+.active {
+
+}

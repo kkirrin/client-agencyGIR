@@ -9,12 +9,18 @@ import {
 }
     from '../../components';
 
+
+
 export default function Form({ title, forWhat }) {
 
     const [items, setItems] = useState([1]);
 
     const handleClick = () => {
         setItems([...items, { id: items.length + 1 }]); 
+    };
+
+    const handleTimeChange = (time) => {
+        console.log('Selected time:', time);
     };
     
     return (
@@ -40,6 +46,7 @@ export default function Form({ title, forWhat }) {
                 {forWhat === 'people' && (
                     <ComponentPeople
                         handleClickBtn={handleClick}
+                        handleTimeChange={handleTimeChange}
                         items={items}
                     />
                 )}
@@ -47,6 +54,7 @@ export default function Form({ title, forWhat }) {
                 {forWhat === 'tech' && (
                     <ComponentTech
                         handleClickBtn={handleClick}
+                        handleTimeChange={handleTimeChange}
                         items={items}
                     />
                 )}
@@ -54,6 +62,7 @@ export default function Form({ title, forWhat }) {
                 {forWhat === 'drobilka' && (
                     <ComponentDrobilka
                         handleClickBtn={handleClick}
+                        handleTimeChange={handleTimeChange}
                         items={items}
                     />
                 )}
