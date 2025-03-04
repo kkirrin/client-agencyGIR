@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
 
+import { motion } from 'motion/react';
+
 import { 
     AddMoreBtn, 
     ComponentDate, 
@@ -105,8 +107,14 @@ const Object = () => {
 
         <div className={styles.workers_list}>
           {workers.map((worker) => (
-            <div key={worker.id} className={styles.workers_item_wrapper}>
-              <div className={styles.workers_item} > 
+           <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }} 
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.5 }} key={worker.id}
+              className={styles.workers_item_wrapper}
+            >
+              <div className={styles.workers_item}> 
                 <div className={styles.worker_data}>
                   <p>{worker.name}</p>
                   <p>Тоннаж</p>
@@ -116,41 +124,25 @@ const Object = () => {
                   <div className={styles.item_table} key={day}>
                     <div className={styles.item_data}>
                       <div className={styles.detail}> 
-                        <p>
-                          Тоннаж 
-                        </p>
-
-                        <p>
-                          500,25
-                        </p>
+                        <p>Тоннаж</p>
+                        <p>500,25</p>
                       </div>
 
                       <div className={styles.detail}>
-                        <p>
-                          ТС 
-                        </p>
-
-                        <p>
-                          УСМ-20
-                        </p>
+                        <p>ТС</p>
+                        <p>УСМ-20</p>
                       </div>
 
                       <CheckNoteBtn handleClick={handleClickNote} />
                     </div>
-                    <div className='border_top_gray'>
-
-                    </div>
+                    <div className='border_top_gray'></div>
                     <div className={styles.item_data}>
                       <div className={styles.detail}> 
-                        <p>
-                          не работал
-                        </p>
+                        <p>не работал</p>
                       </div>
-  
+
                       <CheckNoteBtn handleClick={handleClickNote} />
-
                     </div>
-
                   </div>
                 ))}
 
@@ -179,12 +171,10 @@ const Object = () => {
                   <p>9</p>
                 </div>
 
-
                 <div className={styles.sum_detail}>
                   <p>Всего смен</p>
                   <p>19</p>
                 </div>
-
 
                 <div className={styles.sum_detail}>
                   <p>Общий тоннаж</p>
@@ -197,10 +187,8 @@ const Object = () => {
                 </div>
 
                 <div className={styles.sum_detail}>
-                    <p>Выставили</p>
-                    <p>
-                      10 000,89
-                    </p>
+                  <p>Выставили</p>
+                  <p>10 000,89</p>
                 </div>
 
                 <div className={styles.sum_detail}>
@@ -213,7 +201,7 @@ const Object = () => {
                   <p>1500,89</p>
                 </div>
               </div>  
-            </div>
+            </motion.div>
             
           ))}
         </div>
