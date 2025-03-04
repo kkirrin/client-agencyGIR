@@ -37,6 +37,9 @@ const Object = () => {
   
   const [workers, setWorkers] = useState([]);
 
+  const { date, updateDate } = useDateStore(); 
+
+
   const handleAddWorker = () => {
     setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
   }
@@ -69,6 +72,8 @@ const Object = () => {
           <div className={styles.top_wrapper}>
             <ComponentSearch />
             <ComponentDate />
+
+            Текущая дата из store: {date}
           </div>
         </div>
 
