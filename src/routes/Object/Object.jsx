@@ -22,8 +22,17 @@ function daysInMonth(month, year) {
 
 const Object = () => {
   const { id } = useParams();
+
+
+  
+  const { date } = useDateStore(); 
+
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+
   const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
-  const numDays = daysInMonth(2, 2025); 
+  const numDays = daysInMonth(month, year); 
   const days = Array.from({ length: numDays }, (_, i) => i + 1);
   const daysPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
@@ -36,9 +45,6 @@ const Object = () => {
   const [noteBodyActive, setNoteBodyActive] = useState(false);
   
   const [workers, setWorkers] = useState([]);
-
-  const { date } = useDateStore(); 
-
 
   const handleAddWorker = () => {
     setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
@@ -72,9 +78,6 @@ const Object = () => {
           <div className={styles.top_wrapper}>
             <ComponentSearch />
             <ComponentDate />
-
-            {console.log(date)};
-            Текущая дата из store: {`${date.toLocaleDateString()}`}
           </div>
         </div>
 
