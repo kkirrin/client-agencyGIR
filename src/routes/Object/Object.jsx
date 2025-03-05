@@ -22,29 +22,23 @@ function daysInMonth(month, year) {
 
 const Object = () => {
   const { id } = useParams();
-
   const { dates } = useDateStore(); 
-
-
-  console.log(dates);
-  // Начальные значение для рендера
-  const currentMonth = new Date().getMonth() + 1;
-  const currentYear = new Date().getFullYear();
-
-  const first_day = dates[0] ? dates[0].getDate() : null;
-  const first_month = dates[0] ? dates[0].getMonth() + 1 : null;
-  const first_year = dates[0] ? dates[0].getFullYear() : null;
-
+  // Число
+  const [numDays, setNumDays] = useState(daysInMonth(new Date().getMonth() + 1, new Date().getFullYear()));
+  
   const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
-  const numDays = daysInMonth(currentMonth, currentYear); 
-  const days = Array.from({ length: numDays }, (_, i) => i + 1);
-  const daysPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(0);
-  // const [selectedDay, setSelectedDay] = useState(0);
 
-  const startIndex = currentPage * daysPerPage;
-  const endIndex = Math.min(startIndex + daysPerPage, days.length);
-  const displayedDays = days.slice(startIndex, endIndex);
+  // Разбиение
+  let days = Array.from({ length: numDays }, (_, i) => i + 1);
+
+  // Разбиение на страницы
+  const daysPerPage = 5;
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  let startIndex = currentPage * daysPerPage;
+  let endIndex = Math.min(startIndex + daysPerPage, days.length);
+  let displayedDays = days.slice(startIndex, endIndex);
 
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
@@ -74,6 +68,21 @@ const Object = () => {
   const handleClickNote = () => {
     setNoteBodyActive(true);
   }
+
+
+ useEffect(() => {
+    if (dates.length > 0) {
+      const firstDate = dates[0];
+      const firstDay = firstDate.getDay();
+      const first_month = firstDate.getMonth() + 1;
+      const first_year = firstDate.getFullYear();
+      
+      // Перезаписываем numDays
+      setNumDays(daysInMonth(first_month, first_year));
+      setCurrentPage(0)
+    }
+ }, [dates]);
+  
 
   return (
     <section className={styles.main_section}>
