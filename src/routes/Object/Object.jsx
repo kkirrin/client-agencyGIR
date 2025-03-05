@@ -23,10 +23,9 @@ function daysInMonth(month, year) {
 const Object = () => {
   const { id } = useParams();
 
-
-  
   const { date } = useDateStore(); 
 
+  const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
@@ -36,6 +35,7 @@ const Object = () => {
   const days = Array.from({ length: numDays }, (_, i) => i + 1);
   const daysPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(0);
 
   const startIndex = currentPage * daysPerPage;
   const endIndex = Math.min(startIndex + daysPerPage, days.length);

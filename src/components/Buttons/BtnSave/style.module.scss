@@ -1,8 +1,16 @@
 .btn_save {
+    cursor: pointer;
     background-color: var(--green);
     color: var(--white);
 
     padding: 10px 20px;
     border-radius: 100px;
     width: 100%;
+
+    transition: opacity 0.2s ease-in-out;
+
+}
+
+.btn_save:hover {
+    opacity: 0.6;
 }
