@@ -19,10 +19,6 @@ export default function Form({ title, forWhat }) {
         setItems([...items, { id: items.length + 1 }]); 
     };
 
-    const handleTimeChange = (time) => {
-        console.log('Selected time:', time);
-    };
-    
     return (
         <form
             action=""
@@ -46,7 +42,6 @@ export default function Form({ title, forWhat }) {
                 {forWhat === 'people' && (
                     <ComponentPeople
                         handleClickBtn={handleClick}
-                        handleTimeChange={handleTimeChange}
                         items={items}
                     />
                 )}
@@ -54,7 +49,6 @@ export default function Form({ title, forWhat }) {
                 {forWhat === 'tech' && (
                     <ComponentTech
                         handleClickBtn={handleClick}
-                        handleTimeChange={handleTimeChange}
                         items={items}
                     />
                 )}
@@ -62,7 +56,6 @@ export default function Form({ title, forWhat }) {
                 {forWhat === 'drobilka' && (
                     <ComponentDrobilka
                         handleClickBtn={handleClick}
-                        handleTimeChange={handleTimeChange}
                         items={items}
                     />
                 )}

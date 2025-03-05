@@ -2,7 +2,7 @@ import styles from './style.module.scss';
 
 import {CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
 
-export default function ComponentDrobilka({ handleClickBtn, items, handleTimeChange }) {
+export default function ComponentDrobilka({ handleClickBtn, items }) {
     return (
         <>
             <div className={styles.form_content}>

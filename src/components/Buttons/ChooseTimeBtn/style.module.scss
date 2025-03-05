@@ -1,4 +1,5 @@
 .smena_btn {
+    cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -9,6 +10,12 @@
     
     border-radius: 6px;
     min-width: 110px;
+
+    transition: all .3s ease-in-out;
+}
+
+.smena_btn svg path {
+    transition: all .3s ease-in-out;
 }
 
 .night {
@@ -16,11 +23,24 @@
     color: var(--main);
 }
 
+
 .day {
     border: 1px solid var(--yellow);
     color: var(--yellow);
 }
 
-.active {
+.night.active {
+    background-color: var(--main);
+    color: var(--white);
+}
 
+.day.active {
+    color: var(--white);
+    background-color: var(--yellow);
+}
+
+
+.night.active svg path, 
+.day.active svg path {
+    fill: var(--white);
 }

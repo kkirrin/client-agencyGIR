@@ -2,7 +2,7 @@ import styles from './style.module.scss';
 
 import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
 
-export default function ComponentPeople({ handleClickBtn, items, handleTimeChange }) {
+export default function ComponentPeople({ handleClickBtn, items }) {
 
     return (
         <>
@@ -77,7 +77,7 @@ export default function ComponentPeople({ handleClickBtn, items, handleTimeChang
                                 <div className={styles.smena_content}>
                                     <p>Смена</p>
                                     <div className={styles.smena_btns}>
-                                        <ChooseTimeBtn onClick={handleTimeChange} />
+                                        <ChooseTimeBtn />
                                     </div>
                                 </div>
                             </div>
