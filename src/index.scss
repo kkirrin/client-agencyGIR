@@ -199,3 +199,23 @@ legend {
   display: flex;
   flex-direction: column;
 }
+
+
+.react-datepicker-wrapper {
+  display: flex;
+  justify-content: start;
+  text-align: start;
+  width: 100%;
+  background: var(--light-gray);
+  padding: 10px 10px !important;
+  border-radius: 10px;
+}
+
+.react-datepicker-wrapper input {
+  height: 100% !important;
+}
+
+.sticky-header {
+  background-color: var(--white);
+  z-index: 1000;
+}

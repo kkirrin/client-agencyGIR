@@ -4,6 +4,12 @@
     margin-top: 50px;
 }
 
+.header_wrapper {
+    position: sticky;
+    top: 50px;
+    margin-top: 50px;
+}
+
 
 .top {
     display: flex;
@@ -11,6 +17,7 @@
     align-items: center;
 
     margin-top: 0px;
+    margin-bottom: 10px;
 }
 
 .top_wrapper {
@@ -19,11 +26,6 @@
     align-items: center;
 }
 
-.table {
-    position: sticky;
-    top: 50px;
-    margin-top: 10px;
-}
 
 .name_object {
     font-weight: 700;

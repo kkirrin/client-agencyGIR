@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
 
@@ -73,48 +73,49 @@ const Object = () => {
   return (
     <section className={styles.main_section}>
       <div className="container">
-        <div className={styles.top}>
-          <p className={styles.name_object}>{object.name}</p>
-          <div className={styles.top_wrapper}>
-            <ComponentSearch />
-            <ComponentDate />
-          </div>
-        </div>
-
-        <div className={styles.table}>
-          <div className={styles.table_header}>
-
-            <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-                  {/* <p className={styles.title_table}>ФИО/должность</p> */}
-
-              {displayedDays.map((day) => (
-                <li className={styles.item_table} key={day}>
-                  <div>{day}</div>
-                </li>
-              ))}
-
-              <div className={styles.pagination}> 
-                <button onClick={handlePrevious} disabled={currentPage === 0}>
-                  <img style={{ rotate: '-180deg'}} src='/next.svg' alt='next' />
-                </button>
-                
-                <button onClick={handleNext} disabled={endIndex >= days.length}>
-                    <img src='/next.svg' alt='next' />
-                </button>
+        <div className={`${styles.header_wrapper} sticky-header`}>
+            <div className={styles.top}>
+              <p className={styles.name_object}>{object.name}</p>
+              <div className={styles.top_wrapper}>
+                <ComponentSearch />
+                <ComponentDate />
               </div>
-            </ul>
+            </div>
+            <div className={styles.table}>
+              <div className={styles.table_header}>
 
-            <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
+                <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
+                      {/* <p className={styles.title_table}>ФИО/должность</p> */}
 
-              {displayedDays.map((day) => (
-                <li className={styles.item_table} key={day}>
-                  <div className={styles.time_item}><img src='/moon.svg' alt='' /><p style={{ color: '#1F2433sun'}}>Ночь</p> | <img src='/sun.svg' alt='' /><p style={{ color: '#F2B174'}}>День</p></div> 
-                </li>
-              ))}
-            </ul>
-          </div>
+                  {displayedDays.map((day) => (
+                    <li className={styles.item_table} key={day}>
+                      <div>{day}</div>
+                    </li>
+                  ))}
+
+                  <div className={styles.pagination}> 
+                    <button onClick={handlePrevious} disabled={currentPage === 0}>
+                      <img style={{ rotate: '-180deg'}} src='/next.svg' alt='next' />
+                    </button>
+                    
+                    <button onClick={handleNext} disabled={endIndex >= days.length}>
+                        <img src='/next.svg' alt='next' />
+                    </button>
+                  </div>
+                </ul>
+
+                <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
+
+                  {displayedDays.map((day) => (
+                    <li className={styles.item_table} key={day}>
+                      <div className={styles.time_item}><img src='/moon.svg' alt='' /><p style={{ color: '#1F2433sun'}}>Ночь</p> | <img src='/sun.svg' alt='' /><p style={{ color: '#F2B174'}}>День</p></div> 
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
         </div>
-
+      
         <div className={styles.workers_list}>
           {workers.map((worker) => (
            <motion.div
