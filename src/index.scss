@@ -201,7 +201,12 @@ legend {
 }
 
 .react-datepicker {
+  font-family: var(--font-family) !important;
+  padding: 50px;
   border: none !important;
+  background: var(--white) !important;
+
+  border-radius: 20px !important;
 }
 
 .react-datepicker-wrapper {
@@ -212,6 +217,7 @@ legend {
   background: var(--light-gray);
   padding: 10px 10px !important;
   border-radius: 10px;
+
 }
 
 .react-datepicker-wrapper input {
@@ -220,15 +226,26 @@ legend {
 
 .react-datepicker__header {
   background-color: var(--main) !important;
-  padding: 20px !important;
+  padding: 20px 20px 0px 20px !important;
+  border-bottom: none !important; 
+
+  border-radius: 20px !important;
 }
 
 .react-datepicker__current-month {
+  margin-bottom: 20px;
   color: var(--white) !important;
 }
 
 .react-datepicker__day-names {
-  display: none;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important 
+}
+
+
+.react-datepicker__day-names > *{
+  color: #687182 !important;
 }
 
 .react-datepicker__month-container {
@@ -243,6 +260,17 @@ legend {
 
 .react-datepicker__day {
   color: var(--white) !important;
+  font-weight: 500 !important;
+}
+
+.react-datepicker__week {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+.react-datepicker__day.react-datepicker__day--outside-month {
+    color: #687182 !important;
 }
 
 .react-datepicker__day:not([aria-disabled=true]):hover {
@@ -252,7 +280,7 @@ legend {
 
 .react-datepicker__navigation {
   border-radius: 50% !important;
-  top: 16px !important;
+  top: 70px !important;
 }
 
 .react-datepicker__navigation-icon--next::before {
@@ -267,12 +295,42 @@ legend {
   top: 7px !important;
 }
 
+.react-datepicker__navigation--next {
+  right: 78px !important;
+}
+
+.react-datepicker__navigation--previous {
+  left: 78px !important;
+}
+
 .react-datepicker__navigation--next, .react-datepicker__navigation--previous {
   border-radius: 50px !important;
   background-color: #2E354E !important;
 }
 
+.react-datepicker__view-calendar-icon input {
+  font-weight: 500;
+  text-transform: capitalize;
+  padding-left: 40px !important;
+  width: 100%;
+}
+
+.react-datepicker__input-container.react-datepicker__view-calendar-icon svg {
+  scale: 1.7;
+}
+
 .sticky-header {
   background-color: var(--white);
   z-index: 1000;
+}
+
+.date-wrapper {
+  width: 100%;
+
+  background-color: var(--light-gray);
+  text-align: start;
+
+  border-radius: 20px;
+
+  padding: 10px;
 }

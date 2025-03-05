@@ -66,6 +66,13 @@
     // border: 1px solid var(--another-gray);
 }
 
+.date_content div:first-child {
+    width: 100%;
+    border-radius: 20px;
+    
+    background-color: var(--light-gray);
+}
+
 .date_content p {
     font-weight: 500;
 }
@@ -77,6 +84,7 @@
 .smena_content {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: start;
 
     gap: 10px;
