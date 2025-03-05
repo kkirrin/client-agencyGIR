@@ -319,6 +319,20 @@ legend {
   scale: 1.7;
 }
 
+
+
+.react-datepicker__day--highlighted {
+  border-radius: 50% !important;
+  background-color: var(--another-gray) !important;
+}
+
+
+.react-datepicker__day--keyboard-selected {
+  border-radius: 50% !important;
+  background-color: var(--another-gray) !important;
+}
+
+
 .sticky-header {
   background-color: var(--white);
   z-index: 1000;

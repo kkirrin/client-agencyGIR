@@ -8,27 +8,34 @@ import useDateStore from '../../store/CalendarStore';
 registerLocale('ru', ru); 
 
 export default function ComponentDate() {
-    const { date, updateDate } = useDateStore(); 
-    const [startDate, setStartDate] = useState(date);
+    const { dates, updateDates } = useDateStore(); 
+    const [selectedDates, setSelectedDates] = useState([]);
 
     useEffect(() => {
-        setStartDate(date); 
-    }, [date]);
+        setSelectedDates(dates); 
+    }, [dates]);
 
+    console.log(selectedDates)
+    
     const handleDateChange = (selectedDate) => {
-        console.log('Выбранная дата: ', selectedDate)
-        setStartDate(selectedDate);
-        updateDate(selectedDate); 
-    }
-
-    useEffect(() => {
-        console.log('Текущая дата из store: ', date);
-    }, [date]); 
+        // Метод getTime преобразует объект в числовое значение
+        if (selectedDates.some(d => d.getTime() === selectedDate.getTime())) {
+            // Filter возвращает новый массив кроме selectedDate.getTime() 
+            const newSelectedDates = selectedDates.filter(d => d.getTime() !== selectedDate.getTime());
+            setSelectedDates(newSelectedDates);
+            updateDates(newSelectedDates); 
+        } else {
+            const newSelectedDates = [...selectedDates, selectedDate];
+            setSelectedDates(newSelectedDates);
+            updateDates(newSelectedDates); 
+        }
+    };
 
     return (
         <div className='date-wrapper'>
             <DatePicker
                 showIcon
+                toggleCalendarOnIconClick
                 icon={
                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_605_386)">
@@ -41,15 +48,16 @@ export default function ComponentDate() {
                         </clipPath>
                         </defs>
                     </svg>
-
                 }
-                toggleCalendarOnIconClick
-                selected={startDate}
+                selected={null}
                 onChange={handleDateChange}
                 dateFormat="MMMM y"
                 locale="ru" 
                 shouldCloseOnSelect={false}
                 withPortal
+                highlightDates={selectedDates.map(date => new Date(date))}
+                isClearable={true}
+
             />
         </div>
     );

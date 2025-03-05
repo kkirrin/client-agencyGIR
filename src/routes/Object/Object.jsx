@@ -23,19 +23,22 @@ function daysInMonth(month, year) {
 const Object = () => {
   const { id } = useParams();
 
-  const { date } = useDateStore(); 
+  const { dates } = useDateStore(); 
 
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
+  // Начальные значение для рендера
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
 
+  const first_day = dates[0] ? dates[0].getDate() : null;
+  const first_month = dates[0] ? dates[0].getMonth() + 1 : null;
+  const first_year = dates[0] ? dates[0].getFullYear() : null;
 
   const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
-  const numDays = daysInMonth(month, year); 
+  const numDays = daysInMonth(currentMonth, currentYear); 
   const days = Array.from({ length: numDays }, (_, i) => i + 1);
   const daysPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedDay, setSelectedDay] = useState(0);
+  // const [selectedDay, setSelectedDay] = useState(0);
 
   const startIndex = currentPage * daysPerPage;
   const endIndex = Math.min(startIndex + daysPerPage, days.length);
