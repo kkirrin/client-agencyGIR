@@ -1,18 +1,12 @@
-// import { create } from 'zustand';
-
-// const useDateStore = create((set) => ({
-//   date: new Date(),
-//   updateDate: (newDate) => set({ date: newDate }),
-// }));
-
-// export default useDateStore;
-
-
 import { create } from 'zustand';
 
 const useDateStore = create((set) => ({
-  dates: [], // Инициализируем массив для хранения нескольких дат
-  updateDates: (newDates) => set({ dates: newDates }), // Обновляем массив дат
+  dates: [], 
+  addDate: (newDate) => set((state) => ({ dates: [...state.dates, newDate] })),
+  removeDate: (dateToRemove) => set((state) => ({ 
+    dates: state.dates.filter(date => date.getTime() !== dateToRemove.getTime())
+  })),
+  clearDates: () => set({ dates: [] }), 
 }));
 
 export default useDateStore;
