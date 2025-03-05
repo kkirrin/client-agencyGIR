@@ -15,6 +15,8 @@ import {
   from '../../components';
 
 import useDateStore from '../../store/CalendarStore';
+import { Reorder } from "framer-motion";
+
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
@@ -33,6 +35,7 @@ const Object = () => {
 
   // Разбиение на страницы
   const daysPerPage = 5;
+  
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -130,7 +133,9 @@ const Object = () => {
             </div>
         </div>
       
-        <div className={styles.workers_list}>
+        <Reorder.Group
+          axis="y" onReorder={setWorkers} values={workers}
+          className={styles.workers_list}>
           {workers.map((worker) => (
            <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -229,7 +234,7 @@ const Object = () => {
             </motion.div>
             
           ))}
-        </div>
+        </Reorder.Group>
 
         <div className={styles.add_workers}>
           <AddMoreBtn 
