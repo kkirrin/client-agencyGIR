@@ -3,8 +3,6 @@ import styles from './style.module.scss';
 import { Link } from 'react-router-dom';  
 
 export default function MainComponent({ data }) {
-  console.log(data);
-
   return (
     <section className={styles.main_section}>
       <div className='container'>

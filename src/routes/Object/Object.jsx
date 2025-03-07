@@ -49,6 +49,8 @@ const Object = () => {
 
   const handleAddWorker = () => {
     setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
+    setWorkers([...workers, {id: workers.length + 1, name: ''}]);
+
   }
 
   const handleNext = () => {
@@ -137,7 +139,14 @@ const Object = () => {
 
           {workers.map((worker) => (
             <Reorder.Item key={worker} value={worker}>
-              <WorkerItem setWorkers={setWorkers}  workers={workers} worker={worker} displayedDays={displayedDays} handleClick={handleClick} handleClickNote={handleClickNote} />       
+              <WorkerItem 
+                setWorkers={setWorkers}  
+                workers={workers} 
+                worker={worker} 
+                displayedDays={displayedDays} 
+                handleClick={handleClick} 
+                handleClickNote={handleClickNote}
+              />       
             </Reorder.Item>
           ))}
         </Reorder.Group>
