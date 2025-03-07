@@ -6,6 +6,7 @@ export { default as MainComponent } from './MainComponent/MainComponent';
 export { default as AddPopupContent } from './AddPopupContent/AddPopupContent';
 export { default as ComponentSearch } from './ComponentSearch/ComponentSearch';
 
+export { default as WorkerItem } from './WorkerItem/WorkerItem';
 export { default as BtnSave } from './Buttons/BtnSave/BtnSave';
 export { default as AddMoreBtn } from './Buttons/AddMoreBtn/AddMoreBtn';
 export { default as CheckNoteBtn } from './Buttons/CheckNoteBtn/CheckNoteBtn';
