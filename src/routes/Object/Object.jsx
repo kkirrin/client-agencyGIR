@@ -30,7 +30,13 @@ const Object = () => {
   const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
 
   // Разбиение
-  let days = Array.from({ length: numDays }, (_, i) => i + 1);
+  let days = [];
+
+  if(dates.length == 0) {
+    days = Array.from({ length: numDays }, (_, i) => i + 1);
+  } else {
+    days = Array.from({ length: dates.length }, (_, i) => i + 1);
+  }
 
   // Разбиение на страницы
   const daysPerPage = 5;
@@ -50,7 +56,6 @@ const Object = () => {
   const handleAddWorker = () => {
     // setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
     setWorkers([...workers, {id: workers.length + 1, name: ''}]);
-
   }
 
   const handleNext = () => {
@@ -104,10 +109,9 @@ const Object = () => {
 
                 <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
                       {/* <p className={styles.title_table}>ФИО/должность</p> */}
-
-                  {displayedDays.map((day) => (
-                    <li className={styles.item_table} key={day}>
-                      <div>{day}</div>
+                  {displayedDays.map((day, idx) => (
+                    <li className={styles.item_table} key={idx}>
+                      <div>{dates.length > 0 ? dates[idx].getDate() : day}</div>
                     </li>
                   ))}
 
@@ -134,8 +138,11 @@ const Object = () => {
             </div>
         </div>
       
-        <Reorder.Group values={workers} onReorder={setWorkers}
-          className={styles.workers_list}>
+        <Reorder.Group 
+          values={workers} 
+          onReorder={setWorkers}
+          className={styles.workers_list}
+        >
 
           {workers.map((worker) => (
             <Reorder.Item key={worker} value={worker}>
