@@ -48,7 +48,7 @@ const Object = () => {
   const [workers, setWorkers] = useState([]);
 
   const handleAddWorker = () => {
-    setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
+    // setWorkers([...workers, { id: workers.length + 1, name: 'Test'}]);
     setWorkers([...workers, {id: workers.length + 1, name: ''}]);
 
   }
