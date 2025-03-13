@@ -95,16 +95,16 @@ function App() {
 
   return (
     <div className='page-wrapper'>
-      <Suspense fallback={<Loading />}>
-        <main>
-          {dataLoading ? (
-            <Loading />
-          ) : (
-            <MainComponent data={data} />
-          )}
-        </main>
-      </Suspense>
-    </div>
+      {/* <Suspense fallback={<Loading />}> */}
+      <main>
+        {dataLoading ? (
+          <Loading />
+        ) : (
+          <MainComponent data={data} />
+        )}
+      </main>
+      {/* </Suspense> */}
+    </div >
   );
 }
 
