@@ -1,5 +1,5 @@
-@import '../../mixins.scss';
-
+// @import '../../mixins.scss';
+@use '../../mixins' as *;
 
 .main_section {
     margin-top: 50px;
@@ -43,7 +43,7 @@
     flex-direction: column;
     background-color: var(--white);
     border-radius: 14px;
-    
+
 
     padding: 20px;
 

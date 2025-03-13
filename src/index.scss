@@ -1,4 +1,5 @@
-@import './mixins.scss';
+// @import './mixins.scss';
+@use './mixins' as *;
 
 :root {
   color-scheme: light dark;
@@ -38,6 +39,7 @@
   // padding: 0 20px;
   margin: 0 auto;
 }
+
 .relative {
   position: relative;
 }
@@ -129,7 +131,7 @@ body {
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 * {
@@ -140,31 +142,40 @@ body {
 
 /* Links */
 
-a, a:link, a:visited  {
-    text-decoration: none;
+a,
+a:link,
+a:visited {
+  text-decoration: none;
 }
 
-a:hover  {
-    text-decoration: none;
+a:hover {
+  text-decoration: none;
 }
 
 /* Common */
 
-aside, nav, footer, header, section, main {
-	display: block;
+aside,
+nav,
+footer,
+header,
+section,
+main {
+  display: block;
 }
 
-ul, ul li {
-	list-style: none;
+ul,
+ul li {
+  list-style: none;
 }
 
 img {
-	vertical-align: top;
+  vertical-align: top;
 }
 
-img, svg {
-	max-width: 100%;
-	height: auto;
+img,
+svg {
+  max-width: 100%;
+  height: auto;
 }
 
 address {
@@ -173,25 +184,28 @@ address {
 
 /* Form */
 
-input, textarea, button, select {
-	font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    background-color: transparent;
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
 }
 
 input::-ms-clear {
-	display: none;
+  display: none;
 }
 
 
 
 label {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 legend {
-	display: block;
+  display: block;
 }
 
 
@@ -227,7 +241,7 @@ legend {
 .react-datepicker__header {
   background-color: var(--main) !important;
   padding: 20px 20px 0px 20px !important;
-  border-bottom: none !important; 
+  border-bottom: none !important;
 
   border-radius: 20px !important;
 }
@@ -240,11 +254,11 @@ legend {
 .react-datepicker__day-names {
   display: flex !important;
   justify-content: center !important;
-  gap: 10px !important 
+  gap: 10px !important
 }
 
 
-.react-datepicker__day-names > *{
+.react-datepicker__day-names>* {
   color: #687182 !important;
 }
 
@@ -270,7 +284,7 @@ legend {
 }
 
 .react-datepicker__day.react-datepicker__day--outside-month {
-    color: #687182 !important;
+  color: #687182 !important;
 }
 
 .react-datepicker__day:not([aria-disabled=true]):hover {
@@ -303,7 +317,8 @@ legend {
   left: 78px !important;
 }
 
-.react-datepicker__navigation--next, .react-datepicker__navigation--previous {
+.react-datepicker__navigation--next,
+.react-datepicker__navigation--previous {
   border-radius: 50px !important;
   background-color: #2E354E !important;
 }
