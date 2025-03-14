@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.IP_ADRESS }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "build/*"
+          source: "/"
           target: "/var/www/html/client-agencyGIR"
 
       # Шаг 6: Перезапуск Nginx (опционально)
