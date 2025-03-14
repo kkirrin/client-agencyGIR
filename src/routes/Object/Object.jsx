@@ -98,7 +98,7 @@ const Object = () => {
       <div className="container">
         <div className={`${styles.header_wrapper} sticky-header`}>
 
-          <p className={styles.text}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. In excepturi rerum eum aliquam accusamus fuga saepe provident minima itaque, voluptatem labore suscipit fugit consequuntur, molestiae laborum a est deserunt qui?</p>
+          {/* <p className={styles.text}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. In excepturi rerum eum aliquam accusamus fuga saepe provident minima itaque, voluptatem labore suscipit fugit consequuntur, molestiae laborum a est deserunt qui?</p> */}
           <div className={styles.top}>
             <p className={styles.name_object}>{object.name}</p>
             <div className={styles.top_wrapper}>
