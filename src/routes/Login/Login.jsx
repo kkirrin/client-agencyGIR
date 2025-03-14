@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from './style.module.scss';
 
@@ -22,14 +23,13 @@ export async function loginUserService(userData) {
 
 
 const Login = () => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [isSuccess, setIsSuccess] = useState(false);
+    //const [isSuccess, setIsSuccess] = useState(false); если response.ok
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
 
     const onSubmit = async (formData) => {
-        console.log(formData);
-
         setIsSending(true);
         setError(null);
 
@@ -38,6 +38,9 @@ const Login = () => {
 
             if (response.ok) {
                 console.log('Успешный вход:', data);
+                localStorage.setItem('tokendgvSDfghsdghdrhgzdfrh', data.jwt);
+                // Редирект на приватный роут
+                navigate('/');
             } else {
                 setError(data.error?.message || 'Ошибка входа');
             }
