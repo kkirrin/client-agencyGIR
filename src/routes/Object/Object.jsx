@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
 
+import { process } from 'process';
 
 import {
   AddMoreBtn,
