@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './style.module.scss';
 
-import { process } from 'process';
+import process from 'process';
+import env from "react-dotenv";
 
 import {
   AddMoreBtn,
@@ -97,13 +98,15 @@ const Object = () => {
  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_IP_ADDRESS}/api/people&populate=*`);
-
+        const response = await fetch(`${process.env.REACT_APP_IP_ADDRESS}/api/people`);
+        console.log(response);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         setWorkers(data);
+        console.log(data);
+
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
