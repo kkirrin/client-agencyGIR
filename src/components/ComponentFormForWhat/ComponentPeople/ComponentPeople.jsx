@@ -2,7 +2,13 @@ import styles from './style.module.scss';
 
 import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
 
-export default function ComponentPeople({ handleClickBtn, items }) {
+export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
+    
+    /**
+     * TODO: 
+     * 
+     */
+
 
     return (
         <>
@@ -17,7 +23,14 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                             >
                                 Тоннаж выставили
                             </label>
-                            <CustomInput id={1} placeholder="Введите тн." />
+                            <CustomInput 
+                                errors={errors} 
+                                register={register} 
+                                name={'ton'}
+                                id={1} 
+                                type="text" 
+                                placeholder="Введите тн." 
+                            />
                         </div>
 
                         <div>
@@ -27,7 +40,14 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                             >
                                 Ост. Порт
                             </label>
-                            <CustomInput id={2} placeholder="Введите тн." />
+                            <CustomInput 
+                                errors={errors} 
+                                register={register} 
+                                name={'ost_port'}
+                                id={2} 
+                                type="text" 
+                                placeholder="Введите тн." 
+                            />
                         </div>
 
                         <div>
@@ -37,7 +57,14 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                             >
                                 Ост. ГиР
                             </label>
-                            <CustomInput id={3} placeholder="Введите тн." />
+                            <CustomInput 
+                                errors={errors} 
+                                register={register} 
+                                id={3} 
+                                name={'ost_gir'}
+                                type="text" 
+                                placeholder="Введите тн." 
+                            />
                         </div>
                     </div>
                 </div>
@@ -50,7 +77,14 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                         >
                             ФИО
                         </label>
-                        <CustomInput id={4} placeholder="Введите ФИО" />
+                        <CustomInput 
+                            errors={errors} 
+                            register={register} 
+                            id={4} 
+                            name={'Name'}
+                            type="text" 
+                            placeholder="Введите ФИО"
+                        />
                     </div>
 
                     <div>
@@ -60,7 +94,14 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                         >
                             Должность
                         </label>
-                        <CustomInput id={5} placeholder="Введите должность" />
+                        <CustomInput 
+                            errors={errors} 
+                            register={register} 
+                            id={5} 
+                            name={'Job'}
+                            type="text" 
+                            placeholder="Введите должность"
+                        />
                     </div>
                 </div>
 
@@ -82,31 +123,73 @@ export default function ComponentPeople({ handleClickBtn, items }) {
                                 </div>
                             </div>
 
-                            <div className={styles.data_container}>
+                            {/* <div className={styles.data_container}>
                                 <div className={styles.data}>
                                     <p>Данные</p>
                                     <div className={styles.data_wrapper}>
-                                        <CustomCheckBox label={"Не работал"} checkboxId={'checkbox1'} />
-                                        <CustomCheckBox label={"Выходной"} checkboxId={'checkbox2'} />
-                                        <CustomCheckBox label={"Пусто"} checkboxId={'checkbox3'} />
+                                        <CustomCheckBox 
+                                            errors={errors} 
+                                            register={register} 
+                                            type="checkbox" 
+                                            name={'status'}
+                                            label={"Не работал"} 
+                                            checkboxId={`checkbox${idx}`} 
+                                        />
+                                        <CustomCheckBox 
+                                            errors={errors} 
+                                            register={register} 
+                                            type="checkbox" 
+                                            name={'status'}
+                                            label={"Выходной"} 
+                                            checkboxId={`checkbox${idx}`} 
+                                        />
+                                        <CustomCheckBox 
+                                            errors={errors} 
+                                            register={register} 
+                                            type="checkbox" 
+                                            name={'status'}
+                                            label={"Пусто"} 
+                                            checkboxId={`checkbox${idx}`} 
+                                        />
                                     </div>
                                 </div>
 
                                 <div className={styles.data}>
                                     <p style={{ marginBottom: '10px' }}>Тоннаж</p> 
-                                    <CustomInput placeholder='Введите тн. '/>                                
+                                    <CustomInput 
+                                        id={6} 
+                                        name={''}
+                                        errors={errors} 
+                                        register={register} 
+                                        type="text" 
+                                        placeholder='Введите тн. '
+                                    />                              
                                 </div>
 
                                 <div className={styles.data}>
                                     <p style={{ marginBottom: '10px' }}>ТС</p> 
-                                    <CustomInput placeholder='Введите ТС '/>                                
+                                    <CustomInput 
+                                        id={7} 
+                                        name={''}
+                                        errors={errors} 
+                                        register={register} 
+                                        type="text" 
+                                        placeholder='Введите ТС '
+                                    />                              
                                 </div>
-                            </div>
+                            </div> */}
 
-                            <div className={styles.note}>
+                            {/* <div className={styles.note}>
                                 <p>Примечание</p>
-                                <CustomInput placeholder="Введите примечание" />
-                            </div>
+                                <CustomInput 
+                                    id={8} 
+                                    name={'note'}
+                                    errors={errors} 
+                                    register={register} 
+                                    type="text" 
+                                    placeholder="Введите примечание" 
+                                />
+                            </div> */}
                         </div>
                     )
                 })}

@@ -14,7 +14,7 @@ export default function ComponentTech({ handleClickBtn, items }) {
                         >
                         Наименование
                     </label>
-                    <CustomInput id={4} placeholder="Введите наименование" />
+                    <CustomInput id={4} type="text" placeholder="Введите наименование" />
                 </div>
 
                 <div>
@@ -24,7 +24,7 @@ export default function ComponentTech({ handleClickBtn, items }) {
                     >
                         Порядковый №
                     </label>
-                    <CustomInput id={5} placeholder="Введите номер" />
+                    <CustomInput id={5} type="text" placeholder="Введите номер" />
                 </div>
             </div>
 
@@ -48,16 +48,16 @@ export default function ComponentTech({ handleClickBtn, items }) {
                         <div className={styles.data}>
                             <p>Данные</p>
                             <div className={styles.data_wrapper}>
-                                <CustomCheckBox label={"В работе"} checkboxId={'checkbox1'} />
-                                <CustomCheckBox label={"Ремонт/ТО"} checkboxId={'checkbox2'} />
-                                <CustomCheckBox label={"Отсутствие угля (О/У)"} checkboxId={'checkbox2'} />
-                                <CustomCheckBox label={"Запас"} checkboxId={'checkbox3'} />                         
+                                <CustomCheckBox type="checkbox" label={"В работе"} checkboxId={`checkbox${idx}`} />
+                                <CustomCheckBox type="checkbox" label={"Ремонт/ТО"} checkboxId={`checkbox${idx}`} />
+                                <CustomCheckBox type="checkbox" label={"Отсутствие угля (О/У)"} checkboxId={`checkbox${idx}`} />
+                                <CustomCheckBox type="checkbox" label={"Запас"} checkboxId={`checkbox${idx}`} />                         
                             </div>
                         </div>
 
                         <div className={styles.note}>
                             <p>Примечание</p>
-                            <CustomInput placeholder="Введите примечание" />
+                            <CustomInput type="text" placeholder="Введите примечание" />
                         </div>
                         
                     </div>

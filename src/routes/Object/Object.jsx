@@ -54,8 +54,8 @@ const Object = () => {
   const [workers, setWorkers] = useState([]);
 
   const handleAddWorker = () => {
-    setWorkers([...workers, { id: workers.length + 1, name: 'Test' }]);
-    //setWorkers([...workers, { id: workers.length + 1, name: '' }]);
+    //setWorkers([...workers, { id: workers.length + 1, name: 'Test' }]);
+    setWorkers([...workers, { id: workers.length + 1, name: '' }]);
   }
 
   const handleNext = () => {
@@ -91,6 +91,25 @@ const Object = () => {
       setCurrentPage(0)
     }
   }, [dates]);
+
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_IP_ADDRESS}/api/people&populate=*`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setWorkers(data);
+      } catch (error) {
+        console.error("Ошибка при получении данных:", error);
+      }
+    };
+
+    fetchData();
+  }, []); 
 
 
   return (

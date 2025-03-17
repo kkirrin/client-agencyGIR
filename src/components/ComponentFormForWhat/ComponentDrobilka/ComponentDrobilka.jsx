@@ -15,7 +15,7 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
                         >
                             Тоннаж выставили
                         </label>
-                        <CustomInput id={1} placeholder="Введите тн." />
+                        <CustomInput id={1} type="text" placeholder="Введите тн." />
                     </div>
 
                     <div>
@@ -25,7 +25,7 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
                         >
                             Ост. Порт
                         </label>
-                        <CustomInput id={2} placeholder="Введите тн." />
+                        <CustomInput id={2} type="text" placeholder="Введите тн." />
                     </div>
 
                     <div>
@@ -35,7 +35,7 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
                         >
                             Ост. ГиР
                         </label>
-                        <CustomInput id={3} placeholder="Введите тн." />
+                        <CustomInput id={3} type="text" placeholder="Введите тн." />
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
                     >
                         Наименование
                     </label>
-                    <CustomInput id={4} placeholder="Введите наименование" />
+                    <CustomInput id={4} type="text" placeholder="Введите наименование" />
                 </div>
             </div>
 
@@ -73,21 +73,21 @@ export default function ComponentDrobilka({ handleClickBtn, items }) {
                             <div className={styles.data}>
                                 <p>Данные</p>
                                 <div className={styles.data_wrapper}>
-                                    <CustomCheckBox label={"Ремонт/ТО<"} checkboxId={'checkbox1'} />
-                                    <CustomCheckBox label={"Отсутствие угля (О/У)"} checkboxId={'checkbox2'} />
-                                    <CustomCheckBox label={"Запас"} checkboxId={'checkbox3'} />
+                                    <CustomCheckBox label={"Ремонт/ТО<"}  checkboxId={`checkbox${idx}`} />
+                                    <CustomCheckBox label={"Отсутствие угля (О/У)"}  checkboxId={`checkbox${idx}`} />
+                                    <CustomCheckBox label={"Запас"}  checkboxId={`checkbox${idx}`} />
                                 </div>
                             </div>
 
                             <div className={styles.data}>
                                 <p style={{ marginBottom: '10px' }}>Тоннаж </p> 
-                                <CustomInput placeholder='Введите тн. '/>                                
+                                <CustomInput type="text" placeholder='Введите тн. '/>                                
                             </div>
                         </div>
 
                         <div className={styles.note}>
                             <p>Примечание</p>
-                            <CustomInput placeholder="Введите примечание" />
+                            <CustomInput type="text" placeholder="Введите примечание" />
                         </div>
                     </div>
                 )
