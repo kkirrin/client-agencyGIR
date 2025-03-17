@@ -37,24 +37,27 @@ const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }
 
 
 const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote}) => (
-    <>
+  
+  <>
+
         <div className={styles.workers_item}>
         <div className={styles.worker_data}>
-            <p>{worker.name}</p>
-            <p>Тоннаж</p>
+          <p>{worker.Name}</p>
+          <p>{worker.Job}</p>
+          <p>Тоннаж</p>
         </div>
 
         {displayedDays.map((day) => (
             <div className={styles.item_table} key={day}>
             <div className={styles.item_data}>
                 <div className={styles.detail}>
-                <p>Тоннаж</p>
-                <p>500,25</p>
+                <p></p>
+                <p></p>
                 </div>
 
                 <div className={styles.detail}>
-                <p>ТС</p>
-                <p>УСМ-20</p>
+                <p></p>
+                <p></p>
                 </div>
 
                 <CheckNoteBtn handleClick={handleClickNote} />
@@ -62,7 +65,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote}) =
             <div className='border_top_gray'></div>
             <div className={styles.item_data}>
                 <div className={styles.detail}>
-                <p>не работал</p>
+                <p></p>
                 </div>
 
                 <CheckNoteBtn handleClick={handleClickNote} />
@@ -103,9 +106,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote}) =
   
 
 export default function WorkerItem({ setWorkers, workers, worker, displayedDays, handleClick, handleClickNote }) {
-
   const isWorkerEmpty = worker.name === '';
-
   return (
     <>
         {

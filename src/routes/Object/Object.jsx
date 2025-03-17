@@ -95,25 +95,35 @@ const Object = () => {
   }, [dates]);
 
 
- useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
+   
       try {
-        const response = await fetch(`${process.env.REACT_APP_IP_ADDRESS}/api/people`);
-        console.log(response);
+        // const apiUrl = `${process.env.REACT_APP_IP_ADDRESS}/api/people?populate=*`;
+        const apiUrl = `http://89.104.67.119:1337/api/people?populate=*`;
+        const response = await fetch(apiUrl);
+
+        
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const data = await response.json();
-        setWorkers(data);
-        console.log(data);
+
+        setWorkers(data.data);
+
+        console.log(data)
 
       } catch (error) {
+        // setError(error);
         console.error("Ошибка при получении данных:", error);
+      } finally {
+        // setLoading(false); // Загрузка завершена (успешно или с ошибкой)
       }
     };
 
     fetchData();
-  }, []); 
+  }, []); //  Важно: 
 
 
   return (
