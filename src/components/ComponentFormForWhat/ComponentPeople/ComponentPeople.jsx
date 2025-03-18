@@ -9,7 +9,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
             <div>
                 <div className={styles.form_content}>
                     <p className={styles.form_title_content}>Тоннаж месяц</p>
-                    <div className={styles.wrapper_input}>
+                    {/* <div className={styles.wrapper_input}>
                         <div>
                             <label
                                 htmlFor="1"
@@ -60,7 +60,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 placeholder="Введите тн." 
                             />
                         </div>
-                    </div>
+                    </div>  */}
                 </div>
 
                 <div className={styles.wrapper_name}>
@@ -100,7 +100,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                 </div>
 
                 
-                {items.map((item, idx) => {
+                {/* {items.map((item, idx) => {
                     return (
                         <div className='flex'id='repeatable' key={idx}>
                             <div className={styles.date_wrapper}>
@@ -193,7 +193,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                         onHandleClick={handleClickBtn} 
                         title={'Добавить еще'}
                     />
-                </div>
+                </div> */}
             </div>
         </>
     )
