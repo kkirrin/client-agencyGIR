@@ -3,12 +3,6 @@ import styles from './style.module.scss';
 import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
-    
-    /**
-     * TODO: 
-     * 
-     */
-
 
     return (
         <>
@@ -26,7 +20,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             <CustomInput 
                                 errors={errors} 
                                 register={register} 
-                                name={'ton'}
+                                name={'MonthDataTonnaj:{AmountData}'}
                                 id={1} 
                                 type="text" 
                                 placeholder="Введите тн." 
@@ -43,7 +37,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             <CustomInput 
                                 errors={errors} 
                                 register={register} 
-                                name={'ost_port'}
+                                name={'DayDataOstatkiPORT'}
                                 id={2} 
                                 type="text" 
                                 placeholder="Введите тн." 
@@ -61,7 +55,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 errors={errors} 
                                 register={register} 
                                 id={3} 
-                                name={'ost_gir'}
+                                name={'DayDataOstatkiGIR'}
                                 type="text" 
                                 placeholder="Введите тн." 
                             />
@@ -123,7 +117,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 </div>
                             </div>
 
-                            {/* <div className={styles.data_container}>
+                            <div className={styles.data_container}>
                                 <div className={styles.data}>
                                     <p>Данные</p>
                                     <div className={styles.data_wrapper}>
@@ -131,7 +125,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors} 
                                             register={register} 
                                             type="checkbox" 
-                                            name={'status'}
+                                            name={'statusWorker'}
                                             label={"Не работал"} 
                                             checkboxId={`checkbox${idx}`} 
                                         />
@@ -139,7 +133,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors} 
                                             register={register} 
                                             type="checkbox" 
-                                            name={'status'}
+                                            name={'statusWorker'}
                                             label={"Выходной"} 
                                             checkboxId={`checkbox${idx}`} 
                                         />
@@ -147,7 +141,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors} 
                                             register={register} 
                                             type="checkbox" 
-                                            name={'status'}
+                                            name={'statusWorker'}
                                             label={"Пусто"} 
                                             checkboxId={`checkbox${idx}`} 
                                         />
@@ -158,7 +152,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <p style={{ marginBottom: '10px' }}>Тоннаж</p> 
                                     <CustomInput 
                                         id={6} 
-                                        name={''}
+                                        name={'DayDataTonnaj'}
                                         errors={errors} 
                                         register={register} 
                                         type="text" 
@@ -170,16 +164,16 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <p style={{ marginBottom: '10px' }}>ТС</p> 
                                     <CustomInput 
                                         id={7} 
-                                        name={''}
+                                        name={'TC'}
                                         errors={errors} 
                                         register={register} 
                                         type="text" 
                                         placeholder='Введите ТС '
                                     />                              
                                 </div>
-                            </div> */}
+                            </div>
 
-                            {/* <div className={styles.note}>
+                            <div className={styles.note}>
                                 <p>Примечание</p>
                                 <CustomInput 
                                     id={8} 
@@ -189,7 +183,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     type="text" 
                                     placeholder="Введите примечание" 
                                 />
-                            </div> */}
+                            </div> 
                         </div>
                     )
                 })}

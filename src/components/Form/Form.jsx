@@ -1,6 +1,7 @@
 import styles from './style.module.scss';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useDateStore from '../../store/CalendarStore';
 
 import { 
     BtnSave, 
@@ -38,7 +39,34 @@ export default function Form({ title, forWhat }) {
         setItems([...items, items.length + 1]); 
     };
 
+    const { dates } = useDateStore();
+
     const onSubmit = async (formData) => {
+
+        formData.MonthDataTonnaj = {
+            "AmountData": 'test',
+            "MonthData": 'test'
+        }
+
+        formData.DayDataOstatki = {
+            "DayDataOstatkiPORT": 'test', 
+            "DayDataOstatkiGIR": 'test',
+            "DayDataOstatki": 'test'
+        }
+
+        formData.DayDataDetails = {
+            "DayDataDetails": 'test',
+            "Day": 'test',
+            "Night": 'test',
+            "statusWorker": 'test',
+            "DayDataTonnaj": 'test',
+            "TC": 'test',
+            "note": 'test'
+        }
+
+
+        console.log(formData);
+
         setIsSending(true);
         setError(null);
 
