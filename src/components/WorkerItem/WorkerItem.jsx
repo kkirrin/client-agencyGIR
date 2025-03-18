@@ -44,7 +44,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
           <p>Тоннаж</p>
         </div>
 
-        {displayedDays.map((day) => (
+        {typeof(worker?.DayDataDetails !== undefined) && worker?.DayDataDetails.map((day) => (
             <div className={styles.item_table} key={day}>
               <div className={styles.item_data}>
                 <div className={styles.detail}>
