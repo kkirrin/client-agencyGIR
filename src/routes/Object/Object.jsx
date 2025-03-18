@@ -102,7 +102,7 @@ const Object = () => {
    
       try {
         // const apiUrl = `${process.env.REACT_APP_IP_ADDRESS}/api/people?populate=*`;
-        const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*`;
+        const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
         const response = await fetch(apiUrl);
 
         
