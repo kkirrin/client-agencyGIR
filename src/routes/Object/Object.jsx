@@ -26,6 +26,8 @@ function daysInMonth(month, year) {
 const Object = () => {
   const { id } = useParams();
   const { dates } = useDateStore();
+  const { error, setError } = useState();
+  
   // Число
   const [numDays, setNumDays] = useState(daysInMonth(new Date().getMonth() + 1, new Date().getFullYear()));
 
@@ -100,7 +102,7 @@ const Object = () => {
    
       try {
         // const apiUrl = `${process.env.REACT_APP_IP_ADDRESS}/api/people?populate=*`;
-        const apiUrl = `http://89.104.67.119:1337/api/people?populate=*`;
+        const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*`;
         const response = await fetch(apiUrl);
 
         
@@ -111,11 +113,8 @@ const Object = () => {
         const data = await response.json();
 
         setWorkers(data.data);
-
-        console.log(data)
-
       } catch (error) {
-        // setError(error);
+        setError(error);
         console.error("Ошибка при получении данных:", error);
       } finally {
         // setLoading(false); // Загрузка завершена (успешно или с ошибкой)
@@ -130,8 +129,6 @@ const Object = () => {
     <section className={styles.main_section}>
       <div className="container">
         <div className={`${styles.header_wrapper} sticky-header`}>
-
-          {/* <p className={styles.text}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. In excepturi rerum eum aliquam accusamus fuga saepe provident minima itaque, voluptatem labore suscipit fugit consequuntur, molestiae laborum a est deserunt qui?</p> */}
           <div className={styles.top}>
             <p className={styles.name_object}>{object.name}</p>
             <div className={styles.top_wrapper}>
@@ -143,7 +140,7 @@ const Object = () => {
             <div className={styles.table_header}>
 
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-                {/* <p className={styles.title_table}>ФИО/должность</p> */}
+                <p className={styles.title_table}>ФИО/должность</p>
                 {displayedDays.map((day, idx) => (
                   <li className={styles.item_table} key={idx}>
                     <div>{dates.length > 0 ? dates[idx].getDate() : day}</div>

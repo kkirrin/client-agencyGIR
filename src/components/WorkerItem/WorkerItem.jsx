@@ -36,41 +36,69 @@ const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }
 );
 
 
-const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote}) => (
-  
+const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) => (
   <>
-
         <div className={styles.workers_item}>
         <div className={styles.worker_data}>
-          <p>{worker.Name}</p>
-          <p>{worker.Job}</p>
+          <p>{worker?.Name || "Данные отсутствуют"} <br /> {worker?.Job || "Данные отсутствуют"}</p>
           <p>Тоннаж</p>
         </div>
 
         {displayedDays.map((day) => (
             <div className={styles.item_table} key={day}>
-            <div className={styles.item_data}>
+              <div className={styles.item_data}>
                 <div className={styles.detail}>
-                <p></p>
-                <p></p>
+                  {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
+                    <>
+                      <p className={styles.details_static}>Тоннаж</p>
+                      <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
+                    </>
+                    ) : (
+                      <p className='notWorking'>{worker?.DayDataDetails[0]?.SmenaStatusWorker || "Статус отсутствует"}</p>
+                    )}
                 </div>
 
                 <div className={styles.detail}>
-                <p></p>
-                <p></p>
+                  {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
+                    <>
+                      <p className={styles.details_static}>ТС</p>
+                      <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
+                    </>
+                  ) : (
+                    <p className='notWorking'>{worker?.DayDataDetails[0]?.SmenaStatusWorker || "Статус отсутствует"}</p>
+                  )}
                 </div>
 
                 <CheckNoteBtn handleClick={handleClickNote} />
             </div>
-            <div className='border_top_gray'></div>
-            <div className={styles.item_data}>
-                <div className={styles.detail}>
-                <p></p>
-                </div>
+            
+              <div className='border_top_gray'></div>
+                <div className={styles.item_data}>
+                   <div className={styles.detail}>
+                      {worker?.DayDataDetails[0]?.DayInfo?.Night === true ? (
+                        <>
+                          <p className={styles.details_static}>Тоннаж</p>
+                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
+                        </>
+                        ) : (
+                          <p className="notWorking">{worker?.DayDataDetails[0]?.SmenaStatusWorker || "-"}</p>
+                        )}
+                    </div>
 
-                <CheckNoteBtn handleClick={handleClickNote} />
-            </div>
-            </div>
+                    <div className={styles.detail}>
+                      {worker?.DayDataDetails[0]?.DayInfo?.Night === true ? (
+                        <>
+                          <p className={styles.details_static}>ТС</p>
+                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
+                        </>
+                      ) : (
+                        <p className="notWorking">{worker?.DayDataDetails[0]?.SmenaStatusWorker || "-"}</p>
+                      )}
+                    </div>
+
+                    <CheckNoteBtn handleClick={handleClickNote} />
+                </div>
+              </div>
         ))}
 
         <a href="#popup" className={styles.edit} onClick={handleClick}>
@@ -107,6 +135,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote}) =
 
 export default function WorkerItem({ setWorkers, workers, worker, displayedDays, handleClick, handleClickNote }) {
   const isWorkerEmpty = worker.name === '';
+  console.log('Сотрудник', worker);
   return (
     <>
         {

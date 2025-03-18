@@ -64,7 +64,6 @@ export default function Form({ title, forWhat }) {
             "note": 'test'
         }
 
-
         console.log(formData);
 
         setIsSending(true);

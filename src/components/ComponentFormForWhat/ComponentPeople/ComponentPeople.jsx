@@ -20,7 +20,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             <CustomInput 
                                 errors={errors} 
                                 register={register} 
-                                name={'MonthDataTonnaj:{AmountData}'}
+                                name={'AmountData'}
                                 id={1} 
                                 type="text" 
                                 placeholder="Введите тн." 

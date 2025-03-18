@@ -363,3 +363,24 @@ legend {
 
   padding: 10px;
 }
+
+.working {
+  display: block;
+  background-color: var(--light-green) !important;
+}
+
+.notWorking {
+  display: block;
+  background-color: var(--light-yellow);
+}
+
+.dayOf {
+  display: block;
+  background-color: var(--light-pink);
+}
+
+.empty {
+
+}
+
+
