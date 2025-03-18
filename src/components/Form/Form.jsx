@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import useDateStore from '../../store/CalendarStore';
 
 import { 
@@ -31,7 +31,22 @@ export async function saveUserDateService(userData) {
 export default function Form({ title, forWhat }) {
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+
+    /**
+     * Отслеживать input value принято при помощи useWatch && control
+    */
+    const name = useWatch({ control, name: 'Name' });
+    const job = useWatch({ control, name: 'Job' });
+    const amountData = useWatch({ control, name: 'AmountData' });
+    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
+    const dayDataOstatkiGIR  = useWatch({ control, name: 'DayDataOstatkiGIR' });
+    const smenaStatusWorker = useWatch({ control, name: 'SmenaStatusWorker' });
+    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
+    const TC = useWatch({ control, name: 'TC' });
+    const note = useWatch({ control, name: 'note' });
+
+
 
     const [items, setItems] = useState([1]); 
 
@@ -41,76 +56,84 @@ export default function Form({ title, forWhat }) {
 
     const { dates } = useDateStore();
 
-    const onSubmit = async (formData) => {
-
-        formData.MonthDataTonnaj = [
-            {
-                "AmountData": "100 000 000",
-                "MonthData": "2025-03-11",
-            }
-        ]
-
-        formData.DayDataDetails = [
-            {
-                "DayInfo": {
-                    "Day": true,
-                    "SmenaDetails": {
-                        "Note": "Какое-то примечание",
-                        "SmenaDataTonnaj": "50 000",
-                        "SmenaDateDetails": "2025-03-11",
-                        "SmenaStatusWorker": "Empty",
-                        "TC": "Какое-то тс",
-                    }
-                }
-            },
-
-            {
-                "NightInfo": {
-                    "Night": false,
-                    "SmenaDetails": {
-                        "Note": "-",
-                        "SmenaDataTonnaj": "-",
-                        "SmenaDateDetails": "-",
-                        "SmenaStatusWorker": "Not working",
-                        "TC": "-",
-                    }
-                }
-            },
-        ]
-
-        formData.DayDataOstatki = [
-            {
-                "DayDataOstatki": "2025-03-11",
-                "DayDataOstatkiGIR": "100 000",
-                "DayDataOstatkiPORT": "100 000",
-            }
-        ]
-        
-        console.log(formData);
-
+const onSubmit = async () => {
         setIsSending(true);
         setError(null);
 
-    try {
-        const { response, data } = await saveUserDateService(formData);
-    if (response.ok) {
-        console.log('Успешная отправка:', data);
-        reset(); // Очищаем форму после успешной отправки
-        setItems([1]); // Сбрасываем список items
-    } else {
-        setError('Ошибка');
-    }
-    } catch (error) {
-        setError('Ошибка запроса, попробуйте позже');
-    } finally {
-        setIsSending(false);
-    }
+    const formData = {
+            Name: name || "",
+            Job: job || "",
+            MonthDataTonnaj: [
+                {
+                    AmountData: amountData || "0", 
+                    MonthData: "2025-03-11",
+                },
+            ],
+            DayDataDetails: [
+                {
+                    DayInfo: {
+                        Day: true,
+                        SmenaDetails: {
+                            Note: note || "-", 
+                            SmenaDataTonnaj: dayDataTonnaj || "0", 
+                            SmenaDateDetails: "2025-03-11",
+                            SmenaStatusWorker: smenaStatusWorker || "Not working", 
+                            TC: TC || "-",
+                        },
+                    },
+                },
+                {
+                    NightInfo: {
+                        Night: false,
+                        SmenaDetails: {
+                            Note: "-",
+                            SmenaDataTonnaj: "-",
+                            SmenaDateDetails: "-",
+                            SmenaStatusWorker: "Not working",
+                            TC: "-",
+                        },
+                    },
+                },
+            ],
+            DayDataOstatki: [
+                {
+                    DayDataOstatki: "2025-03-11",
+                    DayDataOstatkiGIR: dayDataOstatkiGIR  || "0", 
+                    DayDataOstatkiPORT: dayDataOstatkiPORT || "0", 
+                },
+            ],
+        };
+
+        console.log('Должна быть новая formData', formData);
+
+        try {
+            const { response, data } = await saveUserDateService(formData);
+            if (response.ok) {
+                console.log('Успешная отправка:', data);
+                reset({
+                    AmountData: "",
+                    DayDataOstatkiPORT: "",
+                    DayDataOstatkiGIR: "",
+                    SmenaStatusWorker: "",
+                    DayDataTonnaj: "",
+                    TC: "",
+                    note: "",
+                }); 
+                
+                setItems([1]); 
+
+            } else {
+                setError('Ошибка при отправке данных');
+            }
+        } catch (error) {
+            setError('Ошибка запроса, попробуйте позже');
+        } finally {
+            setIsSending(false);
+        }
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className={styles.form_wrapper}>
                 <div className={styles.form_header}>
                     <div>
