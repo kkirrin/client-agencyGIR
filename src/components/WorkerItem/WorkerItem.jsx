@@ -6,6 +6,14 @@ import { CheckNoteBtn,  } from '../../components';
 import { motion } from 'motion/react';
 
 
+/**
+ * 
+ * TODO:
+ * сделать проверки типов данных, наличие данных (не пустыеЮ возможно, стоит сделать JSON.parse()); 
+ * 
+ */
+
+
 const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }) => (
     <div className={`${styles.workers_item} ${styles.empty}`}>
       <div className={styles.worker_data}>
