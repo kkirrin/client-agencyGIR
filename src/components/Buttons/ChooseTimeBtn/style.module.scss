@@ -5,42 +5,44 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-
     padding: 12px;
-    
     border-radius: 6px;
     min-width: 110px;
-
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid transparent; /* Прозрачная граница по умолчанию */
 }
 
 .smena_btn svg path {
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .night {
-    border: 1px solid var(--main);
+    border-color: var(--main); /* Граница для ночи */
     color: var(--main);
 }
 
-
 .day {
-    border: 1px solid var(--yellow);
+    border-color: var(--yellow);
     color: var(--yellow);
 }
 
-.night.active {
+
+input[type="checkbox"]{
     background-color: var(--main);
     color: var(--white);
+    border-color: var(--main);
 }
 
-.day.active {
+/* Активное состояние для ночи */
+input[type="checkbox"]#night:checked + .night {
+    background-color: var(--main);
     color: var(--white);
-    background-color: var(--yellow);
+    border-color: var(--main);
 }
 
-
-.night.active svg path, 
-.day.active svg path {
-    fill: var(--white);
+/* Активное состояние для дня */
+input[type="checkbox"]#day:checked + .day {
+    background-color: var(--yellow);
+    color: var(--white);
+    border-color: var(--yellow);
 }

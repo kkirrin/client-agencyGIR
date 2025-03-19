@@ -4,11 +4,11 @@ export default function ChooseTimeBtn({ register }) {
     return (
         <>
             <input
-                type="radio" 
+                type="radio" // Используем тип radio
                 id="day"
-                value="day"
-                {...register('btnDay')} 
-                className={styles.hidden}
+                value="day" // Значение для дня
+                {...register('btnDay')} // Регистрируем в форме
+                className={styles.hidden} // Скрываем стандартный input
             />
             <label
                 htmlFor="day"
@@ -21,11 +21,11 @@ export default function ChooseTimeBtn({ register }) {
             </label>
 
             <input
-                type="radio" 
+                type="radio" // Используем тип radio
                 id="night"
-                value="night" 
-                {...register('btnNight')} 
-                className={styles.hidden} 
+                value="night" // Значение для ночи
+                {...register('btnNight')} // Регистрируем в форме
+                className={styles.hidden} // Скрываем стандартный input
             />
             <label
                 htmlFor="night"
