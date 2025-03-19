@@ -1,7 +1,7 @@
 import { Form } from '../../components';
 import styles from './style.module.scss';
 
-export default function AddPopupContent({ active, setActive, title }) {
+export default function AddPopupContent({ id, active, setActive, title }) {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {

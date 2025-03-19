@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 
-import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
+import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
 
@@ -106,7 +106,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             <div className={styles.date_wrapper}>
                                 <div className={styles.date_content}>
                                     <p>Дата</p>
-                                    <ComponentDate />
+                                    <ComponentDateSingle />
                                 </div>
 
                                 <div className={styles.smena_content}>

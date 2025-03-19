@@ -141,7 +141,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
 
   
 
-export default function WorkerItem({ setWorkers, workers, worker, displayedDays, handleClick, handleClickNote }) {
+export default function WorkerItem({ id, setWorkers, workers, worker, displayedDays, handleClick, handleClickNote }) {
   const isWorkerEmpty = worker.name === '';
   // console.log('Сотрудник', worker);
   return (

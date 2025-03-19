@@ -179,6 +179,7 @@ const Object = () => {
           {workers.map((worker) => (
             <Reorder.Item key={worker} value={worker}>
               <WorkerItem
+                id={worker.id}
                 setWorkers={setWorkers}
                 workers={workers}
                 worker={worker}
@@ -199,11 +200,11 @@ const Object = () => {
       </div>
 
       <AddPopupContent
+        id={''}
         active={popupActive}
         setActive={setPopupActive}
         title={'Сотрудник'}
       />
-
       <NoteBody
         active={noteBodyActive}
         setActive={setNoteBodyActive}

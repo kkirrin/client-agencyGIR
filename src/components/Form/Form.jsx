@@ -10,6 +10,7 @@ import {
     ComponentPeople
 }
     from '../../components';
+import useDateSingeStore from '../../store/CalendarSingleStore';
 
 const url = 'http://89.104.67.119:1337/api/people/';
 
@@ -36,6 +37,16 @@ export default function Form({ title, forWhat }) {
     /**
      * Отслеживать input value принято при помощи useWatch && control
     */
+    
+    const { date } = useDateSingeStore();
+
+    const formattedDate = date.toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
+
+
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
@@ -66,7 +77,7 @@ const onSubmit = async () => {
             MonthDataTonnaj: [
                 {
                     AmountData: amountData || "0", 
-                    MonthData: "2025-03-11",
+                    MonthData: formattedDate || '0',
                 },
             ],
             DayDataDetails: [
@@ -76,7 +87,8 @@ const onSubmit = async () => {
                         SmenaDetails: {
                             Note: note || "-", 
                             SmenaDataTonnaj: dayDataTonnaj || "0", 
-                            SmenaDateDetails: "2025-03-11",
+                            SmenaDateDetails: formattedDate || '0',
+
                             SmenaStatusWorker: smenaStatusWorker || "Not working", 
                             TC: TC || "-",
                         },
@@ -97,7 +109,7 @@ const onSubmit = async () => {
             ],
             DayDataOstatki: [
                 {
-                    DayDataOstatki: "2025-03-11",
+                    DayDataOstatki: formattedDate || '0',
                     DayDataOstatkiGIR: dayDataOstatkiGIR  || "0", 
                     DayDataOstatkiPORT: dayDataOstatkiPORT || "0", 
                 },
