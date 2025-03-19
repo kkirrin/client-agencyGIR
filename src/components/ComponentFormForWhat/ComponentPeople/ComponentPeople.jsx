@@ -1,15 +1,12 @@
 import styles from './style.module.scss';
 
-import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
+import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
 
     const { data } = useDataRequestStore();
-    console.log(data);
 
-
-    
     return (
         <>
             <div>
@@ -24,6 +21,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 Тоннаж выставили
                             </label>
                             <CustomInput 
+                                data={data}  
                                 errors={errors} 
                                 register={register} 
                                 name={'AmountData'}
@@ -41,6 +39,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 Ост. Порт
                             </label>
                             <CustomInput 
+                                data={data} 
                                 errors={errors} 
                                 register={register} 
                                 name={'DayDataOstatkiPORT'}
@@ -58,6 +57,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 Ост. ГиР
                             </label>
                             <CustomInput 
+                                data={data}  
                                 errors={errors} 
                                 register={register} 
                                 id={3} 
@@ -78,6 +78,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             ФИО
                         </label>
                         <CustomInput 
+                            data={data}  
                             errors={errors} 
                             register={register} 
                             id={4} 
@@ -95,6 +96,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             Должность
                         </label>
                         <CustomInput 
+                            data={data}  
                             errors={errors} 
                             register={register} 
                             id={5} 
@@ -157,6 +159,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 <div className={styles.data}>
                                     <p style={{ marginBottom: '10px' }}>Тоннаж</p> 
                                     <CustomInput 
+                                        data={data}  
                                         id={6} 
                                         name={'DayDataTonnaj'}
                                         errors={errors} 
@@ -169,6 +172,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 <div className={styles.data}>
                                     <p style={{ marginBottom: '10px' }}>ТС</p> 
                                     <CustomInput 
+                                        data={data}  
                                         id={7} 
                                         name={'TC'}
                                         errors={errors} 
@@ -182,6 +186,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             <div className={styles.note}>
                                 <p>Примечание</p>
                                 <CustomInput 
+                                    data={data}  
                                     id={8} 
                                     name={'note'}
                                     errors={errors} 

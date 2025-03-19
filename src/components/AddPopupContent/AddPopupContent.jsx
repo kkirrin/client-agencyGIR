@@ -6,7 +6,12 @@ import { useEffect } from 'react';
 import useDataRequestStore from '../../store/DataRequestStore';
 
 
-export default function AddPopupContent({ id, active, setActive, title }) {
+export default function AddPopupContent({ 
+        id, 
+        active, 
+        setActive,
+        title
+    }) {
 
     const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
 
@@ -28,8 +33,6 @@ export default function AddPopupContent({ id, active, setActive, title }) {
       clearData();
     }
   }, [active, setDataRequest, clearData]); 
-
-
 
     console.log(data);
 
