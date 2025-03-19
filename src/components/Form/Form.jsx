@@ -1,7 +1,6 @@
 import styles from './style.module.scss';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import useDateStore from '../../store/CalendarStore';
 
 import { 
     BtnSave, 
@@ -33,12 +32,12 @@ export default function Form({ title, forWhat }) {
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+    const { date } = useDateSingeStore();
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
     */
     
-    const { date } = useDateSingeStore();
 
     const formattedDate = date.toLocaleDateString('ru-RU', {
         day: '2-digit',
@@ -65,13 +64,12 @@ export default function Form({ title, forWhat }) {
         setItems([...items, items.length + 1]); 
     };
 
-    const { dates } = useDateStore();
 
-const onSubmit = async () => {
+    const onSubmit = async () => {
         setIsSending(true);
         setError(null);
 
-    const formData = {
+        const formData = {
             Name: name || "",
             Job: job || "",
             MonthDataTonnaj: [
@@ -130,6 +128,8 @@ const onSubmit = async () => {
                     DayDataTonnaj: "",
                     TC: "",
                     note: "",
+                    job: "",
+                    name: "",
                 }); 
                 
                 setItems([1]); 

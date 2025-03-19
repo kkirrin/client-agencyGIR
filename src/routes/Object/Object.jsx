@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import fetchData from '../../utils/fetchData';
 import styles from './style.module.scss';
 
 import process from 'process';
@@ -17,6 +18,7 @@ import {
 
 import useDateStore from '../../store/CalendarStore';
 import { Reorder } from "framer-motion";
+import useDateSingeStore from '../../store/CalendarSingleStore';
 
 
 function daysInMonth(month, year) {
@@ -24,8 +26,13 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
+  const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+
+  
+  
   const { id } = useParams();
   const { dates } = useDateStore();
+  const { date } = useDateSingeStore();
   const { error, setError } = useState();
   
   // Число
@@ -58,7 +65,6 @@ const Object = () => {
   const [workers, setWorkers] = useState([]);
 
   const handleAddWorker = () => {
-    //setWorkers([...workers, { id: workers.length + 1, name: 'Test' }]);
     setWorkers([...workers, { id: workers.length + 1, name: '' }]);
   }
 
@@ -86,7 +92,6 @@ const Object = () => {
   useEffect(() => {
     if (dates.length > 0) {
       const firstDate = dates[0];
-      const firstDay = firstDate.getDay();
       const first_month = firstDate.getMonth() + 1;
       const first_year = firstDate.getFullYear();
 
@@ -97,33 +102,18 @@ const Object = () => {
   }, [dates]);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-   
-      try {
-        // const apiUrl = `${process.env.REACT_APP_IP_ADDRESS}/api/people?populate=*`;
-        const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
-        const response = await fetch(apiUrl);
+useEffect(() => {
+  const fetchAndSetData = async () => {
+    try {
+      const data = await fetchData(apiUrl, setError);
+      setWorkers(data); 
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  };
 
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        setWorkers(data.data);
-      } catch (error) {
-        setError(error);
-        console.error("Ошибка при получении данных:", error);
-      } finally {
-        // setLoading(false); // Загрузка завершена (успешно или с ошибкой)
-      }
-    };
-
-    fetchData();
-  }, []); //  Важно: 
-
+  fetchAndSetData(); 
+}, [date]);
 
   return (
     <section className={styles.main_section}>
@@ -186,6 +176,10 @@ const Object = () => {
                 displayedDays={displayedDays}
                 handleClick={handleClick}
                 handleClickNote={handleClickNote}
+                active={popupActive}
+                setActive={setPopupActive}
+                title={'Сотрудник'}
+
               />
             </Reorder.Item>
           ))}
@@ -198,13 +192,6 @@ const Object = () => {
           />
         </div>
       </div>
-
-      <AddPopupContent
-        id={''}
-        active={popupActive}
-        setActive={setPopupActive}
-        title={'Сотрудник'}
-      />
       <NoteBody
         active={noteBodyActive}
         setActive={setNoteBodyActive}

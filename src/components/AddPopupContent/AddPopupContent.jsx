@@ -12,6 +12,7 @@ export default function AddPopupContent({ id, active, setActive, title }) {
     return (
 
         <div
+            id={id}
             className={`${styles.popup} ${active ? styles.popupActive : styles.popupNone}`}
             onClick={() => { setActive(false) }}
             onKeyDown={handleKeyDown}

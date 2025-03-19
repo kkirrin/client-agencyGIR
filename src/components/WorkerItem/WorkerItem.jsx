@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './style.module.scss';
+import { AddPopupContent } from '../../components';
 
 import { CheckNoteBtn,  } from '../../components';
 
@@ -121,14 +122,14 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
         </div>
 
         {[
-            { label: 'Дневные смены', value: '9' },
-            { label: 'Ночные смены', value: '9' },
-            { label: 'Всего смен', value: '19' },
-            { label: 'Общий тоннаж', value: '9000,89' },
-            { label: 'Выставили', value: '9000,89' },
-            { label: 'Выставили', value: '10 000,89' },
-            { label: 'Ост. Порт', value: '1000,89' },
-            { label: 'Ост. ГиР', value: '1500,89' },
+            { label: 'Дневные смены', value: '' },
+            { label: 'Ночные смены', value: '' },
+            { label: 'Всего смен', value: '' },
+            { label: 'Общий тоннаж', value: '' },
+            { label: 'Выставили', value: '' },
+            { label: 'Выставили', value: '' },
+            { label: 'Ост. Порт', value: '' },
+            { label: 'Ост. ГиР', value: '' },
         ].map((item, index) => (
             <div className={styles.sum_detail} key={index}>
             <p>{item.label}</p>
@@ -141,9 +142,20 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
 
   
 
-export default function WorkerItem({ id, setWorkers, workers, worker, displayedDays, handleClick, handleClickNote }) {
+export default function WorkerItem({
+  active,
+  setActive,          
+  title,
+  id,
+  setWorkers,
+  workers,
+  worker,
+  displayedDays,
+  handleClick,
+  handleClickNote
+    
+  }) {
   const isWorkerEmpty = worker.name === '';
-  // console.log('Сотрудник', worker);
   return (
     <>
         {
@@ -164,7 +176,14 @@ export default function WorkerItem({ id, setWorkers, workers, worker, displayedD
                         
                 </motion.div>
             )
-        }
+      }
+      
+       <AddPopupContent
+          id={id}
+          active={active}
+          setActive={setActive}
+          title={title}
+        />
     </>
 
   )
