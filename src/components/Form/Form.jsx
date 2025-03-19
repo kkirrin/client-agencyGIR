@@ -80,114 +80,94 @@ export default function Form({ title, forWhat }) {
     };
 
 
-    const onSubmit = async () => {
-        setIsSending(true);
-        setError(null);
+  const onSubmit = async () => {
+    setIsSending(true);
+    setError(null);
 
-        const formData = {
-            uuid: uuidv4(),
-            Name: name || "",
-            Job: job || "",
-            MonthDataTonnaj: [
-                {
-                    AmountData: amountData || "0", 
-                    MonthData: formattedDate || '0',
-                },
-            ],
-            DayDataDetails: [
-                {
-                    DayInfo: {
-                        Day: btnDay ? true : false,
-                        SmenaDetails: {
-                            Note: note || "-", 
-                            SmenaDataTonnaj: dayDataTonnaj || "0", 
-                            SmenaDateDetails: formattedDate || '0',
-
-                            SmenaStatusWorker: smenaStatusWorker || "Not working", 
-                            TC: TC || "-",
-                        },
-                    },
-                },
-                {
-                    NightInfo: {
-                        Night: btnNight ? true : false,
-                        SmenaDetails: {
-                            Note: "-",
-                            SmenaDataTonnaj: "-",
-                            SmenaDateDetails: "-",
-                            SmenaStatusWorker: "Not working",
-                            TC: "-",
-                        },
-                    },
-                },
-            ],
-            DayDataOstatki: [
-                {
-                    DayDataOstatki: formattedDate || '0',
-                    DayDataOstatkiGIR: dayDataOstatkiGIR  || "0", 
-                    DayDataOstatkiPORT: dayDataOstatkiPORT || "0", 
-                },
-            ],
-        };
-
-        console.log('Должна быть новая formData', formData);
-        // Если сотрудника еще не существует
-        try {
-            const { response } = await saveUserDateService(formData);
-            if (response.ok) {
-                console.log('Успешная отправка:', formData);
-                reset({
-                    AmountData: "",
-                    DayDataOstatkiPORT: "",
-                    DayDataOstatkiGIR: "",
-                    SmenaStatusWorker: "",
-                    DayDataTonnaj: "",
-                    TC: "",
-                    note: "",
-                    job: "",
-                    name: "",
-                }); 
-                
-                setItems([1]); 
-
-            } else {
-                setError('Ошибка при отправке данных');
-            }
-        } catch (error) {
-            setError('Ошибка запроса, попробуйте позже');
-        } finally {
-            setIsSending(false);
-        }
-
-
-         // Если сотрудника еще не существует
-        try {
-            const { response } = await saveUserDateService(formData);
-            if (response.ok) {
-                console.log('Успешная отправка:', formData);
-                reset({
-                    AmountData: "",
-                    DayDataOstatkiPORT: "",
-                    DayDataOstatkiGIR: "",
-                    SmenaStatusWorker: "",
-                    DayDataTonnaj: "",
-                    TC: "",
-                    note: "",
-                    job: "",
-                    name: "",
-                }); 
-                
-                setItems([1]); 
-
-            } else {
-                setError('Ошибка при отправке данных');
-            }
-        } catch (error) {
-            setError('Ошибка запроса, попробуйте позже');
-        } finally {
-            setIsSending(false);
-        }
+    const formData = {
+        uuid: uuidv4(),
+        Name: name || "",
+        Job: job || "",
+        MonthDataTonnaj: [
+            {
+                AmountData: amountData || "0",
+                MonthData: formattedDate || '0',
+            },
+        ],
+        DayDataOstatki: [
+            {
+                DayDataOstatki: formattedDate || '0',
+                DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
+                DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
+            },
+        ],
     };
+
+    if (btnDay) {
+        formData.DayDataDetails = [
+            {
+                DayInfo: {
+                    Day: true,
+                    SmenaDetails: {
+                        Note: note || "-",
+                        SmenaDataTonnaj: dayDataTonnaj || "0",
+                        SmenaDateDetails: formattedDate || '0',
+                        SmenaStatusWorker: smenaStatusWorker || "Not working",
+                        TC: TC || "-",
+                    },
+                },
+            },
+        ];
+    }
+
+    if (btnNight) {
+        if (!formData.DayDataDetails) {
+            formData.DayDataDetails = [];
+        }
+        formData.DayDataDetails.push({
+            NightInfo: {
+                Night: true,
+                SmenaDetails: {
+                    Note: note || "-",
+                    SmenaDataTonnaj: dayDataTonnaj || "0",
+                    SmenaDateDetails: formattedDate || '0',
+                    SmenaStatusWorker: smenaStatusWorker || "Not working",
+                    TC: TC || "-",
+                },
+            },
+        });
+    }
+
+    console.log('Должна быть новая formData', formData);
+
+    try {
+        const { response } = await saveUserDateService(formData);
+        if (response.ok) {
+            console.log('Успешная отправка:', formData);
+            reset({
+                AmountData: "",
+                DayDataOstatkiPORT: "",
+                DayDataOstatkiGIR: "",
+                SmenaStatusWorker: "",
+                DayDataTonnaj: "",
+                TC: "",
+                note: "",
+                job: "",
+                name: "",
+                btnDay: false, // Сбрасываем значения
+                btnNight: false, // Сбрасываем значения
+            });
+
+            setItems([1]);
+        } else {
+            setError('Ошибка при отправке данных');
+        }
+    } catch (error) {
+        setError('Ошибка запроса, попробуйте позже');
+    } finally {
+        setIsSending(false);
+    }
+};
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

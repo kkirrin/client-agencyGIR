@@ -84,24 +84,25 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
               <div className='border_top_gray'></div>
                 <div className={styles.item_data}>
                    <div className={styles.detail}>
-                      {worker?.DayDataDetails[0]?.DayInfo?.Night === true ? (
+                      {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
                         <>
                           <p className={styles.details_static}>Тоннаж</p>
-                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
+                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
                         </>
                         ) : (
-                          <p className="notWorking">{worker?.DayDataDetails[0]?.SmenaStatusWorker || "-"}</p>
+                          <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaStatusWorker || "-"}</p>
                         )}
                     </div>
 
                     <div className={styles.detail}>
-                      {worker?.DayDataDetails[0]?.DayInfo?.Night === true ? (
+                      {console.log(worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails.SmenaDataTonnaj)}
+                      {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
                         <>
                           <p className={styles.details_static}>ТС</p>
-                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
+                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
                         </>
                       ) : (
-                        <p className="notWorking">{worker?.DayDataDetails[0]?.SmenaStatusWorker || "-"}</p>
+                        <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaStatusWorker || "-"}</p>
                       )}
                     </div>
 

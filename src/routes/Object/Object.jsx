@@ -113,7 +113,7 @@ useEffect(() => {
   };
 
   fetchAndSetData(); 
-}, [date]);
+}, []);
 
   return (
     <section className={styles.main_section}>
