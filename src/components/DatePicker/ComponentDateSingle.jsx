@@ -3,12 +3,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import { registerLocale } from 'react-datepicker';
 import { useState } from 'react';
-import useDateSingeStore from '../../store/CalendarSingleStore';
+import useDateSingleStore from '../../store/CalendarSingleStore';
 
 registerLocale('ru', ru);
 
 export default function ComponentDate() {
-    const { date, addDate } = useDateSingeStore(); 
+    const { date, addDate } = useDateSingleStore(); 
     const [selectedDates, setSelectedDates] = useState(date);
 
     const handleDateChange = (date) => {

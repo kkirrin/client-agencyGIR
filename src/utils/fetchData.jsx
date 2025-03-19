@@ -1,4 +1,4 @@
-export default async function fetchData(api, setError) {
+export default async function fetchData(api) {
   try {
     const response = await fetch(api);
     if (!response.ok) {
@@ -7,7 +7,6 @@ export default async function fetchData(api, setError) {
     const data = await response.json();
     return data.data;
   } catch (error) {
-    setError(error);
     console.error("Ошибка при получении данных:", error);
     throw error; 
   }

@@ -1,9 +1,15 @@
 import styles from './style.module.scss';
 
 import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
+import useDataRequestStore from '../../../store/DataRequestStore';
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
 
+    const { data } = useDataRequestStore();
+    console.log(data);
+
+
+    
     return (
         <>
             <div>

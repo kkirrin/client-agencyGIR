@@ -160,30 +160,21 @@ useEffect(() => {
           </div>
         </div>
 
-        <Reorder.Group
-          values={workers}
-          onReorder={setWorkers}
-          className={styles.workers_list}
-        >
-
-          {workers.map((worker) => (
-            <Reorder.Item key={worker} value={worker}>
-              <WorkerItem
-                id={worker.id}
-                setWorkers={setWorkers}
-                workers={workers}
-                worker={worker}
-                displayedDays={displayedDays}
-                handleClick={handleClick}
-                handleClickNote={handleClickNote}
-                active={popupActive}
-                setActive={setPopupActive}
-                title={'Сотрудник'}
-
-              />
-            </Reorder.Item>
-          ))}
-        </Reorder.Group>
+        {workers.map((worker, idx) => (
+          <WorkerItem
+            key={idx}
+            id={worker.id}
+            setWorkers={setWorkers}
+            workers={workers}
+            worker={worker}
+            displayedDays={displayedDays}
+            handleClick={handleClick}
+            handleClickNote={handleClickNote}
+            active={popupActive}
+            setActive={setPopupActive}
+            title={'Сотрудник'}
+          />
+        ))}
 
         <div className={styles.add_workers}>
           <AddMoreBtn

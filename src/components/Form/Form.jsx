@@ -1,6 +1,7 @@
 import styles from './style.module.scss';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
 import { 
     BtnSave, 
@@ -70,6 +71,7 @@ export default function Form({ title, forWhat }) {
         setError(null);
 
         const formData = {
+            uuid: uuidv4(),
             Name: name || "",
             Job: job || "",
             MonthDataTonnaj: [
