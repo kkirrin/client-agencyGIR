@@ -37,7 +37,6 @@ const Login = () => {
             const { response, data } = await loginUserService(formData);
 
             if (response.ok) {
-                console.log('Успешный вход:', data);
                 localStorage.setItem('tokendgvSDfghsdghdrhgzdfrh', data.jwt);
                 navigate('/');
 

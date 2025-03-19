@@ -120,7 +120,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 <div className={styles.smena_content}>
                                     <p>Смена</p>
                                     <div className={styles.smena_btns}>
-                                        <ChooseTimeBtn />
+                                        <ChooseTimeBtn register={register}/>
                                     </div>
                                 </div>
                             </div>

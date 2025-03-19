@@ -27,6 +27,20 @@ export async function saveUserDateService(userData) {
     return { response, data };
 }
 
+export async function updateUserDataService(userData) {
+
+    const response = await fetch(url, {
+        method: 'UPDATE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({data: {...userData} }),
+    });
+
+    const data = await response.json();
+    return { response, data };
+}
+
 
 
 export default function Form({ title, forWhat }) {
@@ -56,9 +70,9 @@ export default function Form({ title, forWhat }) {
     const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
-
-
-
+    const btnDay = useWatch({ control, name: 'btnDay' });
+    const btnNight = useWatch({ control, name: 'btnNight' });
+    
     const [items, setItems] = useState([1]); 
 
     const handleClick = () => {
@@ -83,7 +97,7 @@ export default function Form({ title, forWhat }) {
             DayDataDetails: [
                 {
                     DayInfo: {
-                        Day: true,
+                        Day: btnDay ? true : false,
                         SmenaDetails: {
                             Note: note || "-", 
                             SmenaDataTonnaj: dayDataTonnaj || "0", 
@@ -96,7 +110,7 @@ export default function Form({ title, forWhat }) {
                 },
                 {
                     NightInfo: {
-                        Night: false,
+                        Night: btnNight ? true : false,
                         SmenaDetails: {
                             Note: "-",
                             SmenaDataTonnaj: "-",
@@ -117,11 +131,40 @@ export default function Form({ title, forWhat }) {
         };
 
         console.log('Должна быть новая formData', formData);
-
+        // Если сотрудника еще не существует
         try {
-            const { response, data } = await saveUserDateService(formData);
+            const { response } = await saveUserDateService(formData);
             if (response.ok) {
-                console.log('Успешная отправка:', data);
+                console.log('Успешная отправка:', formData);
+                reset({
+                    AmountData: "",
+                    DayDataOstatkiPORT: "",
+                    DayDataOstatkiGIR: "",
+                    SmenaStatusWorker: "",
+                    DayDataTonnaj: "",
+                    TC: "",
+                    note: "",
+                    job: "",
+                    name: "",
+                }); 
+                
+                setItems([1]); 
+
+            } else {
+                setError('Ошибка при отправке данных');
+            }
+        } catch (error) {
+            setError('Ошибка запроса, попробуйте позже');
+        } finally {
+            setIsSending(false);
+        }
+
+
+         // Если сотрудника еще не существует
+        try {
+            const { response } = await saveUserDateService(formData);
+            if (response.ok) {
+                console.log('Успешная отправка:', formData);
                 reset({
                     AmountData: "",
                     DayDataOstatkiPORT: "",

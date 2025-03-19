@@ -51,7 +51,7 @@ export default function CustomInput({ data, placeholder, type, id, register, err
                     id={id}
                     className={styles.custom_input}
                     type={type}
-                    value={valueInput}
+                    defaultValue={valueInput}
                     placeholder={placeholder}
                     {...register(name, { required: { value: true, message: `${placeholder} обязательно` } })}
             />

@@ -36,7 +36,6 @@ const Register = () => {
         try {
             const { response, data } = await registerUserService(formData);
             if (response.ok) {
-                console.log(data);
                 setIsSuccess(true);
                 setError(undefined);
                 reset();
