@@ -152,7 +152,7 @@ useEffect(() => {
 
                 {displayedDays.map((day) => (
                   <li className={styles.item_table} key={day}>
-                    <div className={styles.time_item}><img src='/moon.svg' alt='' /><p style={{ color: '#1F2433sun' }}>Ночь</p> | <img src='/sun.svg' alt='' /><p style={{ color: '#F2B174' }}>День</p></div>
+                    <div className={styles.time_item}><img src='/sun.svg' alt='' /><p style={{ color: '#F2B174' }}>День</p> | <img src='/moon.svg' alt='' /><p style={{ color: '#1F2433' }}>Ночь</p></div>
                   </li>
                 ))}
               </ul>

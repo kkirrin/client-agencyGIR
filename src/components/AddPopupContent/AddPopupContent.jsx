@@ -17,22 +17,22 @@ export default function AddPopupContent({
 
     const { data, setDataRequest, clearData } = useDataRequestStore();
 
-//     useEffect(() => {
-//     if (active) {
-//       const fetchAndSetData = async () => {
-//         try {
-//           const data = await fetchData(apiUrl);
-//           setDataRequest(data);
-//         } catch (error) {
-//           console.error("Ошибка при получении данных:", error);
-//         }
-//       };
+    useEffect(() => {
+    if (active) {
+      const fetchAndSetData = async () => {
+        try {
+          const data = await fetchData(apiUrl);
+          setDataRequest(data);
+        } catch (error) {
+          console.error("Ошибка при получении данных:", error);
+        }
+      };
 
-//       fetchAndSetData();
-//     } else {
-//       clearData();
-//     }
-//   }, [active, setDataRequest, clearData]); 
+      fetchAndSetData();
+    } else {
+      clearData();
+    }
+  }, [active, setDataRequest, clearData]); 
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {

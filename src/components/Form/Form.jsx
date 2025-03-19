@@ -75,7 +75,8 @@ export default function Form({ title, forWhat }) {
     
     const [items, setItems] = useState([1]); 
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault();
         setItems([...items, items.length + 1]); 
     };
 
