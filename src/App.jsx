@@ -9,12 +9,16 @@ function App() {
   const [data, setData] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
 
+  // const api = 'http://89.104.67.119:1337/api/objects'
+  // useEffect(() => {
+  //   fetchData(api);
+  // })
+  
   useEffect(() => {
     const fetchData = async () => {
       // Имитация загрузки
       await delay(2000);
 
-      // Моковые данные
       const mockData = {
         "data": {
           "id": 11,

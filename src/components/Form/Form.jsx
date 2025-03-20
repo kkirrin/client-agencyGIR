@@ -44,131 +44,133 @@ export async function updateUserDataService(userData) {
 
 
 export default function Form({ title, forWhat }) {
-    const [error, setError] = useState();
-    const [isSending, setIsSending] = useState(false);
-    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
-    const { date } = useDateSingeStore();
+        const [error, setError] = useState();
+        const [isSending, setIsSending] = useState(false);
+        const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+        const { date } = useDateSingeStore();
 
-    /**
-     * Отслеживать input value принято при помощи useWatch && control
-    */
+        /**
+         * Отслеживать input value принято при помощи useWatch && control
+        */
     
 
-    const formattedDate = date.toLocaleDateString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
-
-
-    const name = useWatch({ control, name: 'Name' });
-    const job = useWatch({ control, name: 'Job' });
-    const amountData = useWatch({ control, name: 'AmountData' });
-    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-    const dayDataOstatkiGIR  = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    const smenaStatusWorker = useWatch({ control, name: 'SmenaStatusWorker' });
-    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
-    const TC = useWatch({ control, name: 'TC' });
-    const note = useWatch({ control, name: 'note' });
-    const btnDay = useWatch({ control, name: 'btnDay' });
-    const btnNight = useWatch({ control, name: 'btnNight' });
-    
-    const [items, setItems] = useState([1]); 
-
-    const handleClick = (e) => {
-        e.preventDefault();
-        setItems([...items, items.length + 1]); 
-    };
-
-
-  const onSubmit = async () => {
-    setIsSending(true);
-    setError(null);
-
-    const formData = {
-        uuid: uuidv4(),
-        Name: name || "",
-        Job: job || "",
-        MonthDataTonnaj: [
-            {
-                AmountData: amountData || "0",
-                MonthData: formattedDate || '0',
-            },
-        ],
-        DayDataOstatki: [
-            {
-                DayDataOstatki: formattedDate || '0',
-                DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-                DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-            },
-        ],
-    };
-
-    if (btnDay) {
-        formData.DayDataDetails = [
-            {
-                DayInfo: {
-                    Day: true,
-                    SmenaDetails: {
-                        Note: note || "-",
-                        SmenaDataTonnaj: dayDataTonnaj || "0",
-                        SmenaDateDetails: formattedDate || '0',
-                        SmenaStatusWorker: smenaStatusWorker || "Not working",
-                        TC: TC || "-",
-                    },
-                },
-            },
-        ];
-    }
-
-    if (btnNight) {
-        if (!formData.DayDataDetails) {
-            formData.DayDataDetails = [];
-        }
-        formData.DayDataDetails.push({
-            NightInfo: {
-                Night: true,
-                SmenaDetails: {
-                    Note: note || "-",
-                    SmenaDataTonnaj: dayDataTonnaj || "0",
-                    SmenaDateDetails: formattedDate || '0',
-                    SmenaStatusWorker: smenaStatusWorker || "Not working",
-                    TC: TC || "-",
-                },
-            },
+        const formattedDate = date.toLocaleDateString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
         });
-    }
 
-    console.log('Должна быть новая formData', formData);
+        const name = useWatch({ control, name: 'Name' });
+        const job = useWatch({ control, name: 'Job' });
+        const amountData = useWatch({ control, name: 'AmountData' });
+        const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
+        const dayDataOstatkiGIR  = useWatch({ control, name: 'DayDataOstatkiGIR' });
+        const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
+        const TC = useWatch({ control, name: 'TC' });
+        const note = useWatch({ control, name: 'note' });
+        const btnDay = useWatch({ control, name: 'btnDay' });
+        const btnNight = useWatch({ control, name: 'btnNight' });
 
-    try {
-        const { response } = await saveUserDateService(formData);
-        if (response.ok) {
-            console.log('Успешная отправка:', formData);
-            reset({
-                AmountData: "",
-                DayDataOstatkiPORT: "",
-                DayDataOstatkiGIR: "",
-                SmenaStatusWorker: "",
-                DayDataTonnaj: "",
-                TC: "",
-                note: "",
-                job: "",
-                name: "",
-                btnDay: false, // Сбрасываем значения
-                btnNight: false, // Сбрасываем значения
-            });
+        const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
+        const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
+        const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
+        
+        const [items, setItems] = useState([1]); 
 
-            setItems([1]);
-        } else {
-            setError('Ошибка при отправке данных');
-        }
-    } catch (error) {
-        setError('Ошибка запроса, попробуйте позже');
-    } finally {
-        setIsSending(false);
-    }
-};
+        console.log(statusWorkerNotWorked, statusWorkerDayOff, statusWorkerEmpty)
+
+        const handleClick = (e) => {
+            e.preventDefault();
+            setItems([...items, items.length + 1]); 
+        };
+
+
+        const onSubmit = async () => {
+            setIsSending(true);
+            setError(null);
+
+            const formData = {
+                uuid: uuidv4(),
+                Name: name || "",
+                Job: job || "",
+                MonthDataTonnaj: [
+                    {
+                        AmountData: amountData || "0",
+                        MonthData: formattedDate || '0',
+                    },
+                ],
+                DayDataOstatki: [
+                    {
+                        DayDataOstatki: formattedDate || '0',
+                        DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
+                        DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
+                    },
+                ],
+            };
+
+            if (btnDay) {
+                formData.DayDataDetails = [
+                    {
+                        DayInfo: {
+                            Day: true,
+                            SmenaDetails: {
+                                Note: note || "-",
+                                SmenaDataTonnaj: dayDataTonnaj || "0",
+                                SmenaDateDetails: formattedDate || '0',
+                                SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Not working",
+                                TC: TC || "-",
+                            },
+                        },
+                    },
+                ];
+            }
+
+            if (btnNight) {
+                if (!formData.DayDataDetails) {
+                    formData.DayDataDetails = [];
+                }
+                formData.DayDataDetails.push({
+                    NightInfo: {
+                        Night: true,
+                        SmenaDetails: {
+                            Note: note || "-",
+                            SmenaDataTonnaj: dayDataTonnaj || "0",
+                            SmenaDateDetails: formattedDate || '0',
+                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty  || "Not working",
+                            TC: TC || "-",
+                        },
+                    },
+                });
+            }
+
+            try {
+                const { response } = await saveUserDateService(formData);
+                if (response.ok) {
+                    console.log('Успешная отправка:', formData);
+                    reset({
+                        AmountData: "",
+                        DayDataOstatkiPORT: "",
+                        DayDataOstatkiGIR: "",
+                        SmenaStatusWorker: "",
+                        DayDataTonnaj: "",
+                        TC: "",
+                        note: "",
+                        job: "",
+                        name: "",
+                        btnDay: false, // Сбрасываем значения
+                        btnNight: false, // Сбрасываем значения
+                    });
+
+                    setItems([1]);
+                } else {
+                    setError('Ошибка при отправке данных');
+                }
+            } catch (error) {
+                setError('Ошибка запроса, попробуйте позже');
+            } finally {
+                setIsSending(false);
+            }
+        };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

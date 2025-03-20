@@ -49,11 +49,13 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
   <>
         <div className={styles.workers_item}>
         <div className={styles.worker_data}>
-          <p>{worker?.Name || "Данные отсутствуют"} <br /> {worker?.Job || "Данные отсутствуют"}</p>
+        <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}<br /><p>{worker?.Job || "Данные отсутствуют"}</p></p>
+      
           <p>Тоннаж</p>
         </div>
 
-        {typeof(worker?.DayDataDetails !== undefined) && worker?.DayDataDetails.map((day) => (
+        {console.log(worker?.DayDataDetails)}
+      {typeof (worker?.DayDataDetails !== undefined) && worker?.DayDataDetails.map((day) => (
             <div className={styles.item_table} key={day}>
               <div className={styles.item_data}>
                 <div className={styles.detail}>
@@ -95,7 +97,6 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
                     </div>
 
                     <div className={styles.detail}>
-                      {console.log(worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails.SmenaDataTonnaj)}
                       {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
                         <>
                           <p className={styles.details_static}>ТС</p>
@@ -157,6 +158,8 @@ export default function WorkerItem({
     
   }) {
   const isWorkerEmpty = worker.name === '';
+  console.log(worker)
+
   return (
     <>
         {

@@ -126,32 +126,35 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             </div>
 
                             <div className={styles.data_container}>
-                                <div className={styles.data}>
+                                 <div className={styles.data}>
                                     <p>Данные</p>
                                     <div className={styles.data_wrapper}>
                                         <CustomCheckBox 
                                             errors={errors} 
                                             register={register} 
                                             type="checkbox" 
-                                            name={'statusWorker'}
-                                            label={"Не работал"} 
-                                            checkboxId={`checkbox${idx}`} 
+                                            name="statusWorkerNotWorked"
+                                            value={'statusWorkerNotWorked'}
+                                            label="Не работал" 
+                                            checkboxId="checkboxNotWorked" 
                                         />
                                         <CustomCheckBox 
                                             errors={errors} 
                                             register={register} 
                                             type="checkbox" 
-                                            name={'statusWorker'}
-                                            label={"Выходной"} 
-                                            checkboxId={`checkbox${idx}`} 
+                                            name="statusWorkerDayOff"
+                                            value={'statusWorkerDayOff'}
+                                            label="Выходной" 
+                                            checkboxId="checkboxDayOff" 
                                         />
                                         <CustomCheckBox 
                                             errors={errors} 
                                             register={register} 
                                             type="checkbox" 
-                                            name={'statusWorker'}
-                                            label={"Пусто"} 
-                                            checkboxId={`checkbox${idx}`} 
+                                            name="statusWorkerEmpty"
+                                            value={'statusWorkerEmpty'}
+                                            label="Пусто" 
+                                            checkboxId="checkboxEmpty" 
                                         />
                                     </div>
                                 </div>
