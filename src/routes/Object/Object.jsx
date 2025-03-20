@@ -17,7 +17,6 @@ import {
   from '../../components';
 
 import useDateStore from '../../store/CalendarStore';
-import { Reorder } from "framer-motion";
 import useDateSingeStore from '../../store/CalendarSingleStore';
 
 
@@ -26,37 +25,64 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
-  const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+  // const apiUrl = `http://89.104.67.119:1337/api/people?populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;  
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; 
+  const currentYear = currentDate.getFullYear();
 
-  
-  
   const { id } = useParams();
   const { dates } = useDateStore();
   const { date } = useDateSingeStore();
   const { error, setError } = useState();
+
   
   // Число
   const [numDays, setNumDays] = useState(daysInMonth(new Date().getMonth() + 1, new Date().getFullYear()));
-
+  
+  // Получаем текущую дату число
+  const currentDay = new Date().getDate();
+  
   const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
+  
+    // Разбиение
+    let days = [];
 
-  // Разбиение
-  let days = [];
+    if (dates.length == 0) {
+      days = Array.from({ length: numDays }, (_, i) => i + 1);
+    } else {
+      days = Array.from({ length: dates.length }, (_, i) => i + 1);
+    }
 
-  if (dates.length == 0) {
-    days = Array.from({ length: numDays }, (_, i) => i + 1);
-  } else {
-    days = Array.from({ length: dates.length }, (_, i) => i + 1);
-  }
+  const daysFullDate = days.map(day => {
+    const formattedDay = String(day).padStart(2, '0'); 
+    const formattedMonth = String(currentMonth).padStart(2, '0'); 
+    return `${formattedDay}.${formattedMonth}.${currentYear}`; 
+  });
+
+  // Формируем часть URL с фильтрами по датам
+  const dateFilters = daysFullDate
+    .map((date, index) => `filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
+      .join('&');
+    
+
+  const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+  
+  const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populateParams}`;
 
   // Разбиение на страницы
   const daysPerPage = 5;
 
-
   const [currentPage, setCurrentPage] = useState(0);
 
-  let startIndex = currentPage * daysPerPage;
-  let endIndex = Math.min(startIndex + daysPerPage, days.length);
+  // Находим индекс этой даты в массиве
+  const currentDayIndex = days.indexOf(currentDay) + 1;
+
+  let startIndex = currentDayIndex - 2; 
+  if (startIndex < 0) startIndex = 0; 
+
+  let endIndex = startIndex + daysPerPage;
+  if (endIndex > days.length) endIndex = days.length;
+
   let displayedDays = days.slice(startIndex, endIndex);
 
   const [popupActive, setPopupActive] = useState(false);
@@ -89,7 +115,7 @@ const Object = () => {
   }
 
 
-  useEffect(() => {
+   useEffect(() => {
     if (dates.length > 0) {
       const firstDate = dates[0];
       const first_month = firstDate.getMonth() + 1;
@@ -97,9 +123,16 @@ const Object = () => {
 
       // Перезаписываем numDays
       setNumDays(daysInMonth(first_month, first_year));
-      setCurrentPage(0)
+
+      // Находим индекс текущего дня
+      const currentDayIndex = days.indexOf(currentDay);
+      if (currentDayIndex !== -1) {
+        // Вычисляем начальную страницу
+        const initialPage = Math.floor(currentDayIndex / daysPerPage);
+        setCurrentPage(initialPage);
+      }
     }
-  }, [dates]);
+  }, [dates, currentDay]);
 
 
 useEffect(() => {

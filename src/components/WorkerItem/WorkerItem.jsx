@@ -63,7 +63,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
                       <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
                     </>
                     ) : (
-                      <p className='notWorking'>{worker?.DayDataDetails[0]?.SmenaStatusWorker || "Статус отсутствует"}</p>
+                      <p className='notWorking'>{worker?.DayDataDetails[0]?.SmenaStatusWorker || "-"}</p>
                     )}
                 </div>
 
@@ -74,7 +74,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
                       <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
                     </>
                   ) : (
-                    <p className='notWorking'>{worker?.DayDataDetails[0]?.SmenaStatusWorker || "Статус отсутствует"}</p>
+                    <p className='notWorking'>{worker?.DayDataDetails[0]?.SmenaStatusWorker || "-"}</p>
                   )}
                 </div>
 
