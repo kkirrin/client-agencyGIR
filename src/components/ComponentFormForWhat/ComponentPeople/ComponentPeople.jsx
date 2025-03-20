@@ -134,7 +134,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             register={register} 
                                             type="checkbox" 
                                             name="statusWorkerNotWorked"
-                                            value={'statusWorkerNotWorked'}
+                                            value={'Not working'}
                                             label="Не работал" 
                                             checkboxId="checkboxNotWorked" 
                                         />
@@ -143,7 +143,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             register={register} 
                                             type="checkbox" 
                                             name="statusWorkerDayOff"
-                                            value={'statusWorkerDayOff'}
+                                            value={'Day Off'}
                                             label="Выходной" 
                                             checkboxId="checkboxDayOff" 
                                         />
@@ -152,7 +152,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             register={register} 
                                             type="checkbox" 
                                             name="statusWorkerEmpty"
-                                            value={'statusWorkerEmpty'}
+                                            value={'Empty'}
                                             label="Пусто" 
                                             checkboxId="checkboxEmpty" 
                                         />
