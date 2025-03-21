@@ -146,6 +146,9 @@ const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populatePa
     fetchAndSetData();
   }, [dates])
 
+  console.log('data.length', workers.length);
+
+
 
   
   return (
@@ -203,6 +206,7 @@ const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populatePa
             setWorkers={setWorkers}
             workers={workers}
             worker={worker}
+            daysFullDate={daysFullDate}
             displayedDays={displayedDays}
             handleClick={handleClick}
             handleClickNote={handleClickNote}

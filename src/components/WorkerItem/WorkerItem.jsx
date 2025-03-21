@@ -14,6 +14,30 @@ import { motion } from 'motion/react';
  * 
  */
 
+const EmptyWorkerItemData = ({ handleClickNote, handleClick }) => {
+  return (
+    <>
+      <div className={`${styles.workers_item} ${styles.empty}`}>
+        <div className={styles.item_table} key={day}>
+          <div className={styles.item_data}>
+            <div className={styles.detail}></div>
+            <div className={styles.detail}></div>
+            <CheckNoteBtn handleClick={handleClickNote} />
+          </div>
+          <div className='border_top_gray'></div>
+          <div className={styles.item_data}>
+            <div className={styles.detail}>
+            </div>
+            <CheckNoteBtn handleClick={handleClickNote} />
+          </div>
+        </div>
+      </div>
+    </>   
+  )
+}
+
+    
+
 
 const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }) => (
     <div className={`${styles.workers_item} ${styles.empty}`}>
@@ -45,7 +69,7 @@ const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }
 
 
 const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) => {
-  
+  console.log(worker)
   return (
       <>
         <div className={styles.workers_item}>
@@ -58,154 +82,155 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
             <p>Тоннаж</p>
           </div>
           
-        {displayedDays.forEach((item, index) => {
-          /**
-           * тут проверки на тип данных, потом проверяется статус работника
-           * присвоение нужной строки,
-           * если item будет пустой, то будет шаблон пустой отображаться  
-           */
-          typeof (worker?.DayDataDetails !== undefined) && worker?.DayDataDetails.map((day) => {
-            let status = '';
-            let statusClassName = '';
-            switch (worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker) {
+          {displayedDays.forEach((item, index) => {
+            /**
+             * тут проверки на тип данных, потом проверяется статус работника
+             * присвоение нужной строки,
+             * если item будет пустой, то будет шаблон пустой отображаться  
+             */
+            typeof (worker?.DayDataDetails !== undefined) && worker?.DayDataDetails.map((day) => {
+              let status = '';
+              let statusClassName = '';
+              switch (worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker) {
 
-              case 'Default':
-                status = '';
-                statusClassName = ''
-                break;
+                case 'Default':
+                  status = '';
+                  statusClassName = ''
+                  break;
 
-              case 'Not working':
-                status = 'Не работал';
-                statusClassName = 'notWorking';
-                break;
+                case 'Not working':
+                  status = 'Не работал';
+                  statusClassName = 'notWorking';
+                  break;
 
-              case 'Day Off':
-                status = 'Выходной';
-                statusClassName = 'dayOf';
-                break;
+                case 'Day Off':
+                  status = 'Выходной';
+                  statusClassName = 'dayOf';
+                  break;
 
-              case 'Empty':
-                status = '';
-                statusClassName = '';
-                break;
-            }
-            
-            return (
-              <div className={styles.item_table} key={day}>
-                <div className={styles.item_data}>
-                
-                  {/* {worker?.DayDataDetails.DayInfo?.Day === true && worker?.DayDataDetails.NightInfo?.Night === true ? (
-                    <p>
-                      
-                    </p>
-                  )
-                    :
-                  (
-                    <p>
-                        
-                    </p>
-                    )} */}
-                  
-                    <>
-                      <div className={styles.detail}>
-                        {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
-                          ["Not working", "Empty", "Day Off"].includes(worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker) ? (
-                            <p className={`${statusClassName}`}>{status}</p>
-                          ) : (
-                            <>
-                              <p className={styles.details_static}>Тоннаж</p>
-                              <p className={`${styles.details_nostatic} working`}>
-                                {worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
-                              </p>
-  
-                              <p className={styles.details_static}>ТС</p>
-                              <p className={`${styles.details_nostatic} working`}>
-                                {worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}
-                              </p>
-                            </>
-                          )
-                        ) : (
-                          ''
-                        )}
-                      </div>
-                    </>
-  
-  
-  
-                    <>
-                      {["Not working", "Empty", "Day Off"].includes(worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaStatusWorker) ? (
-                        <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaStatusWorker}</p>
-                      ) : (
-                        <>
-                          <p className={styles.details_static}>Тоннаж</p>
-                          <p className={`${styles.details_nostatic} working`}>
-                            {worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
-                          </p>
-                        </>
-                      )}
-                    </> 
-                  
-                    <div className={styles.detail}>
-                      {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
-                        <>
-                          <p className={styles.details_static}>Тоннаж</p>
-                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
-                        </>
-                        ) : (
-                          <p className='notWorking'>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker || "-"}</p>
-                        )}
-                    </div>
-  
-                    <div className={styles.detail}>
-                      {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
-                        <>
-                          <p className={styles.details_static}>ТС</p>
-                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
-                        </>
-                      ) : (
-                          <p className='notWorking'>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker || "-"}</p>
-                      )}
-                    </div> 
-  
-                    <CheckNoteBtn handleClick={handleClickNote} />
-                </div>
+                case 'Empty':
+                  status = '';
+                  statusClassName = '';
+                  break;
+              }
               
-                <div className='border_top_gray'></div>
-                <div className={styles.item_data}>
-                  <div className={styles.detail}>
-                      {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
-                        <>
-                          <p className={styles.details_static}>Тоннаж</p>
-                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
-                        </>
-                        ) : (
-                          <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaStatusWorker || "-"}</p>
-                        )}
+              return (
+                    <div className={styles.item_table} key={day}>
+                          <div className={styles.item_data}>
+                              {/* {worker?.DayDataDetails.DayInfo?.Day === true && worker?.DayDataDetails.NightInfo?.Night === true ? (
+                                <p>
+                                  
+                                </p>
+                              )
+                                :
+                              (
+                              <p>
+                                  
+                              </p>
+                              )} */}
+
+                            {/* /
+                              ДНЕВНАЯ СМЕНА
+                            */}
+                            
+                                <div className={styles.detail}>
+                                  {console.log('worker', worker?.DayDataDetails.length, displayedDays.length)};
+                                  {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
+                                    ["Not working", "Empty", "Day Off"].includes(worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker) ? (
+                                      <p className={`${statusClassName}`}>{status}</p>
+                                    ) : (
+                                      <>
+                                        <p className={styles.details_static}>Тоннаж</p>
+                                        <p className={`${styles.details_nostatic} working`}>
+                                          {worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
+                                        </p>
+            
+                                        <p className={styles.details_static}>ТС</p>
+                                        <p className={`${styles.details_nostatic} working`}>
+                                          {worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}
+                                        </p>
+                                      </>
+                                    )
+                                  ) : (
+                                    ''
+                                  )}
+                                </div>
+
+                                {["Not working", "Empty", "Day Off"].includes(worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaStatusWorker) ? (
+                                  <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaStatusWorker}</p>
+                                ) : (
+                                  <>
+                                    <p className={styles.details_static}>Тоннаж</p>
+                                    <p className={`${styles.details_nostatic} working`}>
+                                      {worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
+                                    </p>
+                                  </>
+                                )}
+                              
+                        
+                              <div className={styles.detail}>
+                                {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
+                                  <>
+                                    <p className={styles.details_static}>Тоннаж</p>
+                                    <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
+                                  </>
+                                  ) : (
+                                    <p className='notWorking'>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker || "-"}</p>
+                                  )}
+                              </div>
+            
+                              <div className={styles.detail}>
+                                {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
+                                  <>
+                                    <p className={styles.details_static}>ТС</p>
+                                    <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
+                                  </>
+                                ) : (
+                                    <p className='notWorking'>{worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker || "-"}</p>
+                                )}
+                              </div> 
+            
+                              <CheckNoteBtn handleClick={handleClickNote} />
+                          </div>
+                    
+                          <div className='border_top_gray'></div>
+
+                          {/* 
+                            НОЧНАЯ СМЕНА
+                          */}
+                          <div className={styles.item_data}>
+                            <div className={styles.detail}>
+                                {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
+                                  <>
+                                    <p className={styles.details_static}>Тоннаж</p>
+                                    <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}</p>
+                                  </>
+                                  ) : (
+                                    <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaStatusWorker || "-"}</p>
+                                  )}
+                              </div>
+            
+                              <div className={styles.detail}>
+                                {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
+                                  <>
+                                    <p className={styles.details_static}>ТС</p>
+                                    <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
+                                  </>
+                                ) : (
+                                  <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaStatusWorker || "-"}</p>
+                                )}
+                              </div>
+            
+                              <CheckNoteBtn handleClick={handleClickNote} />
+                          </div>
                     </div>
-  
-                    <div className={styles.detail}>
-                      {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
-                        <>
-                          <p className={styles.details_static}>ТС</p>
-                          <p className={`${styles.details_nostatic} working`}>{worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.TC || "Данные отсутствуют"}</p>
-                        </>
-                      ) : (
-                        <p className="notWorking">{worker?.DayDataDetails[0]?.NightInfo?.SmenaStatusWorker || "-"}</p>
-                      )}
-                    </div>
-  
-                    <CheckNoteBtn handleClick={handleClickNote} />
-                </div>
-              </div>
-            )
-          }
-              ) 
+              )}) 
             })
           }
       
-            <a href="#popup" className={styles.edit} onClick={handleClick}>
+          <a href="#popup" className={styles.edit} onClick={handleClick}>
                 <img src='/edit.svg' alt='' />
-            </a>
+          </a>
         </div>
 
         <div className={styles.sum}>
@@ -237,6 +262,7 @@ const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote }) 
   
 
 export default function WorkerItem({
+  daysFullDate={daysFullDate},
   active,
   setActive,          
   title,
@@ -249,6 +275,22 @@ export default function WorkerItem({
   handleClickNote
     
   }) {
+  
+  // Все даты месяца
+  const allDates = daysFullDate;
+
+  // Даты из worker.DayDataDetails
+  const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined); 
+
+  // Даты, которые есть в workerDates, но отсутствуют в allDates
+  const missingDates = allDates?.filter(
+    (date) => !workerDates.includes(date)
+  );
+
+  console.log('Все даты месяца:', allDates);
+  console.log('Даты из worker.DayDataDetails:', workerDates);
+  console.log('Отсутствующие даты:', missingDates);
+
   const isWorkerEmpty = worker.name === '';
 
   return (
