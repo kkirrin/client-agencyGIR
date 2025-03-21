@@ -68,6 +68,18 @@
     gap: 40px;
 }
 
+
+.worker_data div:first {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.worker_data p:nth-child(2) {
+    font-weight: 400;
+    color: var(--another-gray);
+}
+
 .edit {
     width: 100px;
     height: 10px;
