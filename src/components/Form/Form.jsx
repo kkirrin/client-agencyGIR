@@ -77,7 +77,6 @@ export default function Form({ title, forWhat }) {
         
         const [items, setItems] = useState([1]); 
 
-        // console.log(statusWorkerNotWorked, statusWorkerDayOff, statusWorkerEmpty)
 
         const handleClick = (e) => {
             e.preventDefault();
