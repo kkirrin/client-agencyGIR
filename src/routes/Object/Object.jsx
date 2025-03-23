@@ -12,7 +12,8 @@ import {
   ComponentSearch,
   AddPopupContent,
   WorkerItem,
-  NoteBody
+  NoteBody,
+  ObjectSelect
 } from '../../components';
 
 import useDateStore from '../../store/CalendarStore';
@@ -23,6 +24,7 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
+
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
   const currentYear = currentDate.getFullYear();
@@ -38,8 +40,6 @@ const Object = () => {
   // Получаем текущую дату (число)
   const currentDay = new Date().getDate();
 
-  const object = { id: 1, name: 'АО "Находкинский морской торговый порт" (УТ-1)' };
-
   // Разбиение
   let days = [];
 
@@ -50,25 +50,25 @@ const Object = () => {
   }
 
   const daysFullDate = dates.length > 0
-  ? dates.map(date => {
+    ? dates.map(date => {
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}.${month}.${year}`;
     })
-  : Array.from({ length: numDays }, (_, i) => {
+    : Array.from({ length: numDays }, (_, i) => {
       const day = String(i + 1).padStart(2, '0');
       const month = String(currentMonth).padStart(2, '0');
       return `${day}.${month}.${currentYear}`;
     });
 
-// Формируем часть URL с фильтрами по датам
-const dateFilters = daysFullDate
-  .map((date, index) => `filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
-  .join('&');
+  // Формируем часть URL с фильтрами по датам
+  const dateFilters = daysFullDate
+    .map((date, index) => `filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
+    .join('&');
 
-const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
-const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populateParams}`;
+  const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+  const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populateParams}`;
 
   // Разбиение на страницы
   const daysPerPage = 5;
@@ -147,18 +147,17 @@ const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populatePa
   }, [dates])
 
 
-  
   return (
     <section className={styles.main_section}>
       <div className="container">
         <div className={`${styles.header_wrapper} sticky-header`}>
-          <div className={styles.top}>
-            <p className={styles.name_object}>{object.name}</p>
+          <header className={styles.top}>
+            <ObjectSelect />
             <div className={styles.top_wrapper}>
               <ComponentSearch />
               <ComponentDate />
             </div>
-          </div>
+          </header>
           <div className={styles.table}>
             <div className={styles.table_header}>
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>

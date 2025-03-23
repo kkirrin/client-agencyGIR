@@ -20,3 +20,4 @@ export { default as CustomInputDate } from './Inputs/CustomInputDate/CustomInput
 export { default as ComponentTech } from './ComponentFormForWhat/ComponentTech/ComponentTech';
 export { default as ComponentPeople } from './ComponentFormForWhat/ComponentPeople/ComponentPeople';
 export { default as ComponentDrobilka } from './ComponentFormForWhat/ComponentDrobilka/ComponentDrobilka';
+export { default as ObjectSelect } from './ObjectSelect/ObjectSelect';

@@ -5,3 +5,45 @@
     border-radius: 10px;
     border: 1px solid var(--another-gray);
 }
+
+.list {
+    position: absolute;
+    top: 50px;
+
+    z-index: 10;
+
+    box-shadow: rgba(0, 0, 0, .3) 0px 19px 38px, rgba(0, 0, 0, .22) 0px 15px 12px;
+
+    width: 100%;
+    overflow: auto;
+    padding: 10px 20px;
+    background-color: #fff;
+}
+
+.item {
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--another-gray);
+}
+
+.image {
+    position: relative;
+    display: block;
+    animation-name: anim_rotation;
+    animation-duration: 600ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(12, start);
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+@keyframes anim_rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
