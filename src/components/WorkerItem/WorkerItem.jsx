@@ -17,7 +17,7 @@ import { motion } from 'motion/react';
 const EmptyWorkerItemData = ({ handleClickNote }) => {
   return (
     <>
-      <div className={${styles.workers_item} ${styles.empty}}>
+      <div className={`${styles.workers_item} ${styles.empty}`}>
         <div className={styles.item_table}>
           <div className={styles.item_data}>
             <div className={styles.detail}></div>
@@ -40,7 +40,7 @@ const EmptyWorkerItemData = ({ handleClickNote }) => {
 
 
 const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }) => (
-    <div className={${styles.workers_item} ${styles.empty}}>
+    <div className={`${styles.workers_item} ${styles.empty}`}>
       <div className={styles.worker_data}>
         <p>{worker.name}</p>
       </div>
@@ -97,11 +97,11 @@ const WorkerDetails = ({
     return (
       <>
         <p className={styles.details_static}>Тоннаж</p>
-        <p className={${styles.details_nostatic} working}>
+        <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
         <p className={styles.details_static}>ТС</p>
-        <p className={${styles.details_nostatic} working}>
+        <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.TC || "Данные отсутствуют"}
         </p>
       </>
@@ -376,7 +376,7 @@ export default function WorkerItem({
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.5 }}
                     key={worker.id}
-                    className={${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}}
+                    className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
                 >
                    {isWorkerEmpty ? (
                     <EmptyWorkerItem worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />

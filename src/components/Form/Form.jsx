@@ -45,44 +45,10 @@ export async function updateUserDataService(userData) {
 
 export default function Form({ title, forWhat }) {
 
-        const [error, setError] = useState();
-        const [isSending, setIsSending] = useState(false);
-        const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
-        const { date } = useDateSingeStore();
-
-        /**
-         * Отслеживать input value принято при помощи useWatch && control
-        */
-    
-
-        const formattedDate = date.toLocaleDateString('ru-RU', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        });
-
-        const name = useWatch({ control, name: 'Name' });
-        const job = useWatch({ control, name: 'Job' });
-        const amountData = useWatch({ control, name: 'AmountData' });
-        const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-        const dayDataOstatkiGIR  = useWatch({ control, name: 'DayDataOstatkiGIR' });
-        const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
-        const TC = useWatch({ control, name: 'TC' });
-        const note = useWatch({ control, name: 'note' });
-        const btnDay = useWatch({ control, name: 'btnDay' });
-        const btnNight = useWatch({ control, name: 'btnNight' });
-
-        const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
-        const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
-        const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
-        
-        const [items, setItems] = useState([1]); 
-
-
-        const handleClick = (e) => {
-            e.preventDefault();
-            setItems([...items, items.length + 1]); 
-        };
+    const [error, setError] = useState();
+    const [isSending, setIsSending] = useState(false);
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+    const { date } = useDateSingeStore();
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
