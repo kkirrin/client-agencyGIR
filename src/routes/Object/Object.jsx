@@ -146,6 +146,9 @@ const Object = () => {
     fetchAndSetData();
   }, [dates])
 
+  console.log('data.length', workers.length);
+
+
 
   return (
     <section className={styles.main_section}>
@@ -202,6 +205,7 @@ const Object = () => {
             setWorkers={setWorkers}
             workers={workers}
             worker={worker}
+            daysFullDate={daysFullDate}
             displayedDays={displayedDays}
             handleClick={handleClick}
             handleClickNote={handleClickNote}
