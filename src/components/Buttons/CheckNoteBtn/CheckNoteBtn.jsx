@@ -4,6 +4,7 @@ export default function CheckNoteBtn({ handleClick }) {
 
     return (
         <button
+            
             onClick={handleClick}
             className={styles.btn}>
             <p>
