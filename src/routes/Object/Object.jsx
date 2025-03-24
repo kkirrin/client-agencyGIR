@@ -1,137 +1,90 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import fetchData from '../../utils/fetchData';
 import styles from './style.module.scss';
-
-import process from 'process';
-import env from "react-dotenv";
-
-import {
-  AddMoreBtn,
-  ComponentDate,
-  ComponentSearch,
-  AddPopupContent,
-  WorkerItem,
-  NoteBody,
-  ObjectSelect
-} from '../../components';
-
+import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, NoteBody, ObjectSelect } from '../../components';
 import useDateStore from '../../store/CalendarStore';
-import useDateSingeStore from '../../store/CalendarSingleStore';
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 
 const Object = () => {
-
   const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentYear = currentDate.getFullYear();
-
-  const { id } = useParams();
+  currentDate.setHours(0, 0, 0, 0);
   const { dates } = useDateStore();
-  const { date } = useDateSingeStore();
-  const { error, setError } = useState();
 
-  // Число дней в месяце
-  const [numDays, setNumDays] = useState(daysInMonth(new Date().getMonth() + 1, new Date().getFullYear()));
+  // Генерация дней
+  const [days, setDays] = useState([]);
+  const [daysFullDate, setDaysFullDate] = useState([]);
 
-  // Получаем текущую дату (число)
-  const currentDay = new Date().getDate();
+  // Инициализация дней
+  useEffect(() => {
+    if (dates.length > 0) {
+      const sortedDates = [...dates].sort((a, b) => a - b);
+      setDays(sortedDates.map(date => date.getDate()));
+      setDaysFullDate(sortedDates.map(date => {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+      }));
+    } else {
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentYear = currentDate.getFullYear();
+      const numDays = daysInMonth(currentMonth, currentYear);
+      setDays(Array.from({ length: numDays }, (_, i) => i + 1));
+      setDaysFullDate(Array.from({ length: numDays }, (_, i) => {
+        const day = String(i + 1).padStart(2, '0');
+        const month = String(currentMonth).padStart(2, '0');
+        return `${day}.${month}.${currentYear}`;
+      }));
+    }
+  }, [dates]);
 
-  // Разбиение
-  let days = [];
+  // Пагинация
+  const daysPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(days.length / daysPerPage);
 
-  if (dates.length == 0) {
-    days = Array.from({ length: numDays }, (_, i) => i + 1);
-  } else {
-    days = Array.from({ length: dates.length }, (_, i) => i + 1);
-  }
+  const startIndex = (currentPage - 1) * daysPerPage;
+  const endIndex = startIndex + daysPerPage;
+  const displayedDays = days.slice(startIndex, endIndex);
 
-  const daysFullDate = dates.length > 0
-    ? dates.map(date => {
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}.${month}.${year}`;
-    })
-    : Array.from({ length: numDays }, (_, i) => {
-      const day = String(i + 1).padStart(2, '0');
-      const month = String(currentMonth).padStart(2, '0');
-      return `${day}.${month}.${currentYear}`;
-    });
+  // Автоскролл к текущей дате при монтировании
+  useEffect(() => {
+    if (dates.length === 0) {
+      const currentDay = currentDate.getDate();
+      const initialPage = Math.ceil(currentDay / daysPerPage);
+      setCurrentPage(initialPage);
+    }
+  }, []);
 
-  // Формируем часть URL с фильтрами по датам
+  // Обработчики пагинации
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(p => p + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(p => p - 1);
+    }
+  };
+
+  // Формирование URL
   const dateFilters = daysFullDate
+    .slice(startIndex, endIndex)
     .map((date, index) => `filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
     .join('&');
 
   const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
   const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populateParams}`;
 
-  // Разбиение на страницы
-  const daysPerPage = 5;
-  const [currentPage, setCurrentPage] = useState(0);
-
-  // Находим индекс текущей даты в массиве
-  const currentDayIndex = days.indexOf(currentDay) + 1;
-
-  let startIndex = currentDayIndex - 2;
-  if (startIndex < 0) startIndex = 0;
-
-  let endIndex = startIndex + daysPerPage;
-  if (endIndex > days.length) endIndex = days.length;
-
-  let displayedDays = days.slice(startIndex, endIndex);
-
+  // Остальной код компонента
+  const [workers, setWorkers] = useState([]);
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
-
-  const [workers, setWorkers] = useState([]);
-
-  const handleAddWorker = () => {
-    setWorkers([...workers, { id: workers.length + 1, name: '' }]);
-  };
-
-  const handleNext = () => {
-    if (endIndex < days.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleClick = () => {
-    setPopupActive(true);
-  };
-
-  const handleClickNote = () => {
-    setNoteBodyActive(true);
-  };
-
-  useEffect(() => {
-    if (dates.length > 0) {
-      const firstDate = dates[0];
-      const first_month = firstDate.getMonth() + 1;
-      const first_year = firstDate.getFullYear();
-
-      // Перезаписываем numDays
-      setNumDays(daysInMonth(first_month, first_year));
-
-      // Находим индекс текущего дня
-      const currentDayIndex = days.indexOf(currentDay);
-      if (currentDayIndex !== -1) {
-        // Вычисляем начальную страницу
-        const initialPage = Math.floor(currentDayIndex / daysPerPage);
-        setCurrentPage(initialPage);
-      }
-    }
-  }, [dates, currentDay]);
 
   // /api/objects/:id
   const domain = 'http://89.104.67.119:1337';
@@ -146,11 +99,11 @@ const Object = () => {
         console.error("Ошибка при получении данных:", error);
       }
     };
-
     fetchAndSetData();
-  }, [id])
 
+  }, [dates, currentPage, id]);
 
+  // Рендеринг
   return (
     <section className={styles.main_section}>
       <div className="container">
@@ -168,16 +121,22 @@ const Object = () => {
                 <p className={styles.title_table}>ФИО/должность</p>
                 {displayedDays.map((day, idx) => (
                   <li className={styles.item_table} key={idx}>
-                    <div>{dates.length > 0 ? dates[idx].getDate() : day}</div>
+                    <div>{day}</div>
                   </li>
                 ))}
 
                 <div className={styles.pagination}>
-                  <button onClick={handlePrevious} disabled={currentPage === 0}>
-                    <img style={{ rotate: '-180deg' }} src='/next.svg' alt='next' />
+                  <button 
+                    onClick={handlePrevious} 
+                    disabled={currentPage === 1}
+                  >
+                    <img style={{ rotate: '-180deg' }} src='/next.svg' alt='previous' />
                   </button>
 
-                  <button onClick={handleNext} disabled={endIndex >= days.length}>
+                  <button 
+                    onClick={handleNext} 
+                    disabled={currentPage === totalPages}
+                  >
                     <img src='/next.svg' alt='next' />
                   </button>
                 </div>
@@ -185,11 +144,12 @@ const Object = () => {
 
               <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
                 <p className={styles.title_table}></p>
-                {displayedDays.map((day) => (
-                  <li className={styles.item_table} key={day}>
+                {displayedDays.map((day, idx) => (
+                  <li className={styles.item_table} key={idx}>
                     <div className={styles.time_item}>
-                      <img src='/sun.svg' alt='' />
-                      <p style={{ color: '#F2B174' }}>День</p> | <img src='/moon.svg' alt='' />
+                      <img src='/sun.svg' alt='День' />
+                      <p style={{ color: '#F2B174' }}>День</p> | 
+                      <img src='/moon.svg' alt='Ночь' />
                       <p style={{ color: '#1F2433' }}>Ночь</p>
                     </div>
                   </li>
@@ -206,10 +166,10 @@ const Object = () => {
             setWorkers={setWorkers}
             workers={workers}
             worker={worker}
-            daysFullDate={daysFullDate}
+            daysFullDate={daysFullDate.slice(startIndex, endIndex)}
             displayedDays={displayedDays}
-            handleClick={handleClick}
-            handleClickNote={handleClickNote}
+            handleClick={() => setPopupActive(true)}
+            handleClickNote={() => setNoteBodyActive(true)}
             active={popupActive}
             setActive={setPopupActive}
             title={'Сотрудник'}
@@ -218,7 +178,7 @@ const Object = () => {
 
         <div className={styles.add_workers}>
           <AddMoreBtn
-            onHandleClick={handleAddWorker}
+            onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
             title={'Добавить сотрудника'}
           />
         </div>

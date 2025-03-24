@@ -85,6 +85,7 @@ const WorkerDetails = ({
     const status = shift.SmenaDetails?.SmenaStatusWorker;
     
     const statusMap = {
+      null: null,
       'Not working': { text: 'Не работал', className: 'notWorking' },
       'Day Off': { text: 'Выходной', className: 'dayOf' },
       'Empty': { text: '', className: '' }
@@ -96,10 +97,12 @@ const WorkerDetails = ({
 
     return (
       <>
+        <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>
         <p className={styles.details_static}>Тоннаж</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
+        <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>
         <p className={styles.details_static}>ТС</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.TC || "Данные отсутствуют"}
@@ -150,7 +153,7 @@ const WorkerDetails = ({
           </div>
           <p>Тоннаж</p>
         </div>
-
+   
         {displayedDays.map(renderDate)}
 
         <a href="#popup" className={styles.edit} onClick={handleClick}>
@@ -169,7 +172,6 @@ const WorkerDetails = ({
           { label: 'Ночные смены', value: '' },
           { label: 'Всего смен', value: '' },
           { label: 'Общий тоннаж', value: '' },
-          { label: 'Выставили', value: '' },
           { label: 'Выставили', value: '' },
           { label: 'Ост. Порт', value: '' },
           { label: 'Ост. ГиР', value: '' },
@@ -316,21 +318,7 @@ const WorkerDetails = ({
 //               <p className={styles.sum_month}>Месяц</p>
 //           </div>
 
-//           {[
-//               { label: 'Дневные смены', value: '' },
-//               { label: 'Ночные смены', value: '' },
-//               { label: 'Всего смен', value: '' },
-//               { label: 'Общий тоннаж', value: '' },
-//               { label: 'Выставили', value: '' },
-//               { label: 'Выставили', value: '' },
-//               { label: 'Ост. Порт', value: '' },
-//               { label: 'Ост. ГиР', value: '' },
-//           ].map((item, index) => (
-//               <div className={styles.sum_detail} key={index}>
-//               <p>{item.label}</p>
-//               <p>{item.value}</p>
-//               </div>
-//           ))}
+//          
 //         </div>
 //       </>
 //   )
