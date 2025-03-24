@@ -86,17 +86,22 @@ const Object = () => {
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
 
+  // /api/objects/:id
+  const domain = 'http://89.104.67.119:1337';
+  const url = `${domain}/api/objects?populate=*`;
+
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
-        const data = await fetchData(apiUrl);
-        setWorkers(data);
+        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*`);
+        setWorkers(data[0].workers);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
     };
     fetchAndSetData();
-  }, [dates, currentPage]);
+
+  }, [dates, currentPage, id]);
 
   // Рендеринг
   return (
