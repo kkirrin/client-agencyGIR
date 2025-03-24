@@ -16,7 +16,7 @@ export default function MainComponent({ data }) {
           {data?.map((item, idx) => {
             return (
               <li className={styles.item} key={idx}>
-                <Link to={`/object/${item.id}`} className={styles.item_link} state={{ data }}>
+                <Link to={`/object/${item.id}`} className={styles.item_link}>
                   <img src={`${domain}${item.image.url}`}
                     alt={item.Name || 'Изображение объекта'}
                     className={styles.item_img}
