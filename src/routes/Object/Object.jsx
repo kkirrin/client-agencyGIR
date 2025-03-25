@@ -11,12 +11,12 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
-  const currentDate = useMemo(() => {
+   const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
     return date;
-   }, []);
-  
+  }, []);
+  currentDate.setHours(0, 0, 0, 0);
   const { dates } = useDateStore();
 
   // Генерация днеЙ
@@ -26,60 +26,52 @@ const Object = () => {
   const { id } = useParams();
 
   // Инициализация дней
- 
-  useEffect(() => {
+ useEffect(() => {
     if (dates.length > 0) {
       const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
       setDays(sortedDates.map(date => date.getDate()));
       setDaysFullDate(sortedDates.map(date => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
-        return `${day}.${month}.${date.getFullYear()}`;
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
       }));
     } else {
       const currentMonth = currentDate.getMonth() + 1;
       const currentYear = currentDate.getFullYear();
       const numDays = daysInMonth(currentMonth, currentYear);
-      const generatedDays = Array.from({ length: numDays }, (_, i) => i + 1);
-      const generatedFullDates = generatedDays.map(day => 
-        `${String(day).padStart(2, '0')}.${String(currentMonth).padStart(2, '0')}.${currentYear}`
-      );
-      setDays(generatedDays);
-      setDaysFullDate(generatedFullDates);
+      setDays(Array.from({ length: numDays }, (_, i) => i + 1));
+      setDaysFullDate(Array.from({ length: numDays }, (_, i) => {
+        const day = String(i + 1).padStart(2, '0');
+        const month = String(currentMonth).padStart(2, '0');
+        return `${day}.${month}.${currentYear}`;
+      }));
     }
-  }, [dates, currentDate]);
+  }, [dates]);
 
   // Пагинация
   const daysPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = useMemo(() => Math.ceil(days.length / daysPerPage), [days]);
+  const totalPages = Math.ceil(days.length / daysPerPage);
 
   const startIndex = (currentPage - 1) * daysPerPage;
   const endIndex = startIndex + daysPerPage;
 
    // Вычисляем displayedDays при каждом изменении days или currentPage
-
   const displayedDays = useMemo(() => {
-    if (dates.length > 0) {
-      const start = (currentPage - 1) * daysPerPage;
-      return days.slice(start, start + daysPerPage);
-    }
-    
-    // Дефолтное отображение: текущий день и следующие 4 дня
-    const currentDay = currentDate.getDate();
-    const startIndex = Math.max(0, currentDay - 1); // -1 потому что индексы с 0
-    const endIndex = startIndex + daysPerPage;
-    return days.slice(startIndex, endIndex);
-  }, [days, currentPage, dates, currentDate]);
+    const start = (currentPage - 1) * daysPerPage;
+    const end = start + daysPerPage;
+    return days.slice(start, end);
+  }, [days, currentPage]); // Добавляем days в зависимости
 
-
+  // Автоскролл к текущей дате при монтировании
   useEffect(() => {
     if (dates.length === 0) {
       const currentDay = currentDate.getDate();
-      const startIndex = Math.floor((currentDay - 1) / daysPerPage);
-      setCurrentPage(startIndex + 1);
+      const initialPage = Math.ceil(currentDay / daysPerPage);
+      setCurrentPage(initialPage);
     }
-  }, [dates, currentDate]);
+  }, []);
 
   // Обработчики пагинации
   const handleNext = () => {
@@ -121,12 +113,9 @@ const Object = () => {
 
   }, [dates, currentPage, id]);
   
-
   useEffect(() => {
     setCurrentPage(1);
   }, [dates]);
-
-  console.log(displayedDays)
 
   return (
     <section className={styles.main_section}>
