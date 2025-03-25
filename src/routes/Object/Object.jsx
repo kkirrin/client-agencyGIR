@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import fetchData from '../../utils/fetchData';
 import styles from './style.module.scss';
 import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, NoteBody, ObjectSelect } from '../../components';
@@ -16,6 +17,8 @@ const Object = () => {
   // Генерация дней
   const [days, setDays] = useState([]);
   const [daysFullDate, setDaysFullDate] = useState([]);
+
+  const { id } = useParams();
 
   // Инициализация дней
   useEffect(() => {
@@ -72,37 +75,45 @@ const Object = () => {
     }
   };
 
-  // Формирование URL
-  const dateFilters = daysFullDate
-    .slice(startIndex, endIndex)
-    .map((date, index) => `filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
-    .join('&');
-
-  const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
-  const apiUrl = `http://89.104.67.119:1337/api/people?${dateFilters}&${populateParams}`;
-
-  // Остальной код компонента
   const [workers, setWorkers] = useState([]);
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
 
-  // /api/objects/:id
-  const domain = 'http://89.104.67.119:1337';
-  const url = `${domain}/api/objects?populate=*`;
+  // Формирование URL
+  const dateFilters = daysFullDate
+    .slice(startIndex, endIndex)
+    .map((date, index) => `?filters[id][$eq]=${id}&filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
+    .join('&');
+
+  const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+  const apiUrl = `http://89.104.67.119:1337/api/people?filters[Object][id][$eq]=${id}${dateFilters}&${populateParams}`;
+  // const apiUrl = `http://89.104.67.119:1337/api/objects?${dateFilters}&${populateParams}`;
 
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
-        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*`);
-        setWorkers(data[0].workers);
+        const data = await fetchData(apiUrl);
+        console.log(data)
+        setWorkers(data);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
+
+      // try {
+      //   const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*`);
+      //   console.log(data)
+      //   setWorkers(data[0].workers);
+      // } catch (error) {
+      //   console.error("Ошибка при получении данных:", error);
+      // }
     };
     fetchAndSetData();
 
   }, [dates, currentPage, id]);
 
+
+
+  console.log('workers',workers);
   // Рендеринг
   return (
     <section className={styles.main_section}>

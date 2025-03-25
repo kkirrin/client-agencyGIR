@@ -2,8 +2,7 @@ import React from 'react';
 import styles from './style.module.scss';
 import { Link } from 'react-router-dom';
 
-export default function MainComponent({ data }) {
-  const domain = 'http://89.104.67.119:1337';
+export default function MainComponent({ data, domain }) {
 
   return (
     <section className={styles.main_section}>

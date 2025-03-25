@@ -1,10 +1,6 @@
-import { Suspense, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Loading, MainComponent } from './components';
 import fetchData from './utils/fetchData';
-
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function App() {
   const [data, setData] = useState([]);
@@ -31,15 +27,13 @@ function App() {
 
   return (
     <div className='page-wrapper'>
-      {/* <Suspense fallback={<Loading />}> */}
       <main>
         {dataLoading ? (
           <Loading />
         ) : (
-          <MainComponent data={data} />
+          <MainComponent data={data} domain={domain} />
         )}
       </main>
-      {/* </Suspense> */}
     </div >
   );
 }
