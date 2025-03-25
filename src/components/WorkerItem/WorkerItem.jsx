@@ -349,7 +349,7 @@ export default function WorkerItem({
 
   // Даты, которые есть в workerDates, но отсутствуют в allDates
   const missingDates = allDates?.filter(
-    (date) => !workerDates.includes(date)
+    (date) => !workerDates?.includes(date)
   );
 
   const isWorkerEmpty = worker.name === '';
