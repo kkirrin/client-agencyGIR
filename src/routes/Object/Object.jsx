@@ -86,26 +86,26 @@ const Object = () => {
     .join('&');
 
   const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
-  const apiUrl = `http://89.104.67.119:1337/api/people?filters[Object][id][$eq]=${id}${dateFilters}&${populateParams}`;
+  const apiUrl = `http://89.104.67.119:1337/api/people?filters[Objects][id][$eq]=${id}${dateFilters}&${populateParams}`;
   // const apiUrl = `http://89.104.67.119:1337/api/objects?${dateFilters}&${populateParams}`;
 
   useEffect(() => {
     const fetchAndSetData = async () => {
-      try {
-        const data = await fetchData(apiUrl);
-        console.log(data)
-        setWorkers(data);
-      } catch (error) {
-        console.error("Ошибка при получении данных:", error);
-      }
-
       // try {
-      //   const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*`);
-      //   console.log(data)
-      //   setWorkers(data[0].workers);
+      //   const data = await fetchData(apiUrl);
+      //   // console.log(data)
+      //   setWorkers(data);
       // } catch (error) {
       //   console.error("Ошибка при получении данных:", error);
       // }
+
+      try {
+        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*`);
+        console.log(data)
+        setWorkers(data[0].workers);
+      } catch (error) {
+        console.error("Ошибка при получении данных:", error);
+      }
     };
     fetchAndSetData();
 
@@ -113,7 +113,7 @@ const Object = () => {
 
 
 
-  console.log('workers',workers);
+  // console.log('workers',workers);
   // Рендеринг
   return (
     <section className={styles.main_section}>

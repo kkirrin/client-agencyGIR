@@ -83,7 +83,7 @@ const ComponentSearch = () => {
               .map((person, index) => (
                 <li key={person.id || index} className={styles.item}>
                   {person.Name}
-                  {console.log(person.id)}
+                  {/* {console.log(person.id)} */}
                 </li>
               ))
           }
