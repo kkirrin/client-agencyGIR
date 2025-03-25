@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 import fetchData from '../../utils/fetchData';
 import styles from './style.module.scss';
 import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, NoteBody, ObjectSelect } from '../../components';
@@ -10,57 +11,75 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
-  const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
+  const currentDate = useMemo(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    return date;
+   }, []);
+  
   const { dates } = useDateStore();
 
-  // Генерация дней
+  // Генерация днеЙ
   const [days, setDays] = useState([]);
   const [daysFullDate, setDaysFullDate] = useState([]);
 
   const { id } = useParams();
 
   // Инициализация дней
+ 
   useEffect(() => {
     if (dates.length > 0) {
-      const sortedDates = [...dates].sort((a, b) => a - b);
+      const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
       setDays(sortedDates.map(date => date.getDate()));
       setDaysFullDate(sortedDates.map(date => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
+        return `${day}.${month}.${date.getFullYear()}`;
       }));
     } else {
       const currentMonth = currentDate.getMonth() + 1;
       const currentYear = currentDate.getFullYear();
       const numDays = daysInMonth(currentMonth, currentYear);
-      setDays(Array.from({ length: numDays }, (_, i) => i + 1));
-      setDaysFullDate(Array.from({ length: numDays }, (_, i) => {
-        const day = String(i + 1).padStart(2, '0');
-        const month = String(currentMonth).padStart(2, '0');
-        return `${day}.${month}.${currentYear}`;
-      }));
+      const generatedDays = Array.from({ length: numDays }, (_, i) => i + 1);
+      const generatedFullDates = generatedDays.map(day => 
+        `${String(day).padStart(2, '0')}.${String(currentMonth).padStart(2, '0')}.${currentYear}`
+      );
+      setDays(generatedDays);
+      setDaysFullDate(generatedFullDates);
     }
-  }, [dates]);
+  }, [dates, currentDate]);
 
   // Пагинация
   const daysPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(days.length / daysPerPage);
+  const totalPages = useMemo(() => Math.ceil(days.length / daysPerPage), [days]);
 
   const startIndex = (currentPage - 1) * daysPerPage;
   const endIndex = startIndex + daysPerPage;
-  const displayedDays = days.slice(startIndex, endIndex);
 
-  // Автоскролл к текущей дате при монтировании
+   // Вычисляем displayedDays при каждом изменении days или currentPage
+
+  const displayedDays = useMemo(() => {
+    if (dates.length > 0) {
+      const start = (currentPage - 1) * daysPerPage;
+      return days.slice(start, start + daysPerPage);
+    }
+    
+    // Дефолтное отображение: текущий день и следующие 4 дня
+    const currentDay = currentDate.getDate();
+    const startIndex = Math.max(0, currentDay - 1); // -1 потому что индексы с 0
+    const endIndex = startIndex + daysPerPage;
+    return days.slice(startIndex, endIndex);
+  }, [days, currentPage, dates, currentDate]);
+
+
   useEffect(() => {
     if (dates.length === 0) {
       const currentDay = currentDate.getDate();
-      const initialPage = Math.ceil(currentDay / daysPerPage);
-      setCurrentPage(initialPage);
+      const startIndex = Math.floor((currentDay - 1) / daysPerPage);
+      setCurrentPage(startIndex + 1);
     }
-  }, []);
+  }, [dates, currentDate]);
 
   // Обработчики пагинации
   const handleNext = () => {
@@ -80,25 +99,16 @@ const Object = () => {
   const [noteBodyActive, setNoteBodyActive] = useState(false);
 
   // Формирование URL
-  const dateFilters = daysFullDate
-    .slice(startIndex, endIndex)
-    .map((date, index) => `?filters[id][$eq]=${id}&filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
-    .join('&');
+  // const dateFilters = daysFullDate
+  //   .slice(startIndex, endIndex)
+  //   .map((date, index) => `?filters[id][$eq]=${id}&filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
+  //   .join('&');
 
-  const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
-  const apiUrl = `http://89.104.67.119:1337/api/people?filters[Objects][id][$eq]=${id}${dateFilters}&${populateParams}`;
-  // const apiUrl = `http://89.104.67.119:1337/api/objects?${dateFilters}&${populateParams}`;
+  // const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+  // const apiUrl = `http://89.104.67.119:1337/api/people?filters[Objects][id][$eq]=${id}${dateFilters}&${populateParams}`;
 
   useEffect(() => {
     const fetchAndSetData = async () => {
-      // try {
-      //   const data = await fetchData(apiUrl);
-      //   // console.log(data)
-      //   setWorkers(data);
-      // } catch (error) {
-      //   console.error("Ошибка при получении данных:", error);
-      // }
-
       try {
         const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*`);
         console.log(data)
@@ -110,11 +120,14 @@ const Object = () => {
     fetchAndSetData();
 
   }, [dates, currentPage, id]);
+  
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [dates]);
 
+  console.log(displayedDays)
 
-  // console.log('workers',workers);
-  // Рендеринг
   return (
     <section className={styles.main_section}>
       <div className="container">
