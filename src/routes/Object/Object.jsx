@@ -181,9 +181,9 @@ const Object = () => {
             worker={worker}
             daysFullDate={daysFullDate.slice(startIndex, endIndex)}
             displayedDays={displayedDays}
-            handleClick={() => setPopupActive(true)}
+            handleClick={() => setPopupActive(worker.id)}
             handleClickNote={() => setNoteBodyActive(true)}
-            active={popupActive}
+            active={popupActive === worker.id}
             setActive={setPopupActive}
             title={'Сотрудник'}
           />

@@ -129,8 +129,7 @@ export default function Form({ title, forWhat }) {
                             Note: note || "-",
                             SmenaDataTonnaj: dayDataTonnaj || "0",
                             SmenaDateDetails: formattedDate || '0',
-                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Not working",
-                            TC: TC || "-",
+                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default"
                         },
                     },
                 },
@@ -148,7 +147,7 @@ export default function Form({ title, forWhat }) {
                         Note: note || "-",
                         SmenaDataTonnaj: dayDataTonnaj || "0",
                         SmenaDateDetails: formattedDate || '0',
-                        SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Not working",
+                        SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default",
                         TC: TC || "-",
                     },
                 },

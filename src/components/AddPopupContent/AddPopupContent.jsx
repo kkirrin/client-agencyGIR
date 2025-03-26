@@ -13,6 +13,11 @@ export default function AddPopupContent({
         title
     }) {
 
+    
+    useEffect(() => {
+        console.log('текцщий ID попапа который актив', id)
+    }, [active])
+    
     const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
 
     const { data, setDataRequest, clearData } = useDataRequestStore();

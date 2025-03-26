@@ -68,6 +68,7 @@ const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }
 );
 
 const WorkerDetails = ({ 
+  id,
   worker, 
   displayedDays, 
   handleClick, 
@@ -145,7 +146,7 @@ const WorkerDetails = ({
 
   return (
     <>
-      <div className={styles.workers_item}>
+      <div className={styles.workers_item} id={id}>
         <div className={styles.worker_data}>
           <div>
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
@@ -356,9 +357,9 @@ export default function WorkerItem({
 
   return (
     <>
-        {
-            workers.length > 0 && worker && (
-                <motion.div
+        {workers.length > 0 && worker && (
+          <motion.div
+                    id={id}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
@@ -369,7 +370,7 @@ export default function WorkerItem({
                    {isWorkerEmpty ? (
                     <EmptyWorkerItem worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
                 ) : (
-                    <WorkerDetails missingDates={missingDates} allDates={allDates}  worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+                <WorkerDetails id={id} missingDates={missingDates} allDates={allDates}  worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
                 )}
                         
                 </motion.div>
