@@ -82,6 +82,9 @@ const WorkerDetails = ({
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
     if (!shift) return <p className="notWorking">-</p>
+
+              {console.log(shift?.SmenaDetails?.TC)};
+
     
     const status = shift.SmenaDetails?.SmenaStatusWorker;
     
@@ -106,7 +109,7 @@ const WorkerDetails = ({
         <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>
         <p className={styles.details_static}>ТС</p>
         <p className={`${styles.details_nostatic} working`}>
-          {shift.SmenaDetails?.TC || "Данные отсутствуют"}
+          {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
         </p>
       </>
     )
@@ -359,18 +362,18 @@ export default function WorkerItem({
     <>
         {workers.length > 0 && worker && (
           <motion.div
-                    id={id}
+                    id={worker.uuid}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ duration: 0.5 }}
-                    key={worker.id}
+                    key={worker.uuid}
                     className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
                 >
                    {isWorkerEmpty ? (
-                    <EmptyWorkerItem worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+                    <EmptyWorkerItem id={worker.uuid ? worker.uuid : worker.id} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
                 ) : (
-                <WorkerDetails id={id} missingDates={missingDates} allDates={allDates}  worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+                <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} missingDates={missingDates} allDates={allDates}  worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
                 )}
                         
                 </motion.div>

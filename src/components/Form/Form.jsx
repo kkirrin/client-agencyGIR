@@ -93,7 +93,6 @@ export default function Form({ title, forWhat }) {
     const onSubmit = async () => {
         setIsSending(true);
         setError(null);
-
         
         const formData = {
             
@@ -129,7 +128,8 @@ export default function Form({ title, forWhat }) {
                             Note: note || "-",
                             SmenaDataTonnaj: dayDataTonnaj || "0",
                             SmenaDateDetails: formattedDate || '0',
-                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default"
+                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default",
+                            TC: TC || "-",
                         },
                     },
                 },

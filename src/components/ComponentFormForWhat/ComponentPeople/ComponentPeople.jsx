@@ -1,15 +1,27 @@
 import styles from './style.module.scss';
+import deleteSVG from '/delete.svg';
 
 import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
+import { deleteService } from '../../../services/delete-service';
 
-import { useParams } from 'react-router-dom';
+const DeleteSection = ({ data, url }) => {
+    return (
+        <div>
+            <button aria-current onClick={(e) => {
+                e.preventDefault();
+                deleteService(data, url + data[0]?.id)
+            }}>
+                <img src={deleteSVG} alt='deleteSVG' width={15} height={15} />
+            </button>
+        </div>
+    )
+};
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
-
-    const { id } = useParams();
-
     const { data } = useDataRequestStore();
+
+    const url = `http://89.104.67.119:1337/api/people/`;
 
     return (
         <>
@@ -24,16 +36,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             >
                                 Тоннаж выставили
                             </label>
-                            {/* <CustomInput 
-                                id={id}
-                                data={data}  
-                                hidden={true}
-                                errors={errors}
-                                type="text" 
-                                placeholder="Введите тн." 
-                                register={register} 
-                                name={'ObjectId'}
-                            /> */}
                             <CustomInput 
                                 data={data}  
                                 errors={errors} 
@@ -121,7 +123,8 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                     </div>
                 </div>
 
-                
+                {data ? <DeleteSection data={data} url={url} /> : ''}
+
                 {items.map((item, idx) => {
                     return (
                         <div className='flex'id='repeatable' key={idx}>

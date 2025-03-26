@@ -2,9 +2,7 @@ import { Form } from '../../components';
 import styles from './style.module.scss';
 import fetchData from '../../utils/fetchData';
 import { useEffect } from 'react';
-
 import useDataRequestStore from '../../store/DataRequestStore';
-
 
 export default function AddPopupContent({ 
         id, 
@@ -12,16 +10,18 @@ export default function AddPopupContent({
         setActive,
         title
     }) {
+    
 
-    
-    useEffect(() => {
-        console.log('текцщий ID попапа который актив', id)
-    }, [active])
-    
     const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
+    const { setDataRequest, clearData } = useDataRequestStore();
+    /** 
+     * 
+     * TODO: сделать запрос UPDATE
+     * если сотрудник уже создан
+     * 
+     */
 
-    const { data, setDataRequest, clearData } = useDataRequestStore();
-
+    // ЭТО ПОВТОРЫЙ ЗАПРОС
     useEffect(() => {
     if (active) {
       const fetchAndSetData = async () => {
