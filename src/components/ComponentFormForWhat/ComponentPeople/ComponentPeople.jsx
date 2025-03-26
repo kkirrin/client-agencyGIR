@@ -24,7 +24,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             >
                                 Тоннаж выставили
                             </label>
-                            <CustomInput 
+                            {/* <CustomInput 
                                 id={id}
                                 data={data}  
                                 hidden={true}
@@ -33,7 +33,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 placeholder="Введите тн." 
                                 register={register} 
                                 name={'ObjectId'}
-                            />
+                            /> */}
                             <CustomInput 
                                 data={data}  
                                 errors={errors} 

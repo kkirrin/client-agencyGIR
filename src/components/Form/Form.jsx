@@ -67,8 +67,6 @@ export default function Form({ title, forWhat }) {
 
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
-    const objectId = useWatch({ control, name: 'ObjectId' });
-    console.log('objectId', objectId);
     const amountData = useWatch({ control, name: 'AmountData' });
     const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
     const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
@@ -104,7 +102,7 @@ export default function Form({ title, forWhat }) {
             Job: job || "",
             Objects: [
                 {
-                    id: objectId || id,
+                    id: id,
                 }
             ],
             MonthDataTonnaj: [

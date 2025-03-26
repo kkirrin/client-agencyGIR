@@ -53,10 +53,10 @@ export default function CustomInput({
                 valueInput = dayDataOstatkiPORT ? dayDataOstatkiPORT : 'Ошибка получения заполненных данных или данных нет' ;
                 break;
             
-            case 'ObjectId': // Сработает только при точном совпадении
-                valueInput = id ? id : 'Ошибка...'; 
-                console.log(valueInput);
-                break;
+            // case 'ObjectId': // Сработает только при точном совпадении
+            //     valueInput = id ? id : 'Ошибка...'; 
+            //     console.log(valueInput);
+            //     break;
         }
     }
     
