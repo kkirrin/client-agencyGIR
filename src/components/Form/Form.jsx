@@ -11,6 +11,7 @@ import {
 }
     from '../../components';
 import useDateSingeStore from '../../store/CalendarSingleStore';
+import { useParams } from 'react-router-dom';
 
 const url = 'http://89.104.67.119:1337/api/people/';
 
@@ -50,6 +51,9 @@ export default function Form({ title, forWhat }) {
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
     const { date } = useDateSingeStore();
 
+    const { id } = useParams();
+    console.log(id);
+
     /**
      * Отслеживать input value принято при помощи useWatch && control
     */
@@ -63,6 +67,8 @@ export default function Form({ title, forWhat }) {
 
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
+    const objectId = useWatch({ control, name: 'ObjectId' });
+    console.log('objectId', objectId);
     const amountData = useWatch({ control, name: 'AmountData' });
     const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
     const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
@@ -90,10 +96,17 @@ export default function Form({ title, forWhat }) {
         setIsSending(true);
         setError(null);
 
+        
         const formData = {
+            
             uuid: uuidv4(),
             Name: name || "",
             Job: job || "",
+            Objects: [
+                {
+                    id: objectId || id,
+                }
+            ],
             MonthDataTonnaj: [
                 {
                     AmountData: amountData || "0",
@@ -147,7 +160,7 @@ export default function Form({ title, forWhat }) {
         try {
             const { response } = await saveUserDateService(formData);
             if (response.ok) {
-                // console.log('Успешная отправка:', formData);
+                console.log('Успешная отправка:', formData);
                 reset({
                     AmountData: "",
                     DayDataOstatkiPORT: "",
@@ -161,7 +174,8 @@ export default function Form({ title, forWhat }) {
                     btnDay: false, // Сбрасываем значения
                     btnNight: false, // Сбрасываем значения
                 });
-
+                
+                
                 setItems([1]);
             } else {
                 setError('Ошибка при отправке данных');

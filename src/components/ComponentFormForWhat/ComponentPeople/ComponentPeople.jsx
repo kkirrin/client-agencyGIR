@@ -3,7 +3,11 @@ import styles from './style.module.scss';
 import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
 
+import { useParams } from 'react-router-dom';
+
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
+
+    const { id } = useParams();
 
     const { data } = useDataRequestStore();
 
@@ -20,6 +24,16 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             >
                                 Тоннаж выставили
                             </label>
+                            <CustomInput 
+                                id={id}
+                                data={data}  
+                                hidden={true}
+                                errors={errors}
+                                type="text" 
+                                placeholder="Введите тн." 
+                                register={register} 
+                                name={'ObjectId'}
+                            />
                             <CustomInput 
                                 data={data}  
                                 errors={errors} 

@@ -1,6 +1,16 @@
 import styles from './style.module.scss';
 
-export default function CustomInput({ data, placeholder, type, id, register, errors, name }) {
+export default function CustomInput({
+        data = '',
+        placeholder = 'Enter text...',
+        type = 'text',
+        id = '',
+        register = () => {},
+        errors = '',
+        name = 'input',
+        hidden = false
+}) {
+    
     let valueInput = '';
     if (data[0]) {
         let firstObject = data[0];
@@ -42,18 +52,27 @@ export default function CustomInput({ data, placeholder, type, id, register, err
                 // Возможно тут будет пересчитываться динамически 
                 valueInput = dayDataOstatkiPORT ? dayDataOstatkiPORT : 'Ошибка получения заполненных данных или данных нет' ;
                 break;
+            
+            case 'ObjectId': // Сработает только при точном совпадении
+                valueInput = id ? id : 'Ошибка...'; 
+                console.log(valueInput);
+                break;
         }
     }
+    
+
+
 
     return (
         <div>
-                <input
-                    id={id}
-                    className={styles.custom_input}
-                    type={type}
-                    defaultValue={valueInput}
-                    placeholder={placeholder}
-                    {...register(name, { required: { value: true, message: `${placeholder} обязательно` } })}
+            <input
+                id={id}
+                className={styles.custom_input}
+                hidden={hidden}
+                type={type}
+                defaultValue={valueInput}
+                placeholder={placeholder}
+                {...register(name)}
             />
             {errors[name] && <span className={styles.error}>{errors[name].message}</span>}
         </div>
