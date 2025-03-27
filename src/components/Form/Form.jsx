@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
 // import { saveUserDateService } from '../../services/save-service';
 import { updateUserDateService } from '../../services/update-service';
+import useDataRequestStore from '../../store/DataRequestStore';
+
 
 import { useParams } from 'react-router-dom';
 import {
@@ -20,19 +22,21 @@ const url = 'http://89.104.67.119:1337/api/people/';
 
 // Проверка существования записи по UUID
 export async function checkExistingRecord(uuid) {
-    console.log('checkExistingRecord', uuid);
-    try {
-        const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
-        if (!response.ok) throw new Error('Ошибка проверки');
 
-        const { data } = await response.json();
-        return data.length > 0 ? data[0] : null;
+  console.log(uuid)
+  try {
+      const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
+        console.log('response', response);
+
+        const result = await response.json();
+        console.log(result);
+        // Для Strapi структура ответа: { data: [...] }
+        return result.data?.length > 0 ? result.data[0]?.documentId : null;
     } catch (error) {
-        console.error('Check existing error:', error);
+        console.error('Ошибка:', error);
         return null;
     }
-};
-
+}
 
 export async function saveUserDateService(userData, url) {
     const response = await fetch(url, {
@@ -57,6 +61,8 @@ export default function Form({ title, forWhat, setActive }) {
     const { date } = useDateSingeStore();
 
     const { id } = useParams();
+
+    const { data } = useDataRequestStore();
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
@@ -99,15 +105,16 @@ export default function Form({ title, forWhat, setActive }) {
     };
 
 
-    const objectUUID = uuidv4();
+    const objectUUID = data[0]?.uuid
+    console.log(objectUUID);
 
     const onSubmit = async () => {
         setIsSending(true);
         setError(null);
 
         const formData = {
-
-            uuid: objectUUID,
+            
+            uuid: objectUUID ? objectUUID : uuidv4(),
             Name: name || "",
             Job: job || "",
             Objects: [
@@ -166,45 +173,24 @@ export default function Form({ title, forWhat, setActive }) {
         }
 
         try {
-            const existingRecord = await checkExistingRecord(objectUUID);
-            console.log(existingRecord);
+            const existingRecordId = await checkExistingRecord(objectUUID);
+            console.log(existingRecordId);
             let response;
 
-            if (existingRecord) {
+            if (existingRecordId) {
                 response = await updateUserDateService(
-                    existingRecord.id,
-                    formData,
+
+                    existingRecordId, 
+                    formData, 
                     url
                 );
-                console.log('Данные обновлены:', response);
+                console.log('Данные обновлены:', response, formData);
             } else {
                 response = await saveUserDateService(formData, url);
-                console.log('Новая запись создана:', response);
+                console.log('Новая запись создана:', response, formData);
             }
 
-            // const { response } = await saveUserDateService(formData, url);
-
-            // if (response.status === 200) {
-            //     console.log('Успешная отправка:', formData);
-            //     reset({
-            //         AmountData: "",
-            //         DayDataOstatkiPORT: "",
-            //         DayDataOstatkiGIR: "",
-            //         SmenaStatusWorker: "",
-            //         DayDataTonnaj: "",
-            //         TC: "",
-            //         note: "",
-            //         job: "",
-            //         name: "",
-            //         btnDay: false, // Сбрасываем значения
-            //         btnNight: false, // Сбрасываем значения
-            //     });
-
-            //     setItems([1]);
-            // } 
-            console.log('Сотрудник создан!!!!!!!!', objectUUID);
-
-        } catch (error) {
+         } catch (error) {
             setError('Ошибка запроса, попробуйте позже', error);
         } finally {
             setIsSending(false);
