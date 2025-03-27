@@ -14,6 +14,7 @@ export default function AddPopupContent({
 
     const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
     const { setDataRequest, clearData } = useDataRequestStore();
+    
     /** 
      * 
      * TODO: сделать запрос UPDATE
@@ -28,6 +29,8 @@ export default function AddPopupContent({
         try {
             const data = await fetchData(apiUrl);
             console.log(data[0]?.uuid);
+            console.log('ID сотрудника: ', data[0]?.id);
+
           setDataRequest(data);
         } catch (error) {
           console.error("Ошибка при получении данных:", error);

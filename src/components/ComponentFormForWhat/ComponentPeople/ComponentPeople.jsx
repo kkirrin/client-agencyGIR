@@ -3,7 +3,6 @@ import deleteSVG from '/delete.svg';
 
 import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
-import { deleteService } from '../../../services/delete-service';
 
 const DeleteSection = ({ data, url }) => {
     return (
@@ -11,7 +10,6 @@ const DeleteSection = ({ data, url }) => {
             <button aria-current onClick={(e) => {
                 e.preventDefault();
                 console.log('!!!!!!!!!!!!!!!!!!', url + data[0]?.id)
-                deleteService(data, url + data[0]?.id)
             }}>
                 <img src={deleteSVG} alt='deleteSVG' width={15} height={15} />
             </button>
