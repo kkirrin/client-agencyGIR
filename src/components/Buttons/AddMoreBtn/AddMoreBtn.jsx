@@ -1,5 +1,5 @@
 import styles from './style.module.scss';
-export default function AddMoreBtn({ onHandleClick, title }) {
+export default function AddMoreBtn({ onHandleClick, title}) {
   return (
     <button onClick={onHandleClick} className={styles.btn}>
       <img src='/add.svg' alt='' />

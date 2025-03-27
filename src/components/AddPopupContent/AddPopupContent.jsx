@@ -26,7 +26,8 @@ export default function AddPopupContent({
     if (active) {
       const fetchAndSetData = async () => {
         try {
-          const data = await fetchData(apiUrl);
+            const data = await fetchData(apiUrl);
+            console.log(data[0]?.uuid);
           setDataRequest(data);
         } catch (error) {
           console.error("Ошибка при получении данных:", error);

@@ -10,6 +10,7 @@ const DeleteSection = ({ data, url }) => {
         <div>
             <button aria-current onClick={(e) => {
                 e.preventDefault();
+                console.log('!!!!!!!!!!!!!!!!!!', url + data[0]?.id)
                 deleteService(data, url + data[0]?.id)
             }}>
                 <img src={deleteSVG} alt='deleteSVG' width={15} height={15} />
@@ -127,7 +128,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
                 {items.map((item, idx) => {
                     return (
-                        <div className='flex'id='repeatable' key={idx}>
+                        <div className='flex'id={`repeatable-${idx}`} key={idx}>
                             <div className={styles.date_wrapper}>
                                 <div className={styles.date_content}>
                                     <p>Дата</p>
@@ -221,7 +222,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
             
                 <div style={{ height: '40px', marginTop: '20px'}}>
                     <AddMoreBtn 
-                        onHandleClick={handleClickBtn} 
+                        onHandleClick={handleClickBtn}
                         title={'Добавить еще'}
                     />
                 </div>

@@ -81,11 +81,8 @@ const WorkerDetails = ({
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
-    if (!shift) return <p className="notWorking">-</p>
+    if (!shift) return <p className="notWorking"></p>
 
-              {console.log(shift?.SmenaDetails?.TC)};
-
-    
     const status = shift.SmenaDetails?.SmenaStatusWorker;
     
     const statusMap = {
@@ -114,6 +111,21 @@ const WorkerDetails = ({
       </>
     )
   }
+  
+  /** 
+   * 
+   * TODO: НАШЕЛ БАГУ
+   * ДЕло в том, что при загрузке первых 5 дней, происходит ошибка, допустим есть с 1 по 5 число, потом с 6 числа не работает логика
+   * При добавлении из админки 10 числа и последующих - не отображаются сотрудники
+   */
+
+
+   /** 
+   * 
+   * TODO: НАШЕЛ БАГУ
+   * При создании человека, надо наверно отправлять правильную дату формата 3.03.2025, а не 03.03.2025
+   * 
+   */
 
   // Рендер одной даты
   const renderDate = (date) => {
@@ -190,148 +202,8 @@ const WorkerDetails = ({
   )
 }
 
-
-
-// const WorkerDetails = ({ worker, displayedDays, handleClick, handleClickNote, allDates, missingDates }) => {
-//   const missingDatesExtracted = missingDates.map(item => parseInt(item.split('.')[0], 10));  
-//   return (
-//       <>
-//         <div className={styles.workers_item}>
-//           <div className={styles.worker_data}>
-//             <div>
-//               <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
-//               <p>{worker?.Job || "Данные отсутствуют"}</p>
-//             </div>
-        
-//             <p>Тоннаж</p>
-//           </div>
-
-//           {displayedDays.map(date => {
-//             const isMissingDate = missingDatesExtracted.includes(date);
-//             if (isMissingDate && worker?.DayDataDetails) {
-//               const dayData = worker?.DayDataDetails?.find(day => day?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0]);
-//               console.log(dayData);
-//               if(dayData){
-
-//                 let status = '';
-//                 let statusClassName = '';
-
-//                 switch (dayData?.DayInfo?.SmenaDetails?.SmenaStatusWorker) {
-
-//                   case 'Default':
-//                     status = '';
-//                     statusClassName = '';
-//                     break;
-
-//                   case 'Not working':
-//                     status = 'Не работал';
-//                     statusClassName = 'notWorking';
-//                     break;
-
-//                   case 'Day Off':
-//                     status = 'Выходной';
-//                     statusClassName = 'dayOf';
-//                     break;
-
-//                   case 'Empty':
-//                     status = '';
-//                     statusClassName = '';
-//                     break;
-
-//                   default:
-//                     status = 'Неизвестный статус';
-//                     statusClassName = 'unknown';
-//                     break;
-//                 }
-//                 return (
-//                   <div className={styles.item_table} key={day}>
-//                         <div className={styles.item_data}>
-//                             <div className={styles.detail}>
-//                               {worker?.DayDataDetails[0]?.DayInfo?.Day === true ? (
-//                                 ["Not working", "Empty", "Day Off"].includes(worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker) ? (
-//                                   <p className={${statusClassName}}>{status}</p>
-//                                 ) : (
-//                                   <>
-//                                     <p className={styles.details_static}>Тоннаж</p>
-//                                     <p className={${styles.details_nostatic} working}>
-//                                       {worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
-//                                     </p>
-        
-//                                     <p className={styles.details_static}>ТС</p>
-//                                     <p className={${styles.details_nostatic} working}>
-//                                       {worker?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC || "Данные отсутствуют"}
-//                                     </p>
-//                                   </>
-//                                 )
-//                               ) : (
-//                                 ''
-//                               )}
-//                             </div>      
-//                             <CheckNoteBtn handleClick={handleClickNote} />
-//                         </div>
-                  
-//                         <div className='border_top_gray'></div>
-//                           <div className={styles.item_data}>
-//                             <div className={styles.detail}>
-//                               {worker?.DayDataDetails[0]?.NightInfo?.Night === true ? (
-//                                 ["Not working", "Empty", "Day Off"].includes(worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaStatusWorker) ? (
-//                                   <p className={${statusClassName}}>{status}</p>
-//                                 ) : (
-//                                   <>
-//                                     <p className={styles.details_static}>Тоннаж</p>
-//                                     <p className={${styles.details_nostatic} working}>
-//                                       {worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
-//                                     </p>
-        
-//                                     <p className={styles.details_static}>ТС</p>
-//                                     <p className={${styles.details_nostatic} working}>
-//                                       {worker?.DayDataDetails[0]?.NightInfo?.SmenaDetails?.TC || "Данные отсутствуют"}
-//                                     </p>
-//                                   </>
-//                                 )
-//                               ) : (
-//                                 ''
-//                               )}
-//                             </div>
-//                             <CheckNoteBtn handleClick={handleClickNote} />
-//                         </div>
-//                   </div>
-//                 )
-//               }
-//               else{
-//                   return (
-//                       <EmptyWorkerItemData  />
-//                   );
-//               }
-              
-//             } else {
-//               return (
-//                   <EmptyWorkerItemData />
-//               );
-//             }
-//           })}
-
-//           <a href="#popup" className={styles.edit} onClick={handleClick}>
-//                 <img src='/edit.svg' alt='' />
-//           </a>
-//         </div>
-
-//         <div className={styles.sum}>
-//           <div className={styles.sum_wrapper}>
-//               <p className={styles.sum_text}>Всего</p>
-//               <p className={styles.sum_month}>Месяц</p>
-//           </div>
-
-//          
-//         </div>
-//       </>
-//   )
-// }
-
-  
-
 export default function WorkerItem({
-  daysFullDate={daysFullDate},
+  daysFullDate,
   active,
   setActive,          
   title,
@@ -347,17 +219,21 @@ export default function WorkerItem({
   
   // Все даты месяца
   const allDates = daysFullDate;
+  // console.log('allDates (дни всего месяца)', allDates);
 
   // Даты из worker.DayDataDetails
   const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined); 
+  // console.log('workerDates (дни, которые отмечены в админки любым статусом)', workerDates);
 
   // Даты, которые есть в workerDates, но отсутствуют в allDates
   const missingDates = allDates?.filter(
     (date) => !workerDates?.includes(date)
   );
+  
+  // console.log('missingDates (по идее, дни для которых будет пустой шаблон т.е. те, которых нет в workerDates)', missingDates);
+
 
   const isWorkerEmpty = worker.name === '';
-
   return (
     <>
         {workers.length > 0 && worker && (
