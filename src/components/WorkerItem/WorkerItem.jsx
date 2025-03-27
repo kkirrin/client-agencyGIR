@@ -78,10 +78,7 @@ const WorkerDetails = ({
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
-    if (!shift) return <p className="notWorking">-</p>
-
-    { console.log(shift?.SmenaDetails?.TC) };
-
+    if (!shift) return <p className="notWorking"></p>
 
     const status = shift.SmenaDetails?.SmenaStatusWorker;
 
@@ -111,6 +108,21 @@ const WorkerDetails = ({
       </>
     )
   }
+  
+  /** 
+   * 
+   * TODO: НАШЕЛ БАГУ
+   * ДЕло в том, что при загрузке первых 5 дней, происходит ошибка, допустим есть с 1 по 5 число, потом с 6 числа не работает логика
+   * При добавлении из админки 10 числа и последующих - не отображаются сотрудники
+   */
+
+
+   /** 
+   * 
+   * TODO: НАШЕЛ БАГУ
+   * При создании человека, надо наверно отправлять правильную дату формата 3.03.2025, а не 03.03.2025
+   * 
+   */
 
   // Рендер одной даты
   const renderDate = (date) => {
@@ -188,7 +200,7 @@ const WorkerDetails = ({
 }
 
 export default function WorkerItem({
-  daysFullDate = { daysFullDate },
+  daysFullDate,
   active,
   setActive,
   title,
@@ -204,17 +216,21 @@ export default function WorkerItem({
 
   // Все даты месяца
   const allDates = daysFullDate;
+  // console.log('allDates (дни всего месяца)', allDates);
 
   // Даты из worker.DayDataDetails
-  const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined);
+  const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined); 
+  // console.log('workerDates (дни, которые отмечены в админки любым статусом)', workerDates);
 
   // Даты, которые есть в workerDates, но отсутствуют в allDates
   const missingDates = allDates?.filter(
     (date) => !workerDates?.includes(date)
   );
+  
+  // console.log('missingDates (по идее, дни для которых будет пустой шаблон т.е. те, которых нет в workerDates)', missingDates);
+
 
   const isWorkerEmpty = worker.name === '';
-
   return (
     <>
       {workers.length > 0 && worker && (

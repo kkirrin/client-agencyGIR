@@ -103,7 +103,6 @@ const Object = () => {
     const fetchAndSetData = async () => {
       try {
         const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*`);
-        console.log(data)
         setWorkers(data[0].workers);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -180,7 +179,7 @@ const Object = () => {
             setWorkers={setWorkers}
             workers={workers}
             worker={worker}
-            daysFullDate={daysFullDate.slice(startIndex, endIndex)}
+            daysFullDate={daysFullDate}
             displayedDays={displayedDays}
             handleClick={() => setPopupActive(worker.id)}
             handleClickNote={() => setNoteBodyActive(true)}

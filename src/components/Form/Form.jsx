@@ -1,37 +1,41 @@
-import styles from './style.module.scss';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
+import styles from './style.module.scss';
+// import { saveUserDateService } from '../../services/save-service';
+import { updateUserDateService } from '../../services/update-service';
 
+import { useParams } from 'react-router-dom';
 import {
     BtnSave,
     ComponentDrobilka,
-    ComponentTech,
-    ComponentPeople
-}
-    from '../../components';
+    ComponentPeople,
+    ComponentTech
+} from '../../components';
 import useDateSingeStore from '../../store/CalendarSingleStore';
-import { useParams } from 'react-router-dom';
 
 const url = 'http://89.104.67.119:1337/api/people/';
 
-export async function saveUserDateService(userData) {
+
+// Проверка существования записи по UUID
+export async function checkExistingRecord(uuid) {
+    console.log('checkExistingRecord', uuid);
+    try {
+        const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
+        if (!response.ok) throw new Error('Ошибка проверки');
+        
+        const { data } = await response.json();
+        return data.length > 0 ? data[0] : null;
+    } catch (error) {
+        console.error('Check existing error:', error);
+        return null;
+    }
+};
+
+
+export async function saveUserDateService(userData, url) {
     const response = await fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: { ...userData } }),
-    });
-
-    const data = await response.json();
-    return { response, data };
-}
-
-export async function updateUserDataService(userData) {
-
-    const response = await fetch(url, {
-        method: 'UPDATE',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -46,57 +50,63 @@ export async function updateUserDataService(userData) {
 
 export default function Form({ title, forWhat }) {
 
-    const [error, setError] = useState();
-    const [isSending, setIsSending] = useState(false);
-    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
-    const { date } = useDateSingeStore();
+    const [error, setError]                                                     = useState();
+    const [isSending, setIsSending]                                             = useState(false);
+    const { register, control, handleSubmit, formState: { errors }, reset }     = useForm();
+    const { date }                                                              = useDateSingeStore();
 
     const { id } = useParams();
-    console.log(id);
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
     */
-
-
-    const formattedDate = date.toLocaleDateString('ru-RU', {
+    
+    const formattedDate             = date.toLocaleDateString('ru-RU', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
     });
 
-    const name = useWatch({ control, name: 'Name' });
-    const job = useWatch({ control, name: 'Job' });
-    const amountData = useWatch({ control, name: 'AmountData' });
-    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-    const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
-    const TC = useWatch({ control, name: 'TC' });
-    const note = useWatch({ control, name: 'note' });
-    const btnDay = useWatch({ control, name: 'btnDay' });
-    const btnNight = useWatch({ control, name: 'btnNight' });
+    const name                      = useWatch({ control, name: 'Name' });
+    const job                       = useWatch({ control, name: 'Job' });
+    const amountData                = useWatch({ control, name: 'AmountData' });
+    const dayDataOstatkiPORT        = useWatch({ control, name: 'DayDataOstatkiPORT' });
+    const dayDataOstatkiGIR         = useWatch({ control, name: 'DayDataOstatkiGIR' });
+    const dayDataTonnaj             = useWatch({ control, name: 'DayDataTonnaj' });
+    const TC                        = useWatch({ control, name: 'TC' });
+    const note                      = useWatch({ control, name: 'note' });
+    const btnDay                    = useWatch({ control, name: 'btnDay' });
+    const btnNight                  = useWatch({ control, name: 'btnNight' });
 
-    const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
-    const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
-    const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
+    const statusWorkerNotWorked     = useWatch({ control, name: 'statusWorkerNotWorked' });
+    const statusWorkerDayOff        = useWatch({ control, name: 'statusWorkerDayOff' });
+    const statusWorkerEmpty         = useWatch({ control, name: 'statusWorkerEmpty' });
 
     const [items, setItems] = useState([1]);
 
-    // console.log(statusWorkerNotWorked, statusWorkerDayOff, statusWorkerEmpty)
-
+    /**
+     * 
+     * TODO: при добавлении еще 
+     */
+    for (let item in items) {
+        
+    }
+    
     const handleClick = (e) => {
         e.preventDefault();
         setItems([...items, items.length + 1]);
     };
 
 
+    const objectUUID = uuidv4();
+    
     const onSubmit = async () => {
         setIsSending(true);
         setError(null);
         
         const formData = {
             
-            uuid: uuidv4(),
+            uuid: objectUUID,
             Name: name || "",
             Job: job || "",
             Objects: [
@@ -155,30 +165,46 @@ export default function Form({ title, forWhat }) {
         }
 
         try {
-            const { response } = await saveUserDateService(formData);
-            if (response.ok) {
-                console.log('Успешная отправка:', formData);
-                reset({
-                    AmountData: "",
-                    DayDataOstatkiPORT: "",
-                    DayDataOstatkiGIR: "",
-                    SmenaStatusWorker: "",
-                    DayDataTonnaj: "",
-                    TC: "",
-                    note: "",
-                    job: "",
-                    name: "",
-                    btnDay: false, // Сбрасываем значения
-                    btnNight: false, // Сбрасываем значения
-                });
-                
-                
-                setItems([1]);
+            const existingRecord = await checkExistingRecord(objectUUID);
+            console.log(existingRecord);
+            let response;
+
+            if (existingRecord) {
+                response = await updateUserDateService(
+                    existingRecord.id, 
+                    formData, 
+                    url
+                );
+                console.log('Данные обновлены:', response);
             } else {
-                setError('Ошибка при отправке данных');
+                response = await saveUserDateService(formData, url);
+                console.log('Новая запись создана:', response);
             }
+            
+            // const { response } = await saveUserDateService(formData, url);
+            
+            // if (response.status === 200) {
+            //     console.log('Успешная отправка:', formData);
+            //     reset({
+            //         AmountData: "",
+            //         DayDataOstatkiPORT: "",
+            //         DayDataOstatkiGIR: "",
+            //         SmenaStatusWorker: "",
+            //         DayDataTonnaj: "",
+            //         TC: "",
+            //         note: "",
+            //         job: "",
+            //         name: "",
+            //         btnDay: false, // Сбрасываем значения
+            //         btnNight: false, // Сбрасываем значения
+            //     });
+                
+            //     setItems([1]);
+            // } 
+            console.log('Сотрудник создан!!!!!!!!', objectUUID);
+
         } catch (error) {
-            setError('Ошибка запроса, попробуйте позже');
+            setError('Ошибка запроса, попробуйте позже', error);
         } finally {
             setIsSending(false);
         }
