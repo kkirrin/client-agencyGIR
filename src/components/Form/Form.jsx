@@ -8,6 +8,7 @@ import { updateUserDateService } from '../../services/update-service';
 import { useParams } from 'react-router-dom';
 import {
     BtnSave,
+    DeleteButton,
     ComponentDrobilka,
     ComponentPeople,
     ComponentTech
@@ -23,7 +24,7 @@ export async function checkExistingRecord(uuid) {
     try {
         const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
         if (!response.ok) throw new Error('Ошибка проверки');
-        
+
         const { data } = await response.json();
         return data.length > 0 ? data[0] : null;
     } catch (error) {
@@ -48,39 +49,39 @@ export async function saveUserDateService(userData, url) {
 
 
 
-export default function Form({ title, forWhat }) {
+export default function Form({ title, forWhat, setActive }) {
 
-    const [error, setError]                                                     = useState();
-    const [isSending, setIsSending]                                             = useState(false);
-    const { register, control, handleSubmit, formState: { errors }, reset }     = useForm();
-    const { date }                                                              = useDateSingeStore();
+    const [error, setError] = useState();
+    const [isSending, setIsSending] = useState(false);
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+    const { date } = useDateSingeStore();
 
     const { id } = useParams();
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
     */
-    
-    const formattedDate             = date.toLocaleDateString('ru-RU', {
+
+    const formattedDate = date.toLocaleDateString('ru-RU', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
     });
 
-    const name                      = useWatch({ control, name: 'Name' });
-    const job                       = useWatch({ control, name: 'Job' });
-    const amountData                = useWatch({ control, name: 'AmountData' });
-    const dayDataOstatkiPORT        = useWatch({ control, name: 'DayDataOstatkiPORT' });
-    const dayDataOstatkiGIR         = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    const dayDataTonnaj             = useWatch({ control, name: 'DayDataTonnaj' });
-    const TC                        = useWatch({ control, name: 'TC' });
-    const note                      = useWatch({ control, name: 'note' });
-    const btnDay                    = useWatch({ control, name: 'btnDay' });
-    const btnNight                  = useWatch({ control, name: 'btnNight' });
+    const name = useWatch({ control, name: 'Name' });
+    const job = useWatch({ control, name: 'Job' });
+    const amountData = useWatch({ control, name: 'AmountData' });
+    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
+    const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
+    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
+    const TC = useWatch({ control, name: 'TC' });
+    const note = useWatch({ control, name: 'note' });
+    const btnDay = useWatch({ control, name: 'btnDay' });
+    const btnNight = useWatch({ control, name: 'btnNight' });
 
-    const statusWorkerNotWorked     = useWatch({ control, name: 'statusWorkerNotWorked' });
-    const statusWorkerDayOff        = useWatch({ control, name: 'statusWorkerDayOff' });
-    const statusWorkerEmpty         = useWatch({ control, name: 'statusWorkerEmpty' });
+    const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
+    const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
+    const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
 
     const [items, setItems] = useState([1]);
 
@@ -89,9 +90,9 @@ export default function Form({ title, forWhat }) {
      * TODO: при добавлении еще 
      */
     for (let item in items) {
-        
+
     }
-    
+
     const handleClick = (e) => {
         e.preventDefault();
         setItems([...items, items.length + 1]);
@@ -99,13 +100,13 @@ export default function Form({ title, forWhat }) {
 
 
     const objectUUID = uuidv4();
-    
+
     const onSubmit = async () => {
         setIsSending(true);
         setError(null);
-        
+
         const formData = {
-            
+
             uuid: objectUUID,
             Name: name || "",
             Job: job || "",
@@ -171,8 +172,8 @@ export default function Form({ title, forWhat }) {
 
             if (existingRecord) {
                 response = await updateUserDateService(
-                    existingRecord.id, 
-                    formData, 
+                    existingRecord.id,
+                    formData,
                     url
                 );
                 console.log('Данные обновлены:', response);
@@ -180,9 +181,9 @@ export default function Form({ title, forWhat }) {
                 response = await saveUserDateService(formData, url);
                 console.log('Новая запись создана:', response);
             }
-            
+
             // const { response } = await saveUserDateService(formData, url);
-            
+
             // if (response.status === 200) {
             //     console.log('Успешная отправка:', formData);
             //     reset({
@@ -198,7 +199,7 @@ export default function Form({ title, forWhat }) {
             //         btnDay: false, // Сбрасываем значения
             //         btnNight: false, // Сбрасываем значения
             //     });
-                
+
             //     setItems([1]);
             // } 
             console.log('Сотрудник создан!!!!!!!!', objectUUID);
@@ -223,6 +224,7 @@ export default function Form({ title, forWhat }) {
                     <div className={styles.form_title_info}>
                         <div className={styles.btn_save_wrapper}>
                             <BtnSave isSending={isSending} />
+                            <DeleteButton setActive={setActive} />
                         </div>
                     </div>
                 </div>
