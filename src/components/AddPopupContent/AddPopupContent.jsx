@@ -4,13 +4,12 @@ import fetchData from '../../utils/fetchData';
 import { useEffect } from 'react';
 import useDataRequestStore from '../../store/DataRequestStore';
 
-export default function AddPopupContent({ 
-        id, 
-        active, 
-        setActive,
-        title
-    }) {
-    
+export default function AddPopupContent({
+    id,
+    active,
+    setActive,
+    title
+}) {
 
     const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
     const { setDataRequest, clearData } = useDataRequestStore();
@@ -37,11 +36,11 @@ export default function AddPopupContent({
         }
       };
 
-      fetchAndSetData();
-    } else {
-      clearData();
-    }
-  }, [active, setDataRequest, clearData]); 
+            fetchAndSetData();
+        } else {
+            clearData();
+        }
+    }, [active, setDataRequest, clearData]);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
@@ -78,6 +77,7 @@ export default function AddPopupContent({
                     <Form
                         title={title}
                         forWhat={'people'}
+                        setActive={setActive}
                     />
                 </div>
             </div>

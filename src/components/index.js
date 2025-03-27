@@ -9,6 +9,7 @@ export { default as ComponentSearch } from './ComponentSearch/ComponentSearch';
 
 export { default as WorkerItem } from './WorkerItem/WorkerItem';
 export { default as BtnSave } from './Buttons/BtnSave/BtnSave';
+export { default as DeleteButton } from './Buttons/DeleteButton/DeleteButton';
 export { default as AddMoreBtn } from './Buttons/AddMoreBtn/AddMoreBtn';
 export { default as CheckNoteBtn } from './Buttons/CheckNoteBtn/CheckNoteBtn';
 export { default as ChooseTimeBtn } from './Buttons/ChooseTimeBtn/ChooseTimeBtn';
