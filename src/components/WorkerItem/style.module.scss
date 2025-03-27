@@ -1,5 +1,5 @@
-
 .workers_item_wrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -8,8 +8,8 @@
     border: 1px solid var(--another-gray);
 
     padding: 25px;
-    margin-top: 10px;    
-    margin-bottom: 10px;    
+    margin-top: 10px;
+    margin-bottom: 10px;
 
 }
 
@@ -53,13 +53,21 @@
     color: var(--white);
 }
 
-
-
 .workers_item {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 40px;
     height: 200px;
+}
+
+.worker_item_empty {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.worker_item_empty .item_table {
+    justify-content: center;
 }
 
 .worker_data {
@@ -67,7 +75,6 @@
     flex-direction: row;
     gap: 40px;
 }
-
 
 .worker_data div:first {
     display: flex;
@@ -81,10 +88,12 @@
 }
 
 .edit {
-    width: 100px;
-    height: 10px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 20px;
+    height: 20px;
 }
-
 
 .item_table {
     // margin-left: 50%;
@@ -97,7 +106,7 @@
 
 .day_item {
     font-weight: 500;
-    
+
 }
 
 .time_list {
@@ -120,6 +129,7 @@
 .details_static {
     color: var(--another-gray);
 }
+
 .details_nostatic {
     font-weight: 700;
     color: var(--black);

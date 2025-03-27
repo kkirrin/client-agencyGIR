@@ -11,7 +11,7 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
-   const currentDate = useMemo(() => {
+  const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
     return date;
@@ -26,7 +26,7 @@ const Object = () => {
   const { id } = useParams();
 
   // Инициализация дней
- useEffect(() => {
+  useEffect(() => {
     if (dates.length > 0) {
       const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
       setDays(sortedDates.map(date => date.getDate()));
@@ -57,7 +57,7 @@ const Object = () => {
   const startIndex = (currentPage - 1) * daysPerPage;
   const endIndex = startIndex + daysPerPage;
 
-   // Вычисляем displayedDays при каждом изменении days или currentPage
+  // Вычисляем displayedDays при каждом изменении days или currentPage
   const displayedDays = useMemo(() => {
     const start = (currentPage - 1) * daysPerPage;
     const end = start + daysPerPage;
@@ -111,7 +111,7 @@ const Object = () => {
     fetchAndSetData();
 
   }, [dates, currentPage, id]);
-  
+
   useEffect(() => {
     setCurrentPage(1);
   }, [dates]);
@@ -130,37 +130,38 @@ const Object = () => {
           <div className={styles.table}>
             <div className={styles.table_header}>
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-                <p className={styles.title_table}>ФИО/должность</p>
+                <li className={styles.title_table}>ФИО/должность</li>
                 {displayedDays.map((day, idx) => (
                   <li className={styles.item_table} key={idx}>
                     <div>{day}</div>
                   </li>
                 ))}
-
-                <div className={styles.pagination}>
-                  <button 
-                    onClick={handlePrevious} 
-                    disabled={currentPage === 1}
-                  >
-                    <img style={{ rotate: '-180deg' }} src='/next.svg' alt='previous' />
-                  </button>
-
-                  <button 
-                    onClick={handleNext} 
-                    disabled={currentPage === totalPages}
-                  >
-                    <img src='/next.svg' alt='next' />
-                  </button>
-                </div>
               </ul>
+              <div className={styles.pagination}>
+                <button
+                  onClick={handlePrevious}
+                  disabled={currentPage === 1}
+                  className={styles.button}
+                >
+                  <img style={{ rotate: '-180deg' }} src='/next.svg' alt='previous' />
+                </button>
+
+                <button
+                  onClick={handleNext}
+                  disabled={currentPage === totalPages}
+                  className={styles.button}
+                >
+                  <img src='/next.svg' alt='next' />
+                </button>
+              </div>
 
               <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
-                <p className={styles.title_table}></p>
+                <li className={styles.title_table}></li>
                 {displayedDays.map((day, idx) => (
                   <li className={styles.item_table} key={idx}>
                     <div className={styles.time_item}>
                       <img src='/sun.svg' alt='День' />
-                      <p style={{ color: '#F2B174' }}>День</p> | 
+                      <p style={{ color: '#F2B174' }}>День</p> |
                       <img src='/moon.svg' alt='Ночь' />
                       <p style={{ color: '#1F2433' }}>Ночь</p>
                     </div>

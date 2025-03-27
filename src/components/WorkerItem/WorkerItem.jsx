@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './style.module.scss';
 import { AddPopupContent } from '../../components';
 
-import { CheckNoteBtn,  } from '../../components';
+import { CheckNoteBtn, } from '../../components';
 
 import { motion } from 'motion/react';
 
@@ -17,7 +17,7 @@ import { motion } from 'motion/react';
 const EmptyWorkerItemData = ({ handleClickNote }) => {
   return (
     <>
-      <div className={`${styles.workers_item} ${styles.empty}`}>
+      <div className={`${styles.worker_item_empty} ${styles.empty}`}>
         <div className={styles.item_table}>
           <div className={styles.item_data}>
             <div className={styles.detail}></div>
@@ -32,49 +32,46 @@ const EmptyWorkerItemData = ({ handleClickNote }) => {
           </div>
         </div>
       </div>
-    </>   
+    </>
   )
 }
 
-    
-
-
 const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }) => (
-    <div className={`${styles.workers_item} ${styles.empty}`}>
-      <div className={styles.worker_data}>
-        <p>{worker.name}</p>
-      </div>
-  
-      {displayedDays.map((day) => (
-        <div className={styles.item_table} key={day}>
-          <div className={styles.item_data}>
-            <div className={styles.detail}></div>
-            <div className={styles.detail}></div>
-            <CheckNoteBtn handleClick={handleClickNote} />
-          </div>
-          <div className='border_top_gray'></div>
-          <div className={styles.item_data}>
-            <div className={styles.detail}>
-            </div>
-            <CheckNoteBtn handleClick={handleClickNote} />
-          </div>
-        </div>
-      ))}
-  
-      <a href="#popup" className={styles.edit} onClick={handleClick}>
-        <img src='/edit.svg' alt='' />
-      </a>
+  <div className={`${styles.workers_item} ${styles.empty}`}>
+    <div className={styles.worker_data}>
+      <p>{worker.name}</p>
     </div>
+
+    {displayedDays.map((day) => (
+      <div className={styles.item_table} key={day}>
+        <div className={styles.item_data}>
+          <div className={styles.detail}></div>
+          <div className={styles.detail}></div>
+          <CheckNoteBtn handleClick={handleClickNote} />
+        </div>
+        <div className='border_top_gray'></div>
+        <div className={styles.item_data}>
+          <div className={styles.detail}>
+          </div>
+          <CheckNoteBtn handleClick={handleClickNote} />
+        </div>
+      </div>
+    ))}
+
+    <a href="#popup" className={styles.edit} onClick={handleClick}>
+      <img src='/edit.svg' alt='' />
+    </a>
+  </div>
 );
 
-const WorkerDetails = ({ 
+const WorkerDetails = ({
   id,
-  worker, 
-  displayedDays, 
-  handleClick, 
-  handleClickNote, 
-  allDates, 
-  missingDates 
+  worker,
+  displayedDays,
+  handleClick,
+  handleClickNote,
+  allDates,
+  missingDates
 }) => {
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
@@ -84,7 +81,7 @@ const WorkerDetails = ({
     if (!shift) return <p className="notWorking"></p>
 
     const status = shift.SmenaDetails?.SmenaStatusWorker;
-    
+
     const statusMap = {
       null: null,
       'Not working': { text: 'Не работал', className: 'notWorking' },
@@ -132,7 +129,7 @@ const WorkerDetails = ({
     const isMissing = missingDatesSet.has(date)
     if (isMissing) return <EmptyWorkerItemData key={date} />
 
-    const dayData = worker?.DayDataDetails?.find(d => 
+    const dayData = worker?.DayDataDetails?.find(d =>
       parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0], 10) === date
     )
 
@@ -169,7 +166,7 @@ const WorkerDetails = ({
           </div>
           <p>Тоннаж</p>
         </div>
-   
+
         {displayedDays.map(renderDate)}
 
         <a href="#popup" className={styles.edit} onClick={handleClick}>
@@ -205,7 +202,7 @@ const WorkerDetails = ({
 export default function WorkerItem({
   daysFullDate,
   active,
-  setActive,          
+  setActive,
   title,
   id,
   setWorkers,
@@ -214,9 +211,9 @@ export default function WorkerItem({
   displayedDays,
   handleClick,
   handleClickNote
-    
-  }) {
-  
+
+}) {
+
   // Все даты месяца
   const allDates = daysFullDate;
   // console.log('allDates (дни всего месяца)', allDates);
@@ -236,32 +233,32 @@ export default function WorkerItem({
   const isWorkerEmpty = worker.name === '';
   return (
     <>
-        {workers.length > 0 && worker && (
-          <motion.div
-                    id={worker.uuid}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.5 }}
-                    key={worker.uuid}
-                    className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
-                >
-                   {isWorkerEmpty ? (
-                    <EmptyWorkerItem id={worker.uuid ? worker.uuid : worker.id} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
-                ) : (
-                <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} missingDates={missingDates} allDates={allDates}  worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
-                )}
-                        
-                </motion.div>
-            )
+      {workers.length > 0 && worker && (
+        <motion.div
+          id={worker.uuid}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          key={worker.uuid}
+          className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
+        >
+          {isWorkerEmpty ? (
+            <EmptyWorkerItem id={worker.uuid ? worker.uuid : worker.id} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+          ) : (
+            <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+          )}
+
+        </motion.div>
+      )
       }
-      
-       <AddPopupContent
-          id={id}
-          active={active}
-          setActive={setActive}
-          title={title}
-        />
+
+      <AddPopupContent
+        id={id}
+        active={active}
+        setActive={setActive}
+        title={title}
+      />
     </>
 
   )
