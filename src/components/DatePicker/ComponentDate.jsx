@@ -4,16 +4,19 @@ import ru from 'date-fns/locale/ru';
 import { registerLocale } from 'react-datepicker';
 import { useEffect, useState } from 'react'; 
 import useDateStore from '../../store/CalendarStore';
+import { format } from 'date-fns';
 
 registerLocale('ru', ru); 
 
 export default function ComponentDate() {
     const { dates, addDate, removeDate, clearDates } = useDateStore(); 
     const [selectedDates, setSelectedDates] = useState([]);
+    const [ currentMouth, setCurrentMonth ] = useState(new Date());
 
     // Обновление store
     useEffect(() => {
         setSelectedDates(dates); 
+        setCurrentMonth(new Date());
     }, [dates]);
 
     const handleDateChange = (selectedDate) => {
@@ -25,10 +28,6 @@ export default function ComponentDate() {
         }
     };
 
-    const handleClearDates = () => {
-        clearDates(); // Очищаем все выбранные даты
-    };
-
     return (
         <div className='date-wrapper'>
             <DatePicker
@@ -36,14 +35,22 @@ export default function ComponentDate() {
                 toggleCalendarOnIconClick
                 selected={null}
                 onChange={handleDateChange}
-                dateFormat="MMMM y"
+                dateFormat="MM YYYY"
                 locale="ru" 
                 shouldCloseOnSelect={false}
                 withPortal
                 highlightDates={selectedDates.map(date => new Date(date))}
-                isClearable={true}
+                isClearable
             />
-           <button onClick={handleClearDates}>Очистить все даты</button>
+            <div className='date-wrapper__info'>
+                <div>
+                    <p className='month'>{format(currentMouth, 'LLLL', {locale: ru})}</p>
+                </div>
+
+                <div>
+                    <p className='year'>{format(currentMouth, 'yyyy', { locale: ru})}г</p>
+                </div>
+            </div>
         </div>
     );
 }

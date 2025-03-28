@@ -1,7 +1,6 @@
 import styles from './style.module.scss';
 
 import useDataRequestStore from './../../../store/DataRequestStore';
-import { deleteService } from '../../../services/delete-service';
 
 export default function DeleteButton({ setActive }) {
     const { data, clearData } = useDataRequestStore();

@@ -23,13 +23,9 @@ const url = 'http://89.104.67.119:1337/api/people/';
 // Проверка существования записи по UUID
 export async function checkExistingRecord(uuid) {
 
-  console.log(uuid)
   try {
       const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
-        console.log('response', response);
-
         const result = await response.json();
-        console.log(result);
         // Для Strapi структура ответа: { data: [...] }
         return result.data?.length > 0 ? result.data[0]?.documentId : null;
     } catch (error) {
@@ -106,7 +102,6 @@ export default function Form({ title, forWhat, setActive }) {
 
 
     const objectUUID = data[0]?.uuid
-    console.log(objectUUID);
 
     const onSubmit = async () => {
         setIsSending(true);
@@ -174,7 +169,6 @@ export default function Form({ title, forWhat, setActive }) {
 
         try {
             const existingRecordId = await checkExistingRecord(objectUUID);
-            console.log(existingRecordId);
             let response;
 
             if (existingRecordId) {

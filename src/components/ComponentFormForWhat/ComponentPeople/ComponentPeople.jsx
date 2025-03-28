@@ -9,7 +9,6 @@ const DeleteSection = ({ data, url }) => {
         <div>
             <button aria-current onClick={(e) => {
                 e.preventDefault();
-                console.log('!!!!!!!!!!!!!!!!!!', url + data[0]?.id)
             }}>
                 <img src={deleteSVG} alt='deleteSVG' width={15} height={15} />
             </button>
