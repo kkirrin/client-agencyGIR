@@ -93,8 +93,6 @@ export default function Form({ title, forWhat, setActive }) {
     useEffect(() => {
         if (data && data.length > 0) {
             setItems(data[0].DayDataDetails);
-            console.log(data);
-
         }
     }, [data])
 

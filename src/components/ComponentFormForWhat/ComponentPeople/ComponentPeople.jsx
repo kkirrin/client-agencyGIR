@@ -42,7 +42,7 @@ const DeleteDateItem = ({ id }) => {
                 throw new Error('Ошибка при удалении элемента');
             }
 
-            console.log('День удален');
+            alert('Рабочая смена удаленна');
         } catch (error) {
             console.error('Ошибка:', error);
         }
@@ -162,7 +162,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                     </div>
                 </div>
 
-
                 {items.map((item, idx) => {
                     return (
                         <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
@@ -170,13 +169,13 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                             <div className={styles.date_wrapper}>
                                 <div className={styles.date_content}>
                                     <p>Дата</p>
-                                    <ComponentDateSingle />
+                                    <ComponentDateSingle idx={idx} />
                                 </div>
 
                                 <div className={styles.smena_content}>
                                     <p>Смена</p>
                                     <div className={styles.smena_btns}>
-                                        <ChooseTimeBtn register={register} />
+                                        <ChooseTimeBtn register={register} idx={idx} />
                                     </div>
                                 </div>
                             </div>
@@ -193,6 +192,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             value={'Not working'}
                                             label="Не работал"
                                             checkboxId="checkboxNotWorked"
+                                            idx={idx}
                                         />
                                         <CustomCheckBox
                                             errors={errors}
@@ -202,6 +202,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             value={'Day Off'}
                                             label="Выходной"
                                             checkboxId="checkboxDayOff"
+                                            idx={idx}
                                         />
                                         <CustomCheckBox
                                             errors={errors}
@@ -211,6 +212,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             value={'Empty'}
                                             label="Пусто"
                                             checkboxId="checkboxEmpty"
+                                            idx={idx}
                                         />
                                     </div>
                                 </div>
@@ -225,6 +227,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         register={register}
                                         type="text"
                                         placeholder='Введите тн. '
+                                        idx={idx}
                                     />
                                 </div>
 
@@ -238,6 +241,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         register={register}
                                         type="text"
                                         placeholder='Введите ТС '
+                                        idx={idx}
                                     />
                                 </div>
                             </div>
@@ -252,6 +256,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     register={register}
                                     type="text"
                                     placeholder="Введите примечание"
+                                    idx={idx}
                                 />
                             </div>
                         </div>
