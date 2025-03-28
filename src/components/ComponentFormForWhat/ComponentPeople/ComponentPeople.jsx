@@ -15,35 +15,29 @@ const DeleteDateItem = ({ id }) => {
 
         if (!window.confirm("Вы точно хотите удалить рабочую смену?")) return;
 
-        const updatedDayDataDetails = dayDataDetails.filter(item => item.id !== id);
-
         const cleanedDayDataDetails = dayDataDetails
             .filter(item => item.id !== id)
-            .map(item => ({
-                DayInfo: item.DayInfo
-                    ? {
-                        Day: item.DayInfo.Day,
-                        SmenaDetails: {
-                            SmenaStatusWorker: item.DayInfo.SmenaDetails.SmenaStatusWorker,
-                            SmenaDataTonnaj: item.DayInfo.SmenaDetails.SmenaDataTonnaj,
-                            Note: item.DayInfo.SmenaDetails.Note,
-                            TC: item.DayInfo.SmenaDetails.TC,
-                            SmenaDateDetails: item.DayInfo.SmenaDetails.SmenaDateDetails,
-                        }
+            .map(({ DayInfo, NightInfo }) => ({
+                DayInfo: DayInfo ? {
+                    Day: DayInfo.Day,
+                    SmenaDetails: {
+                        SmenaStatusWorker: DayInfo.SmenaDetails?.SmenaStatusWorker,
+                        SmenaDataTonnaj: DayInfo.SmenaDetails?.SmenaDataTonnaj,
+                        Note: DayInfo.SmenaDetails?.Note,
+                        TC: DayInfo.SmenaDetails?.TC,
+                        SmenaDateDetails: DayInfo.SmenaDetails?.SmenaDateDetails,
                     }
-                    : null,
-                NightInfo: item.NightInfo
-                    ? {
-                        Night: item.NightInfo.Night,
-                        SmenaDetails: {
-                            SmenaStatusWorker: item.NightInfo.SmenaDetails.SmenaStatusWorker,
-                            SmenaDataTonnaj: item.NightInfo.SmenaDetails.SmenaDataTonnaj,
-                            Note: item.NightInfo.SmenaDetails.Note,
-                            TC: item.NightInfo.SmenaDetails.TC,
-                            SmenaDateDetails: item.NightInfo.SmenaDetails.SmenaDateDetails,
-                        }
+                } : null,
+                NightInfo: NightInfo ? {
+                    Night: NightInfo.Night,
+                    SmenaDetails: {
+                        SmenaStatusWorker: NightInfo.SmenaDetails?.SmenaStatusWorker,
+                        SmenaDataTonnaj: NightInfo.SmenaDetails?.SmenaDataTonnaj,
+                        Note: NightInfo.SmenaDetails?.Note,
+                        TC: NightInfo.SmenaDetails?.TC,
+                        SmenaDateDetails: NightInfo.SmenaDetails?.SmenaDateDetails,
                     }
-                    : null
+                } : null
             }));
 
         try {
@@ -53,15 +47,11 @@ const DeleteDateItem = ({ id }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    data: {
-                        DayDataDetails: cleanedDayDataDetails
-                    }
+                    data: { DayDataDetails: cleanedDayDataDetails }
                 })
             });
 
-            if (!response.ok) {
-                throw new Error('Ошибка при обновлении компонента');
-            }
+            if (!response.ok) throw new Error('Ошибка при обновлении компонента');
 
             alert('Рабочая смена удалена');
 
