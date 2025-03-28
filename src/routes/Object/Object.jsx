@@ -230,6 +230,8 @@ const Object = () => {
             handleClickNote={() => setNoteBodyActive(true)}
             active={popupActive === worker.id}
             setActive={setPopupActive}
+            noteBodyActive={noteBodyActive}
+            setNoteBodyActive={setNoteBodyActive}
             title={'Сотрудник'}
           />
         ))}
@@ -241,10 +243,7 @@ const Object = () => {
           />
         </div>
       </div>
-      <NoteBody
-        active={noteBodyActive}
-        setActive={setNoteBodyActive}
-      />
+     
     </section>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './style.module.scss';
 import { AddPopupContent } from '../../components';
 
-import { CheckNoteBtn, } from '../../components';
+import { CheckNoteBtn, NoteBody } from '../../components';
 
 import { motion } from 'motion/react';
 
@@ -71,7 +71,9 @@ const WorkerDetails = ({
   handleClick,
   handleClickNote,
   allDates,
-  missingDates
+  missingDates,
+  setNoteBodyActive,
+  noteBodyActive
 }) => {
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
@@ -105,6 +107,13 @@ const WorkerDetails = ({
         <p className={`${styles.details_nostatic} working`}>
           {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
         </p>
+
+        <NoteBody
+          active={noteBodyActive}
+          setActive={setNoteBodyActive}
+          data={worker}
+          date={shift.SmenaDetails?.SmenaDateDetails}
+        />
       </>
     )
   }
@@ -210,7 +219,10 @@ export default function WorkerItem({
   worker,
   displayedDays,
   handleClick,
-  handleClickNote
+  handleClickNote,
+  noteBodyActive,
+  setNoteBodyActive
+
 
 }) {
 
@@ -246,7 +258,8 @@ export default function WorkerItem({
           {isWorkerEmpty ? (
             <EmptyWorkerItem id={worker.uuid ? worker.uuid : worker.id} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
           ) : (
-            <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+            <WorkerDetails id={worker.uuid ? worker.uuid : worker.id}  noteBodyActive = {noteBodyActive} setNoteBodyActive = {setNoteBodyActive}
+            missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
           )}
 
         </motion.div>
@@ -259,6 +272,10 @@ export default function WorkerItem({
         setActive={setActive}
         title={title}
       />
+      
+
+
+    
     </>
 
   )
