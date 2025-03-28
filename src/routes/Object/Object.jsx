@@ -201,7 +201,6 @@ const Object = () => {
 
               <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
                 <li className={styles.title_table}></li>
-                {console.log(displayedDays)}
                 {displayedDays.map((day, idx) => (
                   <li className={styles.item_table} key={idx}>
                     <div className={styles.time_item}>

@@ -1,9 +1,7 @@
 import styles from './style.module.scss';
 
 export default function NoteBody({ active, setActive, data, date }) {
-
-    console.log('NoteBody data: ', data);
-
+    
     const Job               =   data?.Job;
     const Name              =   data?.Name;
     const createdAt         =   data?.createdAt;

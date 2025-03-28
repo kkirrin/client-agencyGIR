@@ -27,7 +27,6 @@ export default function AddPopupContent({
       const fetchAndSetData = async () => {
         try {
             const data = await fetchData(apiUrl);
-            console.log(data[0]?.uuid);
             console.log('ID сотрудника: ', data[0]?.id);
 
           setDataRequest(data);
