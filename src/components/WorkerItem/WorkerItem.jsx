@@ -5,6 +5,8 @@ import { AddPopupContent } from '../../components';
 import { CheckNoteBtn, NoteBody } from '../../components';
 
 import { motion } from 'motion/react';
+import { ru } from 'date-fns/locale';
+import { format } from 'date-fns';
 
 
 /**
@@ -75,6 +77,8 @@ const WorkerDetails = ({
   setNoteBodyActive,
   noteBodyActive
 }) => {
+
+  console.log(worker);
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
 
@@ -165,6 +169,44 @@ const WorkerDetails = ({
     )
   }
 
+  console.log('worker !!!!!', worker);
+
+  /**
+   * 
+   * TODO: 
+   * тут бут логика подсчета всех данных за месяц или за период
+   * 
+   */
+  // сумма дневных смен, когда он работал (уточнить у заказчика)
+  const totalAmountDaySmena     =   worker?.DayDataDetails?.length;
+
+  // сумма ночных смен, когда он работал (уточнить у заказчика)
+  const totalAmountNightSmena   =   worker?.DayDataDetails?.length;
+
+  // сумма смен всего, сколько работал
+  const totalAmountSmena        =   totalAmountDaySmena + totalAmountNightSmena;
+
+  // сумма тоннажа, сколько он выработала за месяц или период
+  const totalSumTonnaj          =   'SmenaDataTonnaj * ';
+
+  // число планое, сколько ему надо было выработать (на каждый месяц оно свое)
+  const totalSumTonnajPlan      =   worker?.MonthDataTonnaj[0]?.AmountData;
+
+  // сумма тон осталась выработать в ГИР на конец месяца??? сумма выставии - тон смены
+  const totalSumOstatokGir      =   worker?.DayDataOstatki[0]?.DayDataOstatkiGIR;
+
+  // сумма тон осталась выработать в ПОРТ на конец месяца??? сумма выставии - тон смены
+  const totalSumOstatokPort     =   worker?.DayDataOstatki[0]?.DayDataOstatkiPORT;
+  
+  // const totalAmountDaySmena     =   ''
+  // const totalAmountNightSmena   =   ''
+  // const totalAmountSmena        =   ''
+  // const totalSumTonnaj          =   ''
+  // const totalSumTonnajPlan      =   ''
+  // const totalSumOstatokGir      =   ''
+  // const totalSumOstatokPort     =   ''
+
+
   return (
     <>
       <div className={styles.workers_item} id={id}>
@@ -178,6 +220,8 @@ const WorkerDetails = ({
 
         {displayedDays.map(renderDate)}
 
+        {console.log(worker)}
+
         <a href="#popup" className={styles.edit} onClick={handleClick}>
           <img src='/edit.svg' alt='' />
         </a>
@@ -186,17 +230,17 @@ const WorkerDetails = ({
       <div className={styles.sum}>
         <div className={styles.sum_wrapper}>
           <p className={styles.sum_text}>Всего</p>
-          <p className={styles.sum_month}>Месяц</p>
+          <p className={styles.sum_month}>{format(new Date, 'LLLL', { locale: ru})}</p>
         </div>
 
         {[
-          { label: 'Дневные смены', value: '' },
-          { label: 'Ночные смены', value: '' },
-          { label: 'Всего смен', value: '' },
-          { label: 'Общий тоннаж', value: '' },
-          { label: 'Выставили', value: '' },
-          { label: 'Ост. Порт', value: '' },
-          { label: 'Ост. ГиР', value: '' },
+          { label: 'Дневные смены',   value:  totalAmountDaySmena   },
+          { label: 'Ночные смены',    value:  totalAmountNightSmena },
+          { label: 'Всего смен',      value:  totalAmountSmena      },
+          { label: 'Общий тоннаж',    value:  totalSumTonnaj        },
+          { label: 'Выставили',       value:  totalSumTonnajPlan    },
+          { label: 'Ост. Порт',       value:  totalSumOstatokGir    },
+          { label: 'Ост. ГиР',        value:  totalSumOstatokPort   },
         ].map((item, index) => (
           <div className={styles.sum_detail} key={item.label}>
             <p>{item.label}</p>
@@ -225,6 +269,8 @@ export default function WorkerItem({
 
 
 }) {
+
+  console.log(worker);
 
   // Все даты месяца
   const allDates = daysFullDate;

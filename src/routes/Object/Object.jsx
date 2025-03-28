@@ -114,7 +114,7 @@ const Object = () => {
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
-        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*`);
+        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`);
         setWorkers(data[0].workers);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -215,6 +215,8 @@ const Object = () => {
             </div>
           </div>
         </div>
+        
+          {console.log('!!!!!!!!!!!!!!!', workers)}
 
         {workers.map((worker, idx) => (
           <WorkerItem
