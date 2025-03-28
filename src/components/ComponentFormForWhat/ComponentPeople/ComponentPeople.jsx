@@ -12,12 +12,40 @@ const DeleteDateItem = ({ id }) => {
 
     const handleClick = async (e) => {
         e.preventDefault();
-        console.log('Delete Date Item', id);
-        console.log('userId', userId);
 
-        const updatedDayDataDetails = dayDataDetails
+        if (!window.confirm("Вы точно хотите удалить рабочую смену?")) return;
+
+        const updatedDayDataDetails = dayDataDetails.filter(item => item.id !== id);
+
+        const cleanedDayDataDetails = dayDataDetails
             .filter(item => item.id !== id)
-            .map(item => item.id);
+            .map(item => ({
+                DayInfo: item.DayInfo
+                    ? {
+                        Day: item.DayInfo.Day,
+                        SmenaDetails: {
+                            SmenaStatusWorker: item.DayInfo.SmenaDetails.SmenaStatusWorker,
+                            SmenaDataTonnaj: item.DayInfo.SmenaDetails.SmenaDataTonnaj,
+                            Note: item.DayInfo.SmenaDetails.Note,
+                            TC: item.DayInfo.SmenaDetails.TC,
+                            SmenaDateDetails: item.DayInfo.SmenaDetails.SmenaDateDetails,
+                        }
+                    }
+                    : null,
+                NightInfo: item.NightInfo
+                    ? {
+                        Night: item.NightInfo.Night,
+                        SmenaDetails: {
+                            SmenaStatusWorker: item.NightInfo.SmenaDetails.SmenaStatusWorker,
+                            SmenaDataTonnaj: item.NightInfo.SmenaDetails.SmenaDataTonnaj,
+                            Note: item.NightInfo.SmenaDetails.Note,
+                            TC: item.NightInfo.SmenaDetails.TC,
+                            SmenaDateDetails: item.NightInfo.SmenaDetails.SmenaDateDetails,
+                        }
+                    }
+                    : null
+            }));
+
         try {
             const response = await fetch(url, {
                 method: 'PUT',
@@ -26,27 +54,22 @@ const DeleteDateItem = ({ id }) => {
                 },
                 body: JSON.stringify({
                     data: {
-                        DayDataDetails: updatedDayDataDetails
+                        DayDataDetails: cleanedDayDataDetails
                     }
                 })
             });
 
-            if (window.confirm("Вы точно хотите удалить рабочую смену?")) {
-                // window.location.reload();
-                /**
-                 * TODO: закрытие попапа, перерендер компонентов
-                 */
-            }
-
             if (!response.ok) {
-                throw new Error('Ошибка при удалении элемента');
+                throw new Error('Ошибка при обновлении компонента');
             }
 
-            alert('Рабочая смена удаленна');
+            alert('Рабочая смена удалена');
+
         } catch (error) {
             console.error('Ошибка:', error);
         }
     };
+
 
     return (
         <button className={styles.delete_section} aria-current onClick={handleClick}>
