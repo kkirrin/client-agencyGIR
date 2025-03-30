@@ -38,12 +38,13 @@
     border-radius: 10px;
     position: relative;
     box-sizing: border-box;
-    max-width: 740px;
-    min-height: 430px;
+    width: 100%;
+    max-width: 500px;
+    min-height: 530px;
     padding: 40px;
     background: var(--white);
     color: var(--blue);
-    text-align: center;
+    text-align: start;
 }
 
 .popup__close {
@@ -54,7 +55,7 @@
     background-color: var(--white);
     border-radius: 50%;
     height: 20px;
-    width: 42px;
+    width: 20px;
     border: none;
     display: flex;
     align-items: center;
@@ -90,6 +91,56 @@
     align-items: center;
     justify-content: center;
     border-radius: 100%;
+}
+
+.name_worker_name {
+    color: var(--black);
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 10px;
+
+}
+
+.name_worker_job {
+    color: var(--light-gray);
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.name_worker_date {
+    display: flex;
+    color: var(--light-gray);
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.name_worker_status {
+    color: var(--black);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.name_worker_note {
+    margin-bottom: 25ps;
+}
+
+.name_worker_note_back p {
+    padding: 20px;
+}
+
+.name_worker_note_back {
+    height: 250px;
+    border-radius: 5px;
+    background-color: var(--light-gray);
+}
+
+.note_title {
+    font-weight: 500;
+    color: var(--black);
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .popup__btn svg path {

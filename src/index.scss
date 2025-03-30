@@ -354,6 +354,9 @@ legend {
 }
 
 .date-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
   width: 100%;
 
   background-color: var(--light-gray);
@@ -362,6 +365,25 @@ legend {
   border-radius: 20px;
 
   padding: 10px;
+}
+
+.date-wrapper__info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date-wrapper__info .month {
+  position: absolute;
+  top: 14px;
+  left: 50px;
+  text-transform: capitalize;
+  font-size: 20px;
+}
+
+.date-wrapper__info .year {
+  font-weight: 400;
+  color: var(--another-gray);
 }
 
 .working {

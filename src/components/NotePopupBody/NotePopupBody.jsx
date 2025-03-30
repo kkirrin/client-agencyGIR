@@ -1,6 +1,19 @@
 import styles from './style.module.scss';
 
-export default function NoteBody({ active, setActive, data }) {
+export default function NoteBody({ active, setActive, data, date }) {
+    
+    const Job               =   data?.Job;
+    const Name              =   data?.Name;
+    const createdAt         =   data?.createdAt;
+    const documentId        =   data?.documentId;
+
+    const dateWorkered      =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDateDetails;
+    const Note              =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.Note;
+    const SmenaDataTonnaj   =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj;
+    const SmenaStatusWorker =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker;
+    const TC                =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC;
+
+    const id                =   data?.id;
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
@@ -16,7 +29,7 @@ export default function NoteBody({ active, setActive, data }) {
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
-            <div className={styles.popup__body}>
+            <div className={`${styles.popup__body} ${styles.popup__body__note}`} id={id}>
 
                 <div
                     className={styles.popup__content}
@@ -33,8 +46,17 @@ export default function NoteBody({ active, setActive, data }) {
                         </svg>
                     </button>
                     <div>
+                        <h3 className={styles.name_worker_name}>{Name}</h3>
+                        <p className={styles.name_worker_job}>{Job}</p>
+                        <p className={styles.name_worker_date}>{date}</p>  
+                        <p className={styles.name_worker_status}>{SmenaStatusWorker}</p>
 
-                        {data}
+                        <div className={styles.name_worker_note}>
+                            <p className={styles.note_title}>Примечание</p>
+                            <div className={styles.name_worker_note_back}>
+                                <p className=''>{Note}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,21 +1,32 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useMemo } from 'react';
-import fetchData from '../../utils/fetchData';
 import styles from './style.module.scss';
+
+import { useState, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+
+import fetchData from '../../utils/fetchData';
+
 import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, NoteBody, ObjectSelect } from '../../components';
+
 import useDateStore from '../../store/CalendarStore';
+
+import { format } from 'date-fns';
+import { registerLocale } from 'react-datepicker';
+import ru from 'date-fns/locale/ru';
+
+registerLocale('ru', ru); 
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 
 const Object = () => {
+  
   const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
     return date;
   }, []);
+
   currentDate.setHours(0, 0, 0, 0);
   const { dates } = useDateStore();
 
@@ -34,6 +45,7 @@ const Object = () => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
+       
         return `${day}.${month}.${year}`;
       }));
     } else {
@@ -102,7 +114,7 @@ const Object = () => {
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
-        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*`);
+        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`);
         setWorkers(data[0].workers);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -115,6 +127,27 @@ const Object = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [dates]);
+
+  const [months, setMonths] = useState([]);
+
+  useEffect(() => {
+    if (dates.length > 0) {
+      const newMonths = dates.map((date, idx) => ({id: idx, month: format(date, 'LLL', { locale: ru })
+      }));
+      
+      setMonths(newMonths);
+    } 
+  }, [dates]);
+
+  /**
+   * 
+   * TODO: 
+   * сейчас при загрузке страницы грузится текущий месяц и первые 5 дней от начала месяца (допустимо)
+   * Нужно во-первых сделать так чтобы грузилась текущая дата
+   * Во-вторых, нужно подумать, как ставить название месяца, при выборе конкретного дня (Или он не будет меняться и просто менять текст ?)
+   * В третьих, при добавлении дней в dates должны отображаться дни (выбранные) с правильным месяцем (сейчас это работает но только до 5 дней, после - начинается повторение, что неверно)
+   * 
+   */
 
   return (
     <section className={styles.main_section}>
@@ -131,11 +164,22 @@ const Object = () => {
             <div className={styles.table_header}>
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
                 <li className={styles.title_table}>ФИО/должность</li>
-                {displayedDays.map((day, idx) => (
-                  <li className={styles.item_table} key={idx}>
-                    <div>{day}</div>
-                  </li>
-                ))}
+                {displayedDays.map((day, idx) => {
+                  const currentMonth = months.length > 0 
+                    ? months[idx].month 
+                    : format(new Date(), 'LLL', { locale: ru }
+                  );
+
+                   return (
+                    <li className={styles.item_table} key={idx}>
+                      {/* ТИПО ВРЕМЕННОЕ РЕШЕНИЕ (НЕТ) */}
+                      <div>
+                        {day} {currentMonth}
+                        
+                      </div>
+                    </li>
+                  )}
+                )}
               </ul>
               <div className={styles.pagination}>
                 <button
@@ -171,6 +215,8 @@ const Object = () => {
             </div>
           </div>
         </div>
+        
+          {console.log('!!!!!!!!!!!!!!!', workers)}
 
         {workers.map((worker, idx) => (
           <WorkerItem
@@ -185,6 +231,8 @@ const Object = () => {
             handleClickNote={() => setNoteBodyActive(true)}
             active={popupActive === worker.id}
             setActive={setPopupActive}
+            noteBodyActive={noteBodyActive}
+            setNoteBodyActive={setNoteBodyActive}
             title={'Сотрудник'}
           />
         ))}
@@ -196,10 +244,7 @@ const Object = () => {
           />
         </div>
       </div>
-      <NoteBody
-        active={noteBodyActive}
-        setActive={setNoteBodyActive}
-      />
+     
     </section>
   );
 };
