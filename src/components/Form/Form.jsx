@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
@@ -22,6 +22,7 @@ const url = 'http://89.104.67.119:1337/api/people/';
 
 // Проверка существования записи по UUID
 export async function checkExistingRecord(uuid) {
+
 
   try {
       const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
@@ -57,7 +58,6 @@ export default function Form({ title, forWhat, setActive }) {
     const { date } = useDateSingeStore();
 
     const { id } = useParams();
-
     const { data } = useDataRequestStore();
 
     /**
@@ -85,21 +85,18 @@ export default function Form({ title, forWhat, setActive }) {
     const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
     const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
 
-    const [items, setItems] = useState([1]);
+    const [items, setItems] = useState([]);
 
-    /**
-     * 
-     * TODO: при добавлении еще 
-     */
-    for (let item in items) {
-
-    }
+    useEffect(() => {
+        if (data && data.length > 0) {
+            setItems(data[0].DayDataDetails);
+        }
+    }, [data])
 
     const handleClick = (e) => {
         e.preventDefault();
         setItems([...items, items.length + 1]);
     };
-
 
     const objectUUID = data[0]?.uuid
 
@@ -108,7 +105,7 @@ export default function Form({ title, forWhat, setActive }) {
         setError(null);
 
         const formData = {
-            
+
             uuid: objectUUID ? objectUUID : uuidv4(),
             Name: name || "",
             Job: job || "",
@@ -174,8 +171,8 @@ export default function Form({ title, forWhat, setActive }) {
             if (existingRecordId) {
                 response = await updateUserDateService(
 
-                    existingRecordId, 
-                    formData, 
+                    existingRecordId,
+                    formData,
                     url
                 );
                 console.log('Данные обновлены:', response, formData);
@@ -184,7 +181,7 @@ export default function Form({ title, forWhat, setActive }) {
                 console.log('Новая запись создана:', response, formData);
             }
 
-         } catch (error) {
+        } catch (error) {
             setError('Ошибка запроса, попробуйте позже', error);
         } finally {
             setIsSending(false);

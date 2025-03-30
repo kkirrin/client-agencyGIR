@@ -10,18 +10,20 @@ registerLocale('ru', ru);
 
 
 export default function ComponentDate() {
+
     const { date, addDate } = useDateSingleStore(); 
     const { dates } = useDateStore();
+
     const [selectedDates, setSelectedDates] = useState(date);
     
     const handleDateChange = (date) => {
         setSelectedDates(date);
-        addDate(date); 
+        addDate(date);
     };
 
     const handleClearDate = () => {
         setSelectedDates(null);
-        addDate(null); 
+        addDate(null);
     };
 
     return (
@@ -29,7 +31,7 @@ export default function ComponentDate() {
             <DatePicker
                 showIcon
                 toggleCalendarOnIconClick
-                selected={selectedDates} 
+                selected={selectedDates}
                 onChange={handleDateChange}
                 onClear={handleClearDate}
                 dateFormat="dd.MM.yyyy"
