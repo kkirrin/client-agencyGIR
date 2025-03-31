@@ -27,7 +27,7 @@ export default function DeleteButton({ setActive }) {
                 throw new Error(`Ошибка: ${response.status}`);
             }
 
-            console.log(`Пользователь с ID ${userId} успешно удалён.`);
+            // console.log(`Пользователь с ID ${userId} успешно удалён.`);
         } catch (error) {
             console.error('Ошибка при удалении пользователя:', error);
         }

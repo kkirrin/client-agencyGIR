@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 registerLocale('ru', ru); 
 
 export default function ComponentDate() {
-    const { dates, addDate, removeDate, clearDates } = useDateStore(); 
+    const { dates, addDate, removeDate } = useDateStore(); 
     const [selectedDates, setSelectedDates] = useState([]);
     const [ currentMouth, setCurrentMonth ] = useState(new Date());
 

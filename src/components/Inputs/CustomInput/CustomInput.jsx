@@ -20,7 +20,6 @@ export default function CustomInput({
         const amountData = MonthDataTonnaj[0].AmountData;
         const dayDataOstatkiGIR = DayDataOstatki[0].DayDataOstatkiGIR;
         const dayDataOstatkiPORT = DayDataOstatki[0].DayDataOstatkiPORT;
-
         
         /** 
          * 
@@ -30,6 +29,7 @@ export default function CustomInput({
          * 
          * 
          */
+
         switch (name) {
             case 'AmountData':
                 valueInput = amountData ? amountData : 'Ошибка получения заполненных данных или данных нет' ;

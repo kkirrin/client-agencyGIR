@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
-// import { saveUserDateService } from '../../services/save-service';
 import { updateUserDateService } from '../../services/update-service';
 import useDataRequestStore from '../../store/DataRequestStore';
-
 
 import { useParams } from 'react-router-dom';
 import {
@@ -22,7 +20,6 @@ const url = 'http://89.104.67.119:1337/api/people/';
 
 // Проверка существования записи по UUID
 export async function checkExistingRecord(uuid) {
-
 
   try {
       const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
@@ -54,11 +51,21 @@ export default function Form({ title, forWhat, setActive }) {
 
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
-    const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm();
+
+
     const { date } = useDateSingeStore();
 
     const { id } = useParams();
     const { data } = useDataRequestStore();
+    console.log(data[0]?.DayDataDetails);
+
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
@@ -70,6 +77,32 @@ export default function Form({ title, forWhat, setActive }) {
         year: 'numeric',
     });
 
+    useEffect(() => {
+        reset({
+            Name: data.name,
+            Job: data.job,
+            // AmountData: data?.MonthDataTonnaj[0]?.AmountData,
+            // DayDataOstatkiPORT: data.DayDataOstatki[0]?.DayDataOstatkiPORT,
+            // DayDataOstatkiGIR: data.DayDataOstatki[0]?.DayDataOstatkiGIR,
+            // DayDataTonnaj: data?.MonthDataTonnaj[0]?.MonthData,
+            // TC: data?.DayDataDetails[0]?.SmenaDetails?.TC,
+            // note: data?.DayDataDetails[0]?.SmenaDetails?.Note,
+            // btnDay: data,
+            // btnNight: data,
+            // statusWorkerNotWorked: data,
+            // statusWorkerDayOff: data,
+            // statusWorkerEmpty: data,
+            
+         });
+    }, []);
+
+
+
+    /**
+     * 
+     * TODO: нужно перебором делать проверку массива
+     */
+    
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
@@ -85,6 +118,9 @@ export default function Form({ title, forWhat, setActive }) {
     const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
     const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
 
+
+    console.log(dayDataTonnaj);
+
     const [items, setItems] = useState([]);
 
     useEffect(() => {
@@ -96,9 +132,30 @@ export default function Form({ title, forWhat, setActive }) {
     const handleClick = (e) => {
         e.preventDefault();
         setItems([...items, items.length + 1]);
+        console.log(items);
     };
 
     const objectUUID = data[0]?.uuid
+
+  // Инициализация формы с данными
+    // useEffect(() => {
+    //     if (data && data[0]) {
+    //         const initialData = {
+    //             ...data[0],
+    //             DayDataDetails: data[0].DayDataDetails?.map(item => ({
+    //                 ...item,
+    //                 id: undefined // Убираем strapi id для новых записей
+    //             })) || []
+    //         };
+    //         reset(initialData);
+    //     }
+    // }, [data, reset]);
+
+    // console.log('data', data)
+    //  // Отслеживание всех значений
+    // const formValues = useWatch({ control });
+    // console.log('formValues', formValues);
+
 
     const onSubmit = async () => {
         setIsSending(true);

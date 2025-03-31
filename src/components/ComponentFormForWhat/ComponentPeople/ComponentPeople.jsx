@@ -74,7 +74,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
     const { data } = useDataRequestStore();
 
     const url = `http://89.104.67.119:1337/api/people/`;
-
     return (
         <>
             <div>
@@ -175,7 +174,9 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                     </div>
                 </div>
 
+                
                 {items.map((item, idx) => {
+                    
                     return (
                         <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
                             {data ? <DeleteDateItem id={item.id} /> : ''}
@@ -201,7 +202,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors}
                                             register={register}
                                             type="checkbox"
-                                            name="statusWorkerNotWorked"
+                                            name={'statusWorkerNotWorked'}
                                             value={'Not working'}
                                             label="Не работал"
                                             checkboxId="checkboxNotWorked"
@@ -211,7 +212,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors}
                                             register={register}
                                             type="checkbox"
-                                            name="statusWorkerDayOff"
+                                            name={'statusWorkerDayOff'}
                                             value={'Day Off'}
                                             label="Выходной"
                                             checkboxId="checkboxDayOff"
@@ -221,7 +222,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors}
                                             register={register}
                                             type="checkbox"
-                                            name="statusWorkerEmpty"
+                                            name={'statusWorkerEmpty'}
                                             value={'Empty'}
                                             label="Пусто"
                                             checkboxId="checkboxEmpty"
