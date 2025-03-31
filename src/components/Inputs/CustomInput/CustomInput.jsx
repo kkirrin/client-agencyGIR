@@ -11,8 +11,11 @@ export default function CustomInput({
         hidden = false
 }) {
     
+    console.log(data);
+
     let valueInput = '';
     if (data[0]) {
+        console.log(true);
         let firstObject = data[0];
     
         const { MonthDataTonnaj, Name, Job, DayDataOstatki } = firstObject;
@@ -20,7 +23,6 @@ export default function CustomInput({
         const amountData = MonthDataTonnaj[0].AmountData;
         const dayDataOstatkiGIR = DayDataOstatki[0].DayDataOstatkiGIR;
         const dayDataOstatkiPORT = DayDataOstatki[0].DayDataOstatkiPORT;
-
         
         /** 
          * 
@@ -31,7 +33,6 @@ export default function CustomInput({
          * 
          */
 
-        console.log(valueInput);
         switch (name) {
             case 'AmountData':
                 valueInput = amountData ? amountData : 'Ошибка получения заполненных данных или данных нет' ;

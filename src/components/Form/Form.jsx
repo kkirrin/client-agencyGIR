@@ -70,6 +70,27 @@ export default function Form({ title, forWhat, setActive }) {
         year: 'numeric',
     });
 
+    useEffect(() => {
+        reset({
+            Name: data.name,
+            Job: data.job,
+            // AmountData: data?.MonthDataTonnaj[0]?.AmountData,
+            // DayDataOstatkiPORT: data.DayDataOstatki[0]?.DayDataOstatkiPORT,
+            // DayDataOstatkiGIR: data.DayDataOstatki[0]?.DayDataOstatkiGIR,
+            // DayDataTonnaj: data?.MonthDataTonnaj[0]?.MonthData,
+            // TC: data?.DayDataDetails[0]?.SmenaDetails?.TC,
+            // note: data?.DayDataDetails[0]?.SmenaDetails?.Note,
+            // btnDay: data,
+            // btnNight: data,
+            // statusWorkerNotWorked: data,
+            // statusWorkerDayOff: data,
+            // statusWorkerEmpty: data,
+            
+         });
+    }, []);
+
+
+
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
