@@ -75,6 +75,8 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
     const url = `http://89.104.67.119:1337/api/people/`;
 
+    console.log(data);
+
     return (
         <>
             <div>

@@ -30,6 +30,8 @@ export default function CustomInput({
          * 
          * 
          */
+
+        console.log(valueInput);
         switch (name) {
             case 'AmountData':
                 valueInput = amountData ? amountData : 'Ошибка получения заполненных данных или данных нет' ;

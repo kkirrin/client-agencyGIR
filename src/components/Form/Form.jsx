@@ -85,6 +85,9 @@ export default function Form({ title, forWhat, setActive }) {
     const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
     const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
 
+
+    console.log(name);
+
     const [items, setItems] = useState([]);
 
     useEffect(() => {
