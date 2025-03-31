@@ -13,14 +13,14 @@ import { format } from 'date-fns';
 import { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 
-registerLocale('ru', ru); 
+registerLocale('ru', ru);
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 
 const Object = () => {
-  
+
   const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -45,7 +45,7 @@ const Object = () => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-       
+
         return `${day}.${month}.${year}`;
       }));
     } else {
@@ -132,11 +132,12 @@ const Object = () => {
 
   useEffect(() => {
     if (dates.length > 0) {
-      const newMonths = dates.map((date, idx) => ({id: idx, month: format(date, 'LLL', { locale: ru })
+      const newMonths = dates.map((date, idx) => ({
+        id: idx, month: format(date, 'LLL', { locale: ru })
       }));
-      
+
       setMonths(newMonths);
-    } 
+    }
   }, [dates]);
 
   /**
@@ -165,20 +166,21 @@ const Object = () => {
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
                 <li className={styles.title_table}>ФИО/должность</li>
                 {displayedDays.map((day, idx) => {
-                  const currentMonth = months.length > 0 
-                    ? months[idx].month 
+                  const currentMonth = months.length > 0
+                    ? months[idx].month
                     : format(new Date(), 'LLL', { locale: ru }
-                  );
+                    );
 
-                   return (
+                  return (
                     <li className={styles.item_table} key={idx}>
                       {/* ТИПО ВРЕМЕННОЕ РЕШЕНИЕ (НЕТ) */}
                       <div>
                         {day} {currentMonth}
-                        
+
                       </div>
                     </li>
-                  )}
+                  )
+                }
                 )}
               </ul>
               <div className={styles.pagination}>
@@ -215,8 +217,8 @@ const Object = () => {
             </div>
           </div>
         </div>
-        
-          {console.log('!!!!!!!!!!!!!!!', workers)}
+
+        {/* {console.log('!!!!!!!!!!!!!!!', workers)} */}
 
         {workers.map((worker, idx) => (
           <WorkerItem
@@ -244,7 +246,7 @@ const Object = () => {
           />
         </div>
       </div>
-     
+
     </section>
   );
 };
