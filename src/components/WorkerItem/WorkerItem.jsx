@@ -77,8 +77,6 @@ const WorkerDetails = ({
   setNoteBodyActive,
   noteBodyActive
 }) => {
-
-  console.log(worker);
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
 
