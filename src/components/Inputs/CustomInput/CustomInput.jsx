@@ -11,11 +11,8 @@ export default function CustomInput({
         hidden = false
 }) {
     
-    console.log(data);
-
     let valueInput = '';
     if (data[0]) {
-        console.log(true);
         let firstObject = data[0];
     
         const { MonthDataTonnaj, Name, Job, DayDataOstatki } = firstObject;

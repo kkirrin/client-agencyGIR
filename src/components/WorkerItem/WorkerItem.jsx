@@ -168,9 +168,6 @@ const WorkerDetails = ({
       </div>
     )
   }
-
-  console.log('worker !!!!!', worker);
-
   /**
    * 
    * TODO: 
@@ -220,8 +217,6 @@ const WorkerDetails = ({
 
         {displayedDays.map(renderDate)}
 
-        {console.log(worker)}
-
         <a href="#popup" className={styles.edit} onClick={handleClick}>
           <img src='/edit.svg' alt='' />
         </a>
@@ -269,9 +264,6 @@ export default function WorkerItem({
 
 
 }) {
-
-  console.log(worker);
-
   // Все даты месяца
   const allDates = daysFullDate;
   // console.log('allDates (дни всего месяца)', allDates);

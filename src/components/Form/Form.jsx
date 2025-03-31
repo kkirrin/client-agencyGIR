@@ -90,7 +90,11 @@ export default function Form({ title, forWhat, setActive }) {
     }, []);
 
 
-
+    /**
+     * 
+     * TODO: нужно перебором делать проверку массива
+     */
+    
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
@@ -105,9 +109,6 @@ export default function Form({ title, forWhat, setActive }) {
     const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
     const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
     const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
-
-
-    console.log(name);
 
     const [items, setItems] = useState([]);
 

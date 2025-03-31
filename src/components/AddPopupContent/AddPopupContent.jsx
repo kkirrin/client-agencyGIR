@@ -28,8 +28,6 @@ export default function AddPopupContent({
       const fetchAndSetData = async () => {
         try {
             const data = await fetchData(apiUrl);
-            console.log('ID сотрудника: ', data[0]?.id);
-
                     setDataRequest(data);
                 } catch (error) {
                     console.error("Ошибка при получении данных:", error);

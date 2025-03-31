@@ -216,8 +216,6 @@ const Object = () => {
           </div>
         </div>
         
-          {console.log('!!!!!!!!!!!!!!!', workers)}
-
         {workers.map((worker, idx) => (
           <WorkerItem
             key={idx}
