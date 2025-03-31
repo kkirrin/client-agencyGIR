@@ -5,13 +5,13 @@ export default function ChooseTimeBtn({ register, idx }) {
         <>
             <input
                 type="radio" // Используем тип radio
-                id={`day-` + idx}
+                id={'day'}
                 value="day" // Значение для дня
-                {...register(`btnDay-` + idx)} // Регистрируем в форме
+                {...register('btnDay')} // Регистрируем в форме
                 className={styles.hidden} // Скрываем стандартный input
             />
             <label
-                htmlFor={`day-` + idx}
+                htmlFor={'day'}
                 className={`${styles.smena_btn} ${styles.day}`}
             >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,13 +22,13 @@ export default function ChooseTimeBtn({ register, idx }) {
 
             <input
                 type="radio" // Используем тип radio
-                id={`night-` + idx}
+                id={'night'}
                 value="night" // Значение для ночи
-                {...register(`btnNight-` + idx)} // Регистрируем в форме
+                {...register('btnNight')} // Регистрируем в форме
                 className={styles.hidden} // Скрываем стандартный input
             />
             <label
-                htmlFor={`night-` + idx}
+                htmlFor={'night'}
                 className={`${styles.smena_btn} ${styles.night}`}
             >
                 <p>Ночь</p>

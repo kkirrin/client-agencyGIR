@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
-// import { saveUserDateService } from '../../services/save-service';
 import { updateUserDateService } from '../../services/update-service';
 import useDataRequestStore from '../../store/DataRequestStore';
-import { useFieldArray } from 'react-hook-form';
 
 import { useParams } from 'react-router-dom';
 import {
@@ -59,15 +57,8 @@ export default function Form({ title, forWhat, setActive }) {
         handleSubmit,
         formState: { errors },
         reset,
-        // getValues
     } = useForm();
 
-    // const { fields, append, remove } = useFieldArray({
-    //     control,
-    //     name: "DayDataDetails"
-    // });
-
-    // console.log(fields);
 
     const { date } = useDateSingeStore();
 
@@ -126,6 +117,9 @@ export default function Form({ title, forWhat, setActive }) {
     const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
     const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
     const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
+
+
+    console.log(dayDataTonnaj);
 
     const [items, setItems] = useState([]);
 

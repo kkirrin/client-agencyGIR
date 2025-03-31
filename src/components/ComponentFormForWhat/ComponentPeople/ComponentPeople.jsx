@@ -202,7 +202,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors}
                                             register={register}
                                             type="checkbox"
-                                            name={`statusWorkerNotWorked-` + idx}
+                                            name={'statusWorkerNotWorked'}
                                             value={'Not working'}
                                             label="Не работал"
                                             checkboxId="checkboxNotWorked"
@@ -212,7 +212,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors}
                                             register={register}
                                             type="checkbox"
-                                            name={`statusWorkerDayOff-` + idx}
+                                            name={'statusWorkerDayOff'}
                                             value={'Day Off'}
                                             label="Выходной"
                                             checkboxId="checkboxDayOff"
@@ -222,7 +222,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             errors={errors}
                                             register={register}
                                             type="checkbox"
-                                            name={`statusWorkerEmpty-` + idx}
+                                            name={'statusWorkerEmpty'}
                                             value={'Empty'}
                                             label="Пусто"
                                             checkboxId="checkboxEmpty"
@@ -236,7 +236,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <CustomInput
                                         data={data}
                                         id={6}
-                                        name={`DayDataTonnaj-` + idx}
+                                        name={'DayDataTonnaj'}
                                         errors={errors}
                                         register={register}
                                         type="text"
@@ -250,7 +250,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <CustomInput
                                         data={data}
                                         id={7}
-                                        name={`TC-` + idx}
+                                        name={'TC'}
                                         errors={errors}
                                         register={register}
                                         type="text"
@@ -265,7 +265,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 <CustomInput
                                     data={data}
                                     id={8}
-                                    name={`note-` + idx}
+                                    name={'note'}
                                     errors={errors}
                                     register={register}
                                     type="text"
