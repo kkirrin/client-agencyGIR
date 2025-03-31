@@ -1,19 +1,19 @@
 import styles from './style.module.scss';
 
 export default function NoteBody({ active, setActive, data, date }) {
-    
-    const Job               =   data?.Job;
-    const Name              =   data?.Name;
-    const createdAt         =   data?.createdAt;
-    const documentId        =   data?.documentId;
 
-    const dateWorkered      =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDateDetails;
-    const Note              =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.Note;
-    const SmenaDataTonnaj   =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj;
-    const SmenaStatusWorker =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker;
-    const TC                =   data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC;
+    const Job = data?.Job;
+    const Name = data?.Name;
+    const createdAt = data?.createdAt;
+    const documentId = data?.documentId;
 
-    const id                =   data?.id;
+    const dateWorkered = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDateDetails;
+    const Note = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.Note;
+    const SmenaDataTonnaj = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj;
+    const SmenaStatusWorker = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker;
+    const TC = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC;
+
+    const id = data?.id;
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
@@ -48,7 +48,7 @@ export default function NoteBody({ active, setActive, data, date }) {
                     <div>
                         <h3 className={styles.name_worker_name}>{Name}</h3>
                         <p className={styles.name_worker_job}>{Job}</p>
-                        <p className={styles.name_worker_date}>{date}</p>  
+                        <p className={styles.name_worker_date}>{date}</p>
                         <p className={styles.name_worker_status}>{SmenaStatusWorker}</p>
 
                         <div className={styles.name_worker_note}>

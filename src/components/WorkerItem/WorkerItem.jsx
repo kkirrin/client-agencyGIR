@@ -8,7 +8,6 @@ import { motion } from 'motion/react';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 
-
 /**
  * 
  * TODO:
@@ -77,6 +76,7 @@ const WorkerDetails = ({
   setNoteBodyActive,
   noteBodyActive
 }) => {
+
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
 
@@ -99,12 +99,12 @@ const WorkerDetails = ({
 
     return (
       <>
-        <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>
+        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
         <p className={styles.details_static}>Тоннаж</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
-        <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>
+        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
         <p className={styles.details_static}>ТС</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
@@ -119,7 +119,7 @@ const WorkerDetails = ({
       </>
     )
   }
-  
+
   /** 
    * 
    * TODO: НАШЕЛ БАГУ
@@ -128,12 +128,12 @@ const WorkerDetails = ({
    */
 
 
-   /** 
-   * 
-   * TODO: НАШЕЛ БАГУ
-   * При создании человека, надо наверно отправлять правильную дату формата 3.03.2025, а не 03.03.2025
-   * 
-   */
+  /** 
+  * 
+  * TODO: НАШЕЛ БАГУ
+  * При создании человека, надо наверно отправлять правильную дату формата 3.03.2025, а не 03.03.2025
+  * 
+  */
 
   // Рендер одной даты
   const renderDate = (date) => {
@@ -166,41 +166,63 @@ const WorkerDetails = ({
       </div>
     )
   }
+
   /**
    * 
    * TODO: 
    * тут бут логика подсчета всех данных за месяц или за период
+   * console.log(allDates) сюда уже приходят отфильтрованные дни
    * 
    */
-  // сумма дневных смен, когда он работал (уточнить у заказчика)
-  const totalAmountDaySmena     =   worker?.DayDataDetails?.length;
 
-  // сумма ночных смен, когда он работал (уточнить у заказчика)
-  const totalAmountNightSmena   =   worker?.DayDataDetails?.length;
+  // количество дневных смен, когда он работал (уточнить у заказчика)
+  const totalAmountDaySmena = worker?.DayDataDetails?.filter(item => {
+    const smena = item?.DayInfo?.SmenaDetails;
+    const date = smena?.SmenaDateDetails;
+    return smena && allDates.includes(date);
+  }).length;
+
+  // количество ночных смен, когда он работал (уточнить у заказчика)
+
+  const totalAmountNightSmena = worker?.DayDataDetails?.filter(item => {
+    const smena = item?.NightInfo?.SmenaDetails;
+    const date = smena?.SmenaDateDetails;
+    return smena && allDates.includes(date);
+  }).length;
 
   // сумма смен всего, сколько работал
-  const totalAmountSmena        =   totalAmountDaySmena + totalAmountNightSmena;
+  const totalAmountSmena = totalAmountDaySmena + totalAmountNightSmena;
 
-  // сумма тоннажа, сколько он выработала за месяц или период
-  const totalSumTonnaj          =   'SmenaDataTonnaj * ';
+  let totalSumTonnaj = 0;
+  worker?.DayDataDetails?.forEach(item => {
+    // Дневная смена
+    const daySmena = item?.DayInfo?.SmenaDetails;
+    const dayDate = daySmena?.SmenaDateDetails;
+
+    if (daySmena && allDates.includes(dayDate)) {
+      const tonnaj = parseFloat(daySmena.SmenaDataTonnaj);
+      totalSumTonnaj += isNaN(tonnaj) ? 0 : tonnaj;
+    }
+
+    // Ночная смена
+    const nightSmena = item?.NightInfo?.SmenaDetails;
+    const nightDate = nightSmena?.SmenaDateDetails;
+
+    if (nightSmena && allDates.includes(nightDate)) {
+      const tonnaj = parseFloat(nightSmena.SmenaDataTonnaj);
+      totalSumTonnaj += isNaN(tonnaj) ? 0 : tonnaj;
+    }
+  });
+
 
   // число планое, сколько ему надо было выработать (на каждый месяц оно свое)
-  const totalSumTonnajPlan      =   worker?.MonthDataTonnaj[0]?.AmountData;
+  const totalSumTonnajPlan = worker?.MonthDataTonnaj[0]?.AmountData;
 
   // сумма тон осталась выработать в ГИР на конец месяца??? сумма выставии - тон смены
-  const totalSumOstatokGir      =   worker?.DayDataOstatki[0]?.DayDataOstatkiGIR;
+  const totalSumOstatokGir = worker?.DayDataOstatki[0]?.DayDataOstatkiGIR;
 
   // сумма тон осталась выработать в ПОРТ на конец месяца??? сумма выставии - тон смены
-  const totalSumOstatokPort     =   worker?.DayDataOstatki[0]?.DayDataOstatkiPORT;
-  
-  // const totalAmountDaySmena     =   ''
-  // const totalAmountNightSmena   =   ''
-  // const totalAmountSmena        =   ''
-  // const totalSumTonnaj          =   ''
-  // const totalSumTonnajPlan      =   ''
-  // const totalSumOstatokGir      =   ''
-  // const totalSumOstatokPort     =   ''
-
+  const totalSumOstatokPort = worker?.DayDataOstatki[0]?.DayDataOstatkiPORT;
 
   return (
     <>
@@ -223,17 +245,18 @@ const WorkerDetails = ({
       <div className={styles.sum}>
         <div className={styles.sum_wrapper}>
           <p className={styles.sum_text}>Всего</p>
-          <p className={styles.sum_month}>{format(new Date, 'LLLL', { locale: ru})}</p>
+          <p className={styles.sum_month}>{format(new Date, 'LLLL', { locale: ru })}</p>
         </div>
 
         {[
-          { label: 'Дневные смены',   value:  totalAmountDaySmena   },
-          { label: 'Ночные смены',    value:  totalAmountNightSmena },
-          { label: 'Всего смен',      value:  totalAmountSmena      },
-          { label: 'Общий тоннаж',    value:  totalSumTonnaj        },
-          { label: 'Выставили',       value:  totalSumTonnajPlan    },
-          { label: 'Ост. Порт',       value:  totalSumOstatokGir    },
-          { label: 'Ост. ГиР',        value:  totalSumOstatokPort   },
+          // { label: 'Дневные смены', value: totalAmountDaySmena },
+          { label: 'Дневные смены', value: totalAmountDaySmena },
+          { label: 'Ночные смены', value: totalAmountNightSmena },
+          { label: 'Всего смен', value: totalAmountSmena },
+          { label: 'Общий тоннаж', value: totalSumTonnaj },
+          { label: 'Выставили', value: totalSumTonnajPlan },
+          { label: 'Ост. Порт', value: totalSumOstatokGir },
+          { label: 'Ост. ГиР', value: totalSumOstatokPort },
         ].map((item, index) => (
           <div className={styles.sum_detail} key={item.label}>
             <p>{item.label}</p>
@@ -259,22 +282,21 @@ export default function WorkerItem({
   handleClickNote,
   noteBodyActive,
   setNoteBodyActive
-
-
 }) {
+
   // Все даты месяца
   const allDates = daysFullDate;
   // console.log('allDates (дни всего месяца)', allDates);
 
   // Даты из worker.DayDataDetails
-  const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined); 
+  const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined);
   // console.log('workerDates (дни, которые отмечены в админки любым статусом)', workerDates);
 
   // Даты, которые есть в workerDates, но отсутствуют в allDates
   const missingDates = allDates?.filter(
     (date) => !workerDates?.includes(date)
   );
-  
+
   // console.log('missingDates (по идее, дни для которых будет пустой шаблон т.е. те, которых нет в workerDates)', missingDates);
 
 
@@ -294,8 +316,8 @@ export default function WorkerItem({
           {isWorkerEmpty ? (
             <EmptyWorkerItem id={worker.uuid ? worker.uuid : worker.id} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
           ) : (
-            <WorkerDetails id={worker.uuid ? worker.uuid : worker.id}  noteBodyActive = {noteBodyActive} setNoteBodyActive = {setNoteBodyActive}
-            missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+            <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} noteBodyActive={noteBodyActive} setNoteBodyActive={setNoteBodyActive}
+              missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
           )}
 
         </motion.div>
@@ -308,11 +330,6 @@ export default function WorkerItem({
         setActive={setActive}
         title={title}
       />
-      
-
-
-    
     </>
-
   )
 }

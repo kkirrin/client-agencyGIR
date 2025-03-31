@@ -93,7 +93,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 register={register}
                                 name={'AmountData'}
                                 id={1}
-                                type="text"
+                                type="number"
                                 placeholder="Введите тн."
                             />
                         </div>
@@ -111,7 +111,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 register={register}
                                 name={'DayDataOstatkiPORT'}
                                 id={2}
-                                type="text"
+                                type="number"
                                 placeholder="Введите тн."
                             />
                         </div>
@@ -129,7 +129,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 register={register}
                                 id={3}
                                 name={'DayDataOstatkiGIR'}
-                                type="text"
+                                type="number"
                                 placeholder="Введите тн."
                             />
                         </div>
@@ -239,7 +239,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         name={'DayDataTonnaj'}
                                         errors={errors}
                                         register={register}
-                                        type="text"
+                                        type="number"
                                         placeholder='Введите тн. '
                                         idx={idx}
                                     />
