@@ -68,12 +68,10 @@ const DeleteDateItem = ({ id }) => {
     )
 };
 
-export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
+export default function ComponentPeople({ handleClickBtn, register, errors }) {
     // console.log('ComponentPeople', items);
 
     const { data } = useDataRequestStore();
-
-    const url = `http://89.104.67.119:1337/api/people/`;
     return (
         <>
             <div>
@@ -176,7 +174,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
 
                 {items.map((item, idx) => {
-                    console.log(item)
                     return (
                         item?.SmenaDetails?.SmenaStatusWorker == 'Default' || Number.isInteger(item) ?
                             (
@@ -185,7 +182,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <div className={styles.date_wrapper}>
                                         <div className={styles.date_content}>
                                             <p>Дата</p>
-                                            <ComponentDateSingle idx={idx} />
+                                            <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
                                         </div>
 
                                         <div className={styles.smena_content}>

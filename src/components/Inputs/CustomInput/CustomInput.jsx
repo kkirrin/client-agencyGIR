@@ -66,9 +66,8 @@ export default function CustomInput({
     }
   };
 
-  const value = getValue();
+    const value = getValue();
 
-  // console.log(note);
 
   return (
     <div className={styles.input_container}>
