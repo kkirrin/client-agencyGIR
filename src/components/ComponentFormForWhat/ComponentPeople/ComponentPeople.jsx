@@ -176,105 +176,118 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
 
                 {items.map((item, idx) => {
-
+                    console.log(item)
                     return (
-                        <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
-                            {data ? <DeleteDateItem id={item.id} /> : ''}
-                            <div className={styles.date_wrapper}>
-                                <div className={styles.date_content}>
-                                    <p>Дата</p>
-                                    <ComponentDateSingle idx={idx} />
-                                </div>
+                        item?.SmenaDetails?.SmenaStatusWorker == 'Default' ?
+                            (
+                                <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
+                                    {data ? <DeleteDateItem id={item.id} /> : ''}
+                                    <div className={styles.date_wrapper}>
+                                        <div className={styles.date_content}>
+                                            <p>Дата</p>
+                                            <ComponentDateSingle idx={idx} />
+                                        </div>
 
-                                <div className={styles.smena_content}>
-                                    <p>Смена</p>
-                                    <div className={styles.smena_btns}>
-                                        <ChooseTimeBtn register={register} idx={idx} />
+                                        <div className={styles.smena_content}>
+                                            <p>Смена</p>
+                                            <div className={styles.smena_btns}>
+                                                <ChooseTimeBtn register={register} idx={idx} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.data_container}>
+                                        <div className={styles.data}>
+                                            <p>Данные</p>
+                                            <div className={styles.data_wrapper}>
+                                                <CustomCheckBox
+                                                    errors={errors}
+                                                    register={register}
+                                                    type="checkbox"
+                                                    name={'statusWorkerNotWorked'}
+                                                    value={'Not working'}
+                                                    label="Не работал"
+                                                    checkboxId="checkboxNotWorked"
+                                                    idx={idx}
+                                                />
+                                                <CustomCheckBox
+                                                    errors={errors}
+                                                    register={register}
+                                                    type="checkbox"
+                                                    name={'statusWorkerDayOff'}
+                                                    value={'Day Off'}
+                                                    label="Выходной"
+                                                    checkboxId="checkboxDayOff"
+                                                    idx={idx}
+                                                />
+                                                <CustomCheckBox
+                                                    errors={errors}
+                                                    register={register}
+                                                    type="checkbox"
+                                                    name={'statusWorkerEmpty'}
+                                                    value={'Empty'}
+                                                    label="Пусто"
+                                                    checkboxId="checkboxEmpty"
+                                                    idx={idx}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.data}>
+                                            <p style={{ marginBottom: '10px' }}>Тоннаж</p>
+                                            <CustomInput
+                                                data={data}
+                                                item={item}
+                                                id={6}
+                                                name={'DayDataTonnaj'}
+                                                errors={errors}
+                                                register={register}
+                                                type="number"
+                                                placeholder='Введите тн. '
+                                                idx={idx}
+                                            />
+                                        </div>
+
+                                        <div className={styles.data}>
+                                            <p style={{ marginBottom: '10px' }}>ТС</p>
+                                            <CustomInput
+                                                data={data}
+                                                item={item}
+                                                id={7}
+                                                name={'TC'}
+                                                errors={errors}
+                                                register={register}
+                                                type="text"
+                                                placeholder='Введите ТС '
+                                                idx={idx}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.note}>
+                                        <p>Примечание</p>
+                                        <CustomInput
+                                            data={data}
+                                            item={item}
+                                            id={8}
+                                            name={'note'}
+                                            errors={errors}
+                                            register={register}
+                                            type="text"
+                                            placeholder="Введите примечание"
+                                            idx={idx}
+                                        />
                                     </div>
                                 </div>
+                            )
+                            : (
+                    
+                            <div>
+                              
                             </div>
-
-                            <div className={styles.data_container}>
-                                <div className={styles.data}>
-                                    <p>Данные</p>
-                                    <div className={styles.data_wrapper}>
-                                        <CustomCheckBox
-                                            errors={errors}
-                                            register={register}
-                                            type="checkbox"
-                                            name={'statusWorkerNotWorked'}
-                                            value={'Not working'}
-                                            label="Не работал"
-                                            checkboxId="checkboxNotWorked"
-                                            idx={idx}
-                                        />
-                                        <CustomCheckBox
-                                            errors={errors}
-                                            register={register}
-                                            type="checkbox"
-                                            name={'statusWorkerDayOff'}
-                                            value={'Day Off'}
-                                            label="Выходной"
-                                            checkboxId="checkboxDayOff"
-                                            idx={idx}
-                                        />
-                                        <CustomCheckBox
-                                            errors={errors}
-                                            register={register}
-                                            type="checkbox"
-                                            name={'statusWorkerEmpty'}
-                                            value={'Empty'}
-                                            label="Пусто"
-                                            checkboxId="checkboxEmpty"
-                                            idx={idx}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={styles.data}>
-                                    <p style={{ marginBottom: '10px' }}>Тоннаж</p>
-                                    <CustomInput
-                                        data={data}
-                                        id={6}
-                                        name={'DayDataTonnaj'}
-                                        errors={errors}
-                                        register={register}
-                                        type="number"
-                                        placeholder='Введите тн. '
-                                        idx={idx}
-                                    />
-                                </div>
-
-                                <div className={styles.data}>
-                                    <p style={{ marginBottom: '10px' }}>ТС</p>
-                                    <CustomInput
-                                        data={data}
-                                        id={7}
-                                        name={'TC'}
-                                        errors={errors}
-                                        register={register}
-                                        type="text"
-                                        placeholder='Введите ТС '
-                                        idx={idx}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className={styles.note}>
-                                <p>Примечание</p>
-                                <CustomInput
-                                    data={data}
-                                    id={8}
-                                    name={'note'}
-                                    errors={errors}
-                                    register={register}
-                                    type="text"
-                                    placeholder="Введите примечание"
-                                    idx={idx}
-                                />
-                            </div>
-                        </div>
+                            )
                     )
+                   
                 })}
 
                 <div style={{ height: '40px', marginTop: '20px' }}>

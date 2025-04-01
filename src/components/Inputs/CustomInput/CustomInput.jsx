@@ -1,72 +1,95 @@
 import styles from './style.module.scss';
 
 export default function CustomInput({
-        data = '',
-        placeholder = 'Enter text...',
-        type = 'text',
-        id = '',
-        register = () => {},
-        errors = '',
-        name = 'input',
-        hidden = false
+  data = [],
+  placeholder = 'Введите текст...',
+  type = 'text',
+  id = '',
+  register = () => {},
+  errors = {},
+  name = 'input',
+  hidden = false,
+  item = {},
+  idx
 }) {
-    
-    let valueInput = '';
-    if (data[0]) {
-        let firstObject = data[0];
-    
-        const { MonthDataTonnaj, Name, Job, DayDataOstatki } = firstObject;
+  // Инициализация значений по умолчанию
+  const workerData = data[idx] || {};
+  const smenaDetails = item?.SmenaDetails || {};
 
-        const amountData = MonthDataTonnaj[0].AmountData;
-        const dayDataOstatkiGIR = DayDataOstatki[0].DayDataOstatkiGIR;
-        const dayDataOstatkiPORT = DayDataOstatki[0].DayDataOstatkiPORT;
-        
-        /** 
-         * 
-         * TODO: 
-         * Тут нужно сделать проверку на то, техника, дробилка или человек ли это?
-         * Возможно, надо будет передавать в props еще один идентификатор inputa, чтобы делать еще сколько-то кейсов
-         * 
-         * 
-         */
+  // Извлечение данных с проверками
+  const {
+    MonthDataTonnaj = [],
+    Name = '',
+    Job = '',
+    DayDataOstatki = []
+  } = workerData;
 
-        switch (name) {
-            case 'AmountData':
-                valueInput = amountData ? amountData : 'Ошибка получения заполненных данных или данных нет' ;
-                break;
-            
-            case 'Name':
-                valueInput = Name ? Name : 'Ошибка получения заполненных данных или данных нет' ;
-                break;
-            
-            case 'Job':
-                valueInput = Job ? Job : 'Ошибка получения заполненных данных или данных нет' ;
-                break; 
-            
-            case 'DayDataOstatkiGIR':
-                // Возможно тут будет пересчитываться динамически 
-                valueInput = dayDataOstatkiGIR ? dayDataOstatkiGIR : 'Ошибка получения заполненных данных или данных нет' ;
-                break;
-            
-            case 'DayDataOstatkiPORT':
-                // Возможно тут будет пересчитываться динамически 
-                valueInput = dayDataOstatkiPORT ? dayDataOstatkiPORT : 'Ошибка получения заполненных данных или данных нет' ;
-                break;
-        }
+  const {
+    Note: note = '',
+    SmenaDataTonnaj: dayDataTonnaj = '',
+    SmenaDateDetails: smenaDateDetails = '',
+    TC: tc = ''
+  } = smenaDetails;
+
+  // Получение значений с проверкой вложенных свойств
+  const getValue = () => {
+    switch (name) {
+      case 'AmountData':
+        return MonthDataTonnaj[0]?.AmountData || '';
+      
+      case 'Name':
+        return Name;
+      
+      case 'Job':
+        return Job;
+      
+      case 'DayDataOstatkiGIR':
+        return DayDataOstatki[0]?.DayDataOstatkiGIR || '';
+      
+      case 'DayDataOstatkiPORT':
+        return DayDataOstatki[0]?.DayDataOstatkiPORT || '';
+      
+      case 'smenaDateDetails':
+        return smenaDateDetails;
+      
+      case 'TC':
+        return tc;
+      
+      case 'dayDataTonnaj':
+        return dayDataTonnaj;
+      
+      case 'note':
+        return note;
+      
+      default:
+        return '';
     }
+  };
 
-    return (
-        <div>
-            <input
-                id={id}
-                className={styles.custom_input}
-                hidden={hidden}
-                type={type}
-                defaultValue={valueInput}
-                placeholder={placeholder}
-                {...register(name)}
-            />
-            {errors[name] && <span className={styles.error}>{errors[name].message}</span>}
-        </div>
-    );
+    const value = getValue();
+    
+    console.log(note);
+
+  return (
+    <div className={styles.input_container}>
+      <input
+        id={id}
+        className={styles.custom_input}
+        type={type}
+        hidden={hidden}
+      
+        placeholder={value ? String(value) : placeholder}
+        {...register(name, { 
+          required: 'Это поле обязательно',
+          validate: (value) => value.trim() !== '' || 'Поле не может быть пустым'
+        })}
+      />
+      
+      {errors[name] && (
+        <span className={styles.error}>
+          {errors[name].message}
+        </span>
+      )}
+    </div>
+  );
 }

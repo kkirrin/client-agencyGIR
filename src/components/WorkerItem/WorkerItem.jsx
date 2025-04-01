@@ -105,7 +105,7 @@ const WorkerDetails = ({
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
-        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>) */}
+        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
         <p className={styles.details_static}>ТС</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
