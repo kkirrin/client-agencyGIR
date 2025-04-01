@@ -5,7 +5,7 @@ export default function CustomInput({
   placeholder = 'Введите текст...',
   type = 'text',
   id = '',
-  register = () => {},
+  register = () => { },
   errors = {},
   name = 'input',
   hidden = false,
@@ -36,36 +36,38 @@ export default function CustomInput({
     switch (name) {
       case 'AmountData':
         return MonthDataTonnaj[0]?.AmountData || '';
-      
+
       case 'Name':
         return Name;
-      
+
       case 'Job':
         return Job;
-      
+
       case 'DayDataOstatkiGIR':
         return DayDataOstatki[0]?.DayDataOstatkiGIR || '';
-      
+
       case 'DayDataOstatkiPORT':
         return DayDataOstatki[0]?.DayDataOstatkiPORT || '';
-      
+
       case 'smenaDateDetails':
         return smenaDateDetails;
-      
+
       case 'TC':
         return tc;
-      
+
       case 'DayDataTonnaj':
         return smenaDataTonnaj;
-      
+
       case 'note':
         return note;
-      
+
       default:
         return '';
     }
   };
+
     const value = getValue();
+
 
   return (
     <div className={styles.input_container}>
@@ -74,14 +76,14 @@ export default function CustomInput({
         className={styles.custom_input}
         type={type}
         hidden={hidden}
-      
+
         placeholder={value ? String(value) : placeholder}
-        {...register(name, { 
+        {...register(name, {
           required: 'Это поле обязательно',
           validate: (value) => value.trim() !== '' || 'Поле не может быть пустым'
         })}
       />
-      
+
       {errors[name] && (
         <span className={styles.error}>
           {errors[name].message}

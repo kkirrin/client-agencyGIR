@@ -9,7 +9,12 @@
     border-radius: 6px;
     min-width: 110px;
     transition: all 0.3s ease-in-out;
-    border: 1px solid transparent; /* Прозрачная граница по умолчанию */
+    border: 1px solid transparent;
+    /* Прозрачная граница по умолчанию */
+}
+
+.hidden {
+    display: none;
 }
 
 .smena_btn svg path {
@@ -17,7 +22,8 @@
 }
 
 .night {
-    border-color: var(--main); /* Граница для ночи */
+    border-color: var(--main);
+    /* Граница для ночи */
     color: var(--main);
 }
 
@@ -26,22 +32,31 @@
     color: var(--yellow);
 }
 
+.active_white {
+    color: var(--white);
+    background-color: var(--yellow);
+}
 
-input[type="checkbox"]{
+.active_black {
+    color: var(--white);
+    background-color: var(--main);
+}
+
+input[type="checkbox"] {
     background-color: var(--main);
     color: var(--white);
     border-color: var(--main);
 }
 
 /* Активное состояние для ночи */
-input[type="checkbox"]#night:checked + .night {
+input[type="checkbox"]#night:checked+.night {
     background-color: var(--main);
     color: var(--white);
     border-color: var(--main);
 }
 
 /* Активное состояние для дня */
-input[type="checkbox"]#day:checked + .day {
+input[type="checkbox"]#day:checked+.day {
     background-color: var(--yellow);
     color: var(--white);
     border-color: var(--yellow);

@@ -69,6 +69,7 @@ const DeleteDateItem = ({ id }) => {
 };
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
+
     const { data } = useDataRequestStore();
     return (
         <>
@@ -173,7 +174,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
                 {items.map((item, idx) => {
                     return (
-                        item?.SmenaDetails?.SmenaStatusWorker == 'Default' ?
+                        item?.SmenaDetails?.SmenaStatusWorker == 'Default' || Number.isInteger(item) ?
                             (
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
                                     {data ? <DeleteDateItem id={item.id} /> : ''}
@@ -186,7 +187,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
-                                                <ChooseTimeBtn register={register} idx={idx} />
+                                                <ChooseTimeBtn register={register} idx={idx} item={item} />
                                             </div>
                                         </div>
                                     </div>
@@ -276,13 +277,13 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 </div>
                             )
                             : (
-                    
-                            <div>
-                              
-                            </div>
+
+                                <div>
+
+                                </div>
                             )
                     )
-                   
+
                 })}
 
                 <div style={{ height: '40px', marginTop: '20px' }}>
