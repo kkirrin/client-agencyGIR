@@ -21,8 +21,8 @@ const url = 'http://89.104.67.119:1337/api/people/';
 // Проверка существования записи по UUID
 export async function checkExistingRecord(uuid) {
 
-  try {
-      const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
+    try {
+        const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
         const result = await response.json();
         // Для Strapi структура ответа: { data: [...] }
         return result.data?.length > 0 ? result.data[0]?.documentId : null;
@@ -45,10 +45,7 @@ export async function saveUserDateService(userData, url) {
     return { response, data };
 }
 
-
-
 export default function Form({ title, forWhat, setActive }) {
-
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const {
@@ -57,15 +54,13 @@ export default function Form({ title, forWhat, setActive }) {
         handleSubmit,
         formState: { errors },
         reset,
-        setValue 
+        setValue
     } = useForm();
 
 
     const { date } = useDateSingeStore();
-
     const { id } = useParams();
     const { data } = useDataRequestStore();
-
 
     /**
      * Отслеживать input value принято при помощи useWatch && control
@@ -92,17 +87,15 @@ export default function Form({ title, forWhat, setActive }) {
             // statusWorkerNotWorked: data,
             // statusWorkerDayOff: data,
             // statusWorkerEmpty: data,
-            
-         });
+
+        });
     }, []);
-
-
 
     /**
      * 
      * TODO: нужно перебором делать проверку массива
      */
-    
+
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
@@ -120,22 +113,34 @@ export default function Form({ title, forWhat, setActive }) {
     // Следим за изменением значений
     const shiftType = useWatch({ control, name: 'shiftType' });
 
-   useEffect(() => {
-    if (shiftType === 'day') {
-        setValue('btnNight', false);
-    } else if (shiftType === 'night') {
-        setValue('btnDay', false);
-    }
-   }, [shiftType, setValue]);
-    
-    
-    const [items, setItems] = useState([]);
+    useEffect(() => {
+        if (shiftType === 'day') {
+            setValue('btnNight', false);
+        } else if (shiftType === 'night') {
+            setValue('btnDay', false);
+        }
+    }, [shiftType, setValue]);
 
+    /**
+     * Устанавливаем массив объектов DayDataDetails
+     */
+    const [items, setItems] = useState([]);
     useEffect(() => {
         if (data && data.length > 0) {
-            setItems(data[0].DayDataDetails);
+            let itemsArray = [];
+            data[0].DayDataDetails.forEach(day => {
+                if (day.DayInfo) {
+                    itemsArray.push(day.DayInfo);
+                }
+                if (day.NightInfo) {
+                    itemsArray.push(day.NightInfo);
+                }
+            });
+
+            setItems(itemsArray);
         }
-    }, [data])
+    }, [data]);
+
 
     const handleClick = (e) => {
         e.preventDefault();

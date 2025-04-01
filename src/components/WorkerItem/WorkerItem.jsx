@@ -79,7 +79,7 @@ const WorkerDetails = ({
 
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
-  console.log(missingDatesSet, missingDates)
+  // console.log(missingDatesSet, missingDates)
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
@@ -139,22 +139,22 @@ const WorkerDetails = ({
   // Рендер одной даты
   const renderDate = (date) => {
     const isMissing = missingDatesSet.has(date)
-    console.log(date, missingDatesSet, isMissing);
+    // console.log(date, missingDatesSet, isMissing);
     if (isMissing) return <EmptyWorkerItemData key={date} />
 
     const dayData = worker?.DayDataDetails?.find(d => {
 
-      const dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);  
+      const dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
       const nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
-      
-      console.log(dayDate)
+
+      // console.log(dayDate)
       return dayDate === date || nightDate === date;
 
 
 
     })
 
-    console.log(dayData);
+    // console.log(dayData);
 
     return (
       <div className={styles.item_table} key={date}>
@@ -305,15 +305,15 @@ export default function WorkerItem({
     if (item?.DayInfo?.SmenaDetails?.SmenaDateDetails) {
       acc.push(item.DayInfo.SmenaDetails.SmenaDateDetails);
     }
-    
+
     // Добавляем дату ночной смены, если есть
     if (item?.NightInfo?.SmenaDetails?.SmenaDateDetails) {
       acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
     }
-    
+
     return acc;
-  }, [])?.filter((date, index, self) => 
-    date !== undefined && 
+  }, [])?.filter((date, index, self) =>
+    date !== undefined &&
     self.indexOf(date) === index
   ) || [];
 

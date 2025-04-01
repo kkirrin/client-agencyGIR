@@ -66,11 +66,11 @@ const DeleteDateItem = ({ id }) => {
             <img src={deleteSVG} alt='deleteSVG' width={15} height={15} />
         </button>
     )
-
-    // ==============================================
 };
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
+    console.log('ComponentPeople', items);
+
     const { data } = useDataRequestStore();
 
     const url = `http://89.104.67.119:1337/api/people/`;
@@ -174,9 +174,9 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                     </div>
                 </div>
 
-                
+
                 {items.map((item, idx) => {
-                    
+
                     return (
                         <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
                             {data ? <DeleteDateItem id={item.id} /> : ''}
