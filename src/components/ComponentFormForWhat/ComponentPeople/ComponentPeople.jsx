@@ -68,7 +68,8 @@ const DeleteDateItem = ({ id }) => {
     )
 };
 
-export default function ComponentPeople({ handleClickBtn, items, register, errors }) {
+export default function ComponentPeople({ handleClickBtn, register, errors }) {
+    // console.log('ComponentPeople', items);
 
     const { data } = useDataRequestStore();
     return (
@@ -187,7 +188,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
-                                                <ChooseTimeBtn register={register} idx={idx} item={item} />
+                                                <ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} />
                                             </div>
                                         </div>
                                     </div>
