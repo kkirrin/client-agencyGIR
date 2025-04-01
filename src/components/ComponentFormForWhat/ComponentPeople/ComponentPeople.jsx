@@ -68,7 +68,7 @@ const DeleteDateItem = ({ id }) => {
     )
 };
 
-export default function ComponentPeople({ handleClickBtn, register, errors }) {
+export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
     // console.log('ComponentPeople', items);
 
     const { data } = useDataRequestStore();
