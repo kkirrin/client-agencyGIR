@@ -176,7 +176,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
 
                 {items.map((item, idx) => {
-                    console.log(item)
                     return (
                         item?.SmenaDetails?.SmenaStatusWorker == 'Default' ?
                             (
@@ -185,7 +184,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <div className={styles.date_wrapper}>
                                         <div className={styles.date_content}>
                                             <p>Дата</p>
-                                            <ComponentDateSingle idx={idx} />
+                                            <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
                                         </div>
 
                                         <div className={styles.smena_content}>

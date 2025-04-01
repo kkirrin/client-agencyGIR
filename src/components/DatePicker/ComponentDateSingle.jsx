@@ -8,10 +8,18 @@ import useDateSingleStore from '../../store/CalendarSingleStore';
 registerLocale('ru', ru);
 
 
-export default function ComponentDate() {
-    const { date, addDate } = useDateSingleStore(); 
-    const [selectedDates, setSelectedDates] = useState(date);
+export default function ComponentDate({ dateForRender = '' }) {
     
+    const { date, addDate } = useDateSingleStore(); 
+    
+    // форматирование и приведение к нужному формату
+    const dateString = dateForRender;
+    const [day, month, year] = dateString.split('.').map(Number);
+    const dateObject = new Date(year, month - 1, day);
+    
+    const [selectedDates, setSelectedDates] = useState(dateObject ? dateObject : date);
+
+
     const handleDateChange = (date) => {
         setSelectedDates(date);
         addDate(date);
