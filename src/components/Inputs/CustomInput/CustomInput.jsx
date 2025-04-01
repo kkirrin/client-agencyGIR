@@ -13,7 +13,7 @@ export default function CustomInput({
   idx
 }) {
   // Инициализация значений по умолчанию
-  const workerData = data[idx] || {};
+  const workerData = data[0] || {};
   const smenaDetails = item?.SmenaDetails || {};
 
   // Извлечение данных с проверками
