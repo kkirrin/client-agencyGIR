@@ -2,7 +2,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import { registerLocale } from 'react-datepicker';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDateSingleStore from '../../store/CalendarSingleStore';
 
 registerLocale('ru', ru);
@@ -11,14 +11,26 @@ registerLocale('ru', ru);
 export default function ComponentDate({ dateForRender = '' }) {
     
     const { date, addDate } = useDateSingleStore(); 
-    
-    // форматирование и приведение к нужному формату
-    const dateString = dateForRender;
-    const [day, month, year] = dateString.split('.').map(Number);
-    const dateObject = new Date(year, month - 1, day);
-    
-    const [selectedDates, setSelectedDates] = useState(dateObject ? dateObject : date);
+    const [selectedDates, setSelectedDates] = useState(null);
 
+    useEffect(() => {
+        let initialDate = new Date();
+
+        if (dateForRender instanceof Date) {
+            initialDate = new Date(dateForRender);
+        } else if (typeof dateForRender === 'string') {
+            const [day, month, year] = dateForRender.split('.').map(Number);
+
+            if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+                initialDate = new Date(year, month - 1, day);
+            }
+        }
+        
+        if (initialDate && !isNaN(initialDate.getTime())) {
+            setSelectedDates(initialDate);
+            addDate(initialDate);
+        }
+    }, [dateForRender]);        
 
     const handleDateChange = (date) => {
         setSelectedDates(date);
