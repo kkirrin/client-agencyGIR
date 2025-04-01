@@ -26,7 +26,7 @@ export default function CustomInput({
 
   const {
     Note: note = '',
-    SmenaDataTonnaj: dayDataTonnaj = '',
+    SmenaDataTonnaj: smenaDataTonnaj = '',
     SmenaDateDetails: smenaDateDetails = '',
     TC: tc = ''
   } = smenaDetails;
@@ -55,8 +55,8 @@ export default function CustomInput({
       case 'TC':
         return tc;
       
-      case 'dayDataTonnaj':
-        return dayDataTonnaj;
+      case 'DayDataTonnaj':
+        return smenaDataTonnaj;
       
       case 'note':
         return note;
