@@ -121,6 +121,7 @@ export default function Form({ title, forWhat, setActive }) {
         }
     }, [shiftType, setValue]);
 
+
     /**
      * Устанавливаем массив объектов DayDataDetails
      */
@@ -259,6 +260,7 @@ export default function Form({ title, forWhat, setActive }) {
                         items={items}
                         register={register}
                         errors={errors}
+                        shiftType={shiftType}
                     />
                 )}
 
