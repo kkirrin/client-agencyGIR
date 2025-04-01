@@ -57,6 +57,7 @@ export default function Form({ title, forWhat, setActive }) {
         handleSubmit,
         formState: { errors },
         reset,
+        setValue 
     } = useForm();
 
 
@@ -64,7 +65,6 @@ export default function Form({ title, forWhat, setActive }) {
 
     const { id } = useParams();
     const { data } = useDataRequestStore();
-    console.log(data[0]?.DayDataDetails);
 
 
     /**
@@ -111,16 +111,24 @@ export default function Form({ title, forWhat, setActive }) {
     const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
-    const btnDay = useWatch({ control, name: 'btnDay' });
-    const btnNight = useWatch({ control, name: 'btnNight' });
 
     const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
     const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
     const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
 
 
-    console.log(dayDataTonnaj);
+    // Следим за изменением значений
+    const shiftType = useWatch({ control, name: 'shiftType' });
 
+   useEffect(() => {
+    if (shiftType === 'day') {
+        setValue('btnNight', false);
+    } else if (shiftType === 'night') {
+        setValue('btnDay', false);
+    }
+   }, [shiftType, setValue]);
+    
+    
     const [items, setItems] = useState([]);
 
     useEffect(() => {
@@ -132,30 +140,9 @@ export default function Form({ title, forWhat, setActive }) {
     const handleClick = (e) => {
         e.preventDefault();
         setItems([...items, items.length + 1]);
-        console.log(items);
     };
 
     const objectUUID = data[0]?.uuid
-
-  // Инициализация формы с данными
-    // useEffect(() => {
-    //     if (data && data[0]) {
-    //         const initialData = {
-    //             ...data[0],
-    //             DayDataDetails: data[0].DayDataDetails?.map(item => ({
-    //                 ...item,
-    //                 id: undefined // Убираем strapi id для новых записей
-    //             })) || []
-    //         };
-    //         reset(initialData);
-    //     }
-    // }, [data, reset]);
-
-    // console.log('data', data)
-    //  // Отслеживание всех значений
-    // const formValues = useWatch({ control });
-    // console.log('formValues', formValues);
-
 
     const onSubmit = async () => {
         setIsSending(true);
@@ -186,7 +173,7 @@ export default function Form({ title, forWhat, setActive }) {
             ],
         };
 
-        if (btnDay) {
+        if (shiftType == "day") {
             formData.DayDataDetails = [
                 {
                     DayInfo: {
@@ -201,24 +188,22 @@ export default function Form({ title, forWhat, setActive }) {
                     },
                 },
             ];
-        }
 
-        if (btnNight) {
-            if (!formData.DayDataDetails) {
-                formData.DayDataDetails = [];
-            }
-            formData.DayDataDetails.push({
-                NightInfo: {
-                    Night: true,
-                    SmenaDetails: {
-                        Note: note || "-",
-                        SmenaDataTonnaj: dayDataTonnaj || "0",
-                        SmenaDateDetails: formattedDate || '0',
-                        SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default",
-                        TC: TC || "-",
+        } else if (shiftType == "night") {
+            formData.DayDataDetails = [
+                {
+                    NightInfo: {
+                        Night: true,
+                        SmenaDetails: {
+                            Note: note || "-",
+                            SmenaDataTonnaj: dayDataTonnaj || "0",
+                            SmenaDateDetails: formattedDate || '0',
+                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default",
+                            TC: TC || "-",
+                        },
                     },
                 },
-            });
+            ];
         }
 
         try {

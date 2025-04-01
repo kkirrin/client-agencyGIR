@@ -3,12 +3,12 @@ import styles from './style.module.scss';
 export default function ChooseTimeBtn({ register, idx }) {
     return (
         <>
-            <input
-                type="radio" // Используем тип radio
-                id={'day'}
-                value="day" // Значение для дня
-                {...register('btnDay')} // Регистрируем в форме
-                className={styles.hidden} // Скрываем стандартный input
+           <input
+                type="radio"
+                id="day"
+                value="day"
+                {...register('shiftType')} // Общее имя для группы
+                className={styles.hidden}
             />
             <label
                 htmlFor={'day'}
@@ -20,12 +20,12 @@ export default function ChooseTimeBtn({ register, idx }) {
                 <p>День</p>
             </label>
 
-            <input
-                type="radio" // Используем тип radio
-                id={'night'}
-                value="night" // Значение для ночи
-                {...register('btnNight')} // Регистрируем в форме
-                className={styles.hidden} // Скрываем стандартный input
+             <input
+                type="radio"
+                id="night"
+                value="night"
+                {...register('shiftType')} // Общее имя для группы
+                className={styles.hidden}
             />
             <label
                 htmlFor={'night'}

@@ -79,6 +79,7 @@ const WorkerDetails = ({
 
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
+  console.log(missingDatesSet, missingDates)
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
@@ -99,12 +100,12 @@ const WorkerDetails = ({
 
     return (
       <>
-        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
+        <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>
         <p className={styles.details_static}>Тоннаж</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
-        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
+        <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p>)
         <p className={styles.details_static}>ТС</p>
         <p className={`${styles.details_nostatic} working`}>
           {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
@@ -138,18 +139,29 @@ const WorkerDetails = ({
   // Рендер одной даты
   const renderDate = (date) => {
     const isMissing = missingDatesSet.has(date)
+    console.log(date, missingDatesSet, isMissing);
     if (isMissing) return <EmptyWorkerItemData key={date} />
 
-    const dayData = worker?.DayDataDetails?.find(d =>
-      parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0], 10) === date
-    )
+    const dayData = worker?.DayDataDetails?.find(d => {
+
+      const dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);  
+      const nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
+      
+      console.log(dayDate)
+      return dayDate === date || nightDate === date;
+
+
+
+    })
+
+    console.log(dayData);
 
     return (
       <div className={styles.item_table} key={date}>
         {/* Дневная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {renderShift(dayData?.DayInfo, 'day')}
+            {renderShift(dayData?.DayInfo)}
           </div>
           <CheckNoteBtn handleClick={handleClickNote} />
         </div>
@@ -159,7 +171,7 @@ const WorkerDetails = ({
         {/* Ночная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {renderShift(dayData?.NightInfo, 'night')}
+            {renderShift(dayData?.NightInfo)}
           </div>
           <CheckNoteBtn handleClick={handleClickNote} />
         </div>
@@ -274,7 +286,6 @@ export default function WorkerItem({
   setActive,
   title,
   id,
-  setWorkers,
   workers,
   worker,
   displayedDays,
@@ -289,16 +300,32 @@ export default function WorkerItem({
   // console.log('allDates (дни всего месяца)', allDates);
 
   // Даты из worker.DayDataDetails
-  const workerDates = worker?.DayDataDetails?.map((item) => item?.DayInfo?.SmenaDetails?.SmenaDateDetails)?.filter((date) => date !== undefined);
-  // console.log('workerDates (дни, которые отмечены в админки любым статусом)', workerDates);
+  const workerDates = worker?.DayDataDetails?.reduce((acc, item) => {
+    // Добавляем дату дневной смены, если есть
+    if (item?.DayInfo?.SmenaDetails?.SmenaDateDetails) {
+      acc.push(item.DayInfo.SmenaDetails.SmenaDateDetails);
+    }
+    
+    // Добавляем дату ночной смены, если есть
+    if (item?.NightInfo?.SmenaDetails?.SmenaDateDetails) {
+      acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
+    }
+    
+    return acc;
+  }, [])?.filter((date, index, self) => 
+    date !== undefined && 
+    self.indexOf(date) === index
+  ) || [];
 
   // Даты, которые есть в workerDates, но отсутствуют в allDates
   const missingDates = allDates?.filter(
     (date) => !workerDates?.includes(date)
   );
 
-  // console.log('missingDates (по идее, дни для которых будет пустой шаблон т.е. те, которых нет в workerDates)', missingDates);
 
+  // console.log('missingDates !!!', missingDates)
+
+  // console.log('missingDates (по идее, дни для которых будет пустой шаблон т.е. те, которых нет в workerDates)', missingDates);
 
   const isWorkerEmpty = worker.name === '';
   return (
