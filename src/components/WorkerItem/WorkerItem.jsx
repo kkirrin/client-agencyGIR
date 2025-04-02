@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './style.module.scss';
-import { AddPopupContent } from '../../components';
+import { AddPopupContent, TotalComponent } from '../../components';
 
 import { CheckNoteBtn, NoteBody } from '../../components';
 
@@ -9,10 +9,10 @@ import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
 
 /**
- * 
+ *
  * TODO:
- * сделать проверки типов данных, наличие данных (не пустыеЮ возможно, стоит сделать JSON.parse()); 
- * 
+ * сделать проверки типов данных, наличие данных (не пустыеЮ возможно, стоит сделать JSON.parse());
+ *
  */
 
 const EmptyWorkerItemData = ({ handleClickNote }) => {
@@ -121,19 +121,19 @@ const WorkerDetails = ({
     )
   }
 
-  /** 
-   * 
+  /**
+   *
    * TODO: НАШЕЛ БАГУ
    * ДЕло в том, что при загрузке первых 5 дней, происходит ошибка, допустим есть с 1 по 5 число, потом с 6 числа не работает логика
    * При добавлении из админки 10 числа и последующих - не отображаются сотрудники
    */
 
 
-  /** 
-  * 
+  /**
+  *
   * TODO: НАШЕЛ БАГУ
   * При создании человека, надо наверно отправлять правильную дату формата 3.03.2025, а не 03.03.2025
-  * 
+  *
   */
 
   // Рендер одной даты
@@ -179,63 +179,6 @@ const WorkerDetails = ({
     )
   }
 
-  /**
-   * 
-   * TODO: 
-   * тут бут логика подсчета всех данных за месяц или за период
-   * console.log(allDates) сюда уже приходят отфильтрованные дни
-   * 
-   */
-
-  // количество дневных смен, когда он работал (уточнить у заказчика)
-  const totalAmountDaySmena = worker?.DayDataDetails?.filter(item => {
-    const smena = item?.DayInfo?.SmenaDetails;
-    const date = smena?.SmenaDateDetails;
-    return smena && allDates.includes(date);
-  }).length;
-
-  // количество ночных смен, когда он работал (уточнить у заказчика)
-
-  const totalAmountNightSmena = worker?.DayDataDetails?.filter(item => {
-    const smena = item?.NightInfo?.SmenaDetails;
-    const date = smena?.SmenaDateDetails;
-    return smena && allDates.includes(date);
-  }).length;
-
-  // сумма смен всего, сколько работал
-  const totalAmountSmena = totalAmountDaySmena + totalAmountNightSmena;
-
-  let totalSumTonnaj = 0;
-  worker?.DayDataDetails?.forEach(item => {
-    // Дневная смена
-    const daySmena = item?.DayInfo?.SmenaDetails;
-    const dayDate = daySmena?.SmenaDateDetails;
-
-    if (daySmena && allDates.includes(dayDate)) {
-      const tonnaj = parseFloat(daySmena.SmenaDataTonnaj);
-      totalSumTonnaj += isNaN(tonnaj) ? 0 : tonnaj;
-    }
-
-    // Ночная смена
-    const nightSmena = item?.NightInfo?.SmenaDetails;
-    const nightDate = nightSmena?.SmenaDateDetails;
-
-    if (nightSmena && allDates.includes(nightDate)) {
-      const tonnaj = parseFloat(nightSmena.SmenaDataTonnaj);
-      totalSumTonnaj += isNaN(tonnaj) ? 0 : tonnaj;
-    }
-  });
-
-
-  // число планое, сколько ему надо было выработать (на каждый месяц оно свое)
-  const totalSumTonnajPlan = worker?.MonthDataTonnaj[0]?.AmountData;
-
-  // сумма тон осталась выработать в ГИР на конец месяца??? сумма выставии - тон смены
-  const totalSumOstatokGir = worker?.DayDataOstatki[0]?.DayDataOstatkiGIR;
-
-  // сумма тон осталась выработать в ПОРТ на конец месяца??? сумма выставии - тон смены
-  const totalSumOstatokPort = worker?.DayDataOstatki[0]?.DayDataOstatkiPORT;
-
   return (
     <>
       <div className={styles.workers_item} id={id}>
@@ -254,28 +197,7 @@ const WorkerDetails = ({
         </a>
       </div>
 
-      <div className={styles.sum}>
-        <div className={styles.sum_wrapper}>
-          <p className={styles.sum_text}>Всего</p>
-          <p className={styles.sum_month}>{format(new Date, 'LLLL', { locale: ru })}</p>
-        </div>
-
-        {[
-          // { label: 'Дневные смены', value: totalAmountDaySmena },
-          { label: 'Дневные смены', value: totalAmountDaySmena },
-          { label: 'Ночные смены', value: totalAmountNightSmena },
-          { label: 'Всего смен', value: totalAmountSmena },
-          { label: 'Общий тоннаж', value: totalSumTonnaj },
-          { label: 'Выставили', value: totalSumTonnajPlan },
-          { label: 'Ост. Порт', value: totalSumOstatokGir },
-          { label: 'Ост. ГиР', value: totalSumOstatokPort },
-        ].map((item, index) => (
-          <div className={styles.sum_detail} key={item.label}>
-            <p>{item.label}</p>
-            <p>{item.value}</p>
-          </div>
-        ))}
-      </div>
+      <TotalComponent object={worker} allDates={allDates} />
     </>
   )
 }
@@ -321,11 +243,6 @@ export default function WorkerItem({
   const missingDates = allDates?.filter(
     (date) => !workerDates?.includes(date)
   );
-
-
-  // console.log('missingDates !!!', missingDates)
-
-  // console.log('missingDates (по идее, дни для которых будет пустой шаблон т.е. те, которых нет в workerDates)', missingDates);
 
   const isWorkerEmpty = worker.name === '';
   return (
