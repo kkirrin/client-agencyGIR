@@ -207,13 +207,14 @@ export default function Form({ title, forWhat, setActive }) {
 
        formData.DayDataDetails = items.map((item, idx) => {
             const status = 
-               statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : "Default";
-        
+               statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : ["Default"];
+
+           console.log(status)
             const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx],
                 SmenaDateDetails: formattedDates?.[idx],
-                SmenaStatusWorker: status,
+                SmenaStatusWorker: status[0],
                 TC: TC?.[idx] || "-"
             };
 
