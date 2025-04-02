@@ -85,6 +85,7 @@ const DeleteDateItem = ({ id }) => {
             if (!response.ok) throw new Error('Ошибка при обновлении компонента');
 
             alert('Рабочая смена удалена');
+            window.location.reload();
 
         } catch (error) {
             console.error('Ошибка:', error);
@@ -100,8 +101,6 @@ const DeleteDateItem = ({ id }) => {
 };
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType, setItems }) {
-    console.log('ComponentPeople', items);
-
     const { data } = useDataRequestStore();
     return (
         <>
@@ -219,7 +218,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
-                                                <ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} />
+                                                <ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} day={item.Day} night={item.Night} />
                                             </div>
                                         </div>
                                     </div>
