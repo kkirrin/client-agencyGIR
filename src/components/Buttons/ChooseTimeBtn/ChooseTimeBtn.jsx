@@ -6,9 +6,9 @@ export default function ChooseTimeBtn({ register, idx, shiftType }) {
     /**
      * TODO: сделать дефолное значение для радио кнопок
      * удаление смены
-     * 
+     *
      */
-    console.log(shiftType);
+    // console.log(shiftType);
 
     return (
         <>

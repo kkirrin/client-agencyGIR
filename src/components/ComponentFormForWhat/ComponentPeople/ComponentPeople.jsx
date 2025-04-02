@@ -5,6 +5,7 @@ import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSi
 import useDataRequestStore from '../../../store/DataRequestStore';
 
 const DeleteDateItem = ({ id }) => {
+
     const { data } = useDataRequestStore();
     const userId = data[0]?.documentId;
     const dayDataDetails = data[0]?.DayDataDetails;
@@ -15,27 +16,57 @@ const DeleteDateItem = ({ id }) => {
 
         if (!window.confirm("Вы точно хотите удалить рабочую смену?")) return;
 
-        const cleanedDayDataDetails = dayDataDetails
-            .filter(item => item.id !== id)
-            .map(({ DayInfo, NightInfo }) => ({
-                DayInfo: DayInfo ? {
-                    Day: DayInfo.Day,
+        // Создаем копию исходных данных
+        const updatedDayDataDetails = [...dayDataDetails];
+
+        // Находим и удаляем элемент с соответствующим id
+        for (let i = 0; i < updatedDayDataDetails.length; i++) {
+            const day = updatedDayDataDetails[i];
+            // Проверяем DayInfo
+            if (day.DayInfo && day.DayInfo.id === id) {
+                // Если удаляем DayInfo, оставляем структуру с null
+                updatedDayDataDetails[i] = {
+                    ...day,
+                    DayInfo: null,
+                    NightInfo: day.NightInfo || null
+                };
+                break;
+            }
+
+            // Проверяем NightInfo
+            if (day.NightInfo && day.NightInfo.id === id) {
+                // Если удаляем NightInfo, оставляем структуру с null
+                updatedDayDataDetails[i] = {
+                    ...day,
+                    DayInfo: day.DayInfo || null,
+                    NightInfo: null
+                };
+                break;
+            }
+        }
+
+        // Фильтруем полностью пустые записи (где и DayInfo и NightInfo null)
+        const cleanedDayDataDetails = updatedDayDataDetails
+            .filter(day => day.DayInfo !== null || day.NightInfo !== null)
+            .map(day => ({
+                DayInfo: day.DayInfo ? {
+                    Day: day.DayInfo.Day,
                     SmenaDetails: {
-                        SmenaStatusWorker: DayInfo.SmenaDetails?.SmenaStatusWorker,
-                        SmenaDataTonnaj: DayInfo.SmenaDetails?.SmenaDataTonnaj,
-                        Note: DayInfo.SmenaDetails?.Note,
-                        TC: DayInfo.SmenaDetails?.TC,
-                        SmenaDateDetails: DayInfo.SmenaDetails?.SmenaDateDetails,
+                        SmenaStatusWorker: day.DayInfo.SmenaDetails?.SmenaStatusWorker,
+                        SmenaDataTonnaj: day.DayInfo.SmenaDetails?.SmenaDataTonnaj,
+                        Note: day.DayInfo.SmenaDetails?.Note,
+                        TC: day.DayInfo.SmenaDetails?.TC,
+                        SmenaDateDetails: day.DayInfo.SmenaDetails?.SmenaDateDetails,
                     }
                 } : null,
-                NightInfo: NightInfo ? {
-                    Night: NightInfo.Night,
+                NightInfo: day.NightInfo ? {
+                    Night: day.NightInfo.Night,
                     SmenaDetails: {
-                        SmenaStatusWorker: NightInfo.SmenaDetails?.SmenaStatusWorker,
-                        SmenaDataTonnaj: NightInfo.SmenaDetails?.SmenaDataTonnaj,
-                        Note: NightInfo.SmenaDetails?.Note,
-                        TC: NightInfo.SmenaDetails?.TC,
-                        SmenaDateDetails: NightInfo.SmenaDetails?.SmenaDateDetails,
+                        SmenaStatusWorker: day.NightInfo.SmenaDetails?.SmenaStatusWorker,
+                        SmenaDataTonnaj: day.NightInfo.SmenaDetails?.SmenaDataTonnaj,
+                        Note: day.NightInfo.SmenaDetails?.Note,
+                        TC: day.NightInfo.SmenaDetails?.TC,
+                        SmenaDateDetails: day.NightInfo.SmenaDetails?.SmenaDateDetails,
                     }
                 } : null
             }));
@@ -68,8 +99,8 @@ const DeleteDateItem = ({ id }) => {
     )
 };
 
-export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
-    // console.log('ComponentPeople', items);
+export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType, setItems }) {
+    console.log('ComponentPeople', items);
 
     const { data } = useDataRequestStore();
     return (

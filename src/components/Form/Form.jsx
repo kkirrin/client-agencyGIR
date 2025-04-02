@@ -92,7 +92,7 @@ export default function Form({ title, forWhat, setActive }) {
     }, []);
 
     /**
-     * 
+     *
      * TODO: нужно перебором делать проверку массива
      */
 
@@ -261,6 +261,7 @@ export default function Form({ title, forWhat, setActive }) {
                         register={register}
                         errors={errors}
                         shiftType={shiftType}
+                        setItems={setItems}
                     />
                 )}
 
