@@ -22,3 +22,4 @@ export { default as ComponentTech } from './ComponentFormForWhat/ComponentTech/C
 export { default as ComponentPeople } from './ComponentFormForWhat/ComponentPeople/ComponentPeople';
 export { default as ComponentDrobilka } from './ComponentFormForWhat/ComponentDrobilka/ComponentDrobilka';
 export { default as ObjectSelect } from './ObjectSelect/ObjectSelect';
+export { default as TotalComponent } from './TotalComponent/TotalComponent';

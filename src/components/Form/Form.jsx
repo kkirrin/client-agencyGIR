@@ -109,7 +109,7 @@ export default function Form({ title, forWhat, setActive }) {
     // console.log(data?.name);
 
     /**
-     * 
+     *
      * TODO: нужно перебором делать проверку массива
      */
 
@@ -285,6 +285,7 @@ export default function Form({ title, forWhat, setActive }) {
                         register={register}
                         errors={errors}
                         shiftType={shiftType}
+                        setItems={setItems}
                     />
                 )}
 

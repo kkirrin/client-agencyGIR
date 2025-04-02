@@ -1,5 +1,6 @@
 import styles from './style.module.scss';
 
+
 export default function ChooseTimeBtn({ register, idx, shiftType }) {
   // Генерируем уникальные ID для каждого элемента
   const dayId = `day-${idx}`;

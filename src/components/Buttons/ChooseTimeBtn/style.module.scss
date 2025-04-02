@@ -23,8 +23,11 @@
 
 .night {
     border-color: var(--main);
-    /* Граница для ночи */
     color: var(--main);
+}
+
+.night svg {
+    fill: #1F2433;
 }
 
 .day {
@@ -32,14 +35,27 @@
     color: var(--yellow);
 }
 
+.day svg {
+    fill: var(--yellow);
+}
+
 .active_white {
     color: var(--white);
     background-color: var(--yellow);
 }
 
+.active_white svg {
+    fill: var(--white);
+}
+
 .active_black {
     color: var(--white);
     background-color: var(--main);
+}
+
+.active_black svg {
+    color: var(--white);
+    fill: var(--white);
 }
 
 input[type="checkbox"] {
