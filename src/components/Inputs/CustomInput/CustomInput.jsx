@@ -66,9 +66,19 @@ export default function CustomInput({
     }
   };
 
-    const value = getValue();
+  const value = getValue();
+
+  // console.log(value);
 
 
+  /**
+   * 
+   * TODO: баг в индексе, когда в name передаешь Index он подхватывает значение верное для каждого инпута
+   * но тогда ломается отправка
+   * сначала попробую отправить форму верно со всеми полями 
+   * а потом вернусь сюда и выведу их (9:40:00 02.04.2025)
+   */
+  
   return (
     <div className={styles.input_container}>
       <input
@@ -76,13 +86,15 @@ export default function CustomInput({
         className={styles.custom_input}
         type={type}
         hidden={hidden}
-
         placeholder={value ? String(value) : placeholder}
-        {...register(name, {
-          required: 'Это поле обязательно',
-          validate: (value) => value.trim() !== '' || 'Поле не может быть пустым'
-        })}
+        {...(
+          typeof idx !== 'undefined' 
+            ? register(`${name}.${idx}`, {
+              })
+            : register(name)
+        )}
       />
+
 
       {errors[name] && (
         <span className={styles.error}>

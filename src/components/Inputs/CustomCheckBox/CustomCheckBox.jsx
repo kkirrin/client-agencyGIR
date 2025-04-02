@@ -1,7 +1,7 @@
 import styles from './style.module.scss';
 
-export default function CustomCheckBox({ label, checkboxId, labelHtmlFor, register, errors, type, name, value }) {
-
+export default function CustomCheckBox({ label, checkboxId, labelHtmlFor, register, errors, type, name, value, idx }) {
+    console.log(name)
     return (
         <div className={styles.item}>
             <input 
@@ -9,7 +9,13 @@ export default function CustomCheckBox({ label, checkboxId, labelHtmlFor, regist
                 type={type} 
                 id={checkboxId}
                 value={value}
-                {...register(name)} // Регистрируем чекбокс
+                {...(
+                    typeof idx !== 'undefined' 
+                        ? register(`${name}`, {
+                            validate: v => v?.toString().trim() !== '' || 'Поле не может быть пустым'
+                        })
+                        : register(name)
+                )}// Регистрируем чекбокс
             />
             <label htmlFor={checkboxId}>
                 {label}

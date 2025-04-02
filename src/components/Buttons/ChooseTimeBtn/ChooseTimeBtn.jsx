@@ -8,8 +8,6 @@ export default function ChooseTimeBtn({ register, idx, shiftType }) {
      * удаление смены
      * 
      */
-    console.log(shiftType);
-
     return (
         <>
             <input

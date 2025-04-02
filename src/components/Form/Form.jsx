@@ -13,7 +13,8 @@ import {
     ComponentPeople,
     ComponentTech
 } from '../../components';
-import useDateSingeStore from '../../store/CalendarSingleStore';
+
+import useDateSingleStore from '../../store/CalendarSingleStore';
 
 const url = 'http://89.104.67.119:1337/api/people/';
 
@@ -58,24 +59,38 @@ export default function Form({ title, forWhat, setActive }) {
     } = useForm();
 
 
-    const { date } = useDateSingeStore();
+    const { dates } = useDateSingleStore();
     const { id } = useParams();
     const { data } = useDataRequestStore();
 
-    /**
-     * Отслеживать input value принято при помощи useWatch && control
-    */
+    // Правильное определение формата
+    const formatOptions = {
+        locale: 'ru-RU',
+        options: {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }
+    };
 
-    const formattedDate = date.toLocaleDateString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
+    // Форматирование дат с учетом:
+    // 1. Проверки на валидность даты
+    // 2. Преобразования объекта dates в массив
+    // 3. Корректного использования toLocaleDateString
 
+    const formattedDates = Object.values(dates)
+        .filter(date => date instanceof Date && !isNaN(date))
+        .map(date => 
+            date.toLocaleDateString(
+                formatOptions.locale, 
+                formatOptions.options
+            )
+    );
+    
     useEffect(() => {
         reset({
-            Name: data.name,
-            Job: data.job,
+            Name: data.Name,
+            Job: data.Job,
             // AmountData: data?.MonthDataTonnaj[0]?.AmountData,
             // DayDataOstatkiPORT: data.DayDataOstatki[0]?.DayDataOstatkiPORT,
             // DayDataOstatkiGIR: data.DayDataOstatki[0]?.DayDataOstatkiGIR,
@@ -91,6 +106,8 @@ export default function Form({ title, forWhat, setActive }) {
         });
     }, []);
 
+    // console.log(data?.name);
+
     /**
      * 
      * TODO: нужно перебором делать проверку массива
@@ -105,13 +122,19 @@ export default function Form({ title, forWhat, setActive }) {
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
 
-    const statusWorkerNotWorked = useWatch({ control, name: 'statusWorkerNotWorked' });
-    const statusWorkerDayOff = useWatch({ control, name: 'statusWorkerDayOff' });
-    const statusWorkerEmpty = useWatch({ control, name: 'statusWorkerEmpty' });
+    const statusValues = useWatch({
+        control,
+        name: ['statusWorkerNotWorked', 'statusWorkerDayOff', 'statusWorkerEmpty']
+    });
+
+    console.log('statusValuesstatusValuesstatusValues', statusValues);
 
 
     // Следим за изменением значений
+    
     const shiftType = useWatch({ control, name: 'shiftType' });
+    // const shiftType = 'night';
+    // console.log(shiftType)
 
     useEffect(() => {
         if (shiftType === 'day') {
@@ -143,6 +166,8 @@ export default function Form({ title, forWhat, setActive }) {
     }, [data]);
 
 
+    console.log(formattedDates)
+
     const handleClick = (e) => {
         e.preventDefault();
         setItems([...items, items.length + 1]);
@@ -167,50 +192,45 @@ export default function Form({ title, forWhat, setActive }) {
             MonthDataTonnaj: [
                 {
                     AmountData: amountData || "0",
-                    MonthData: formattedDate || '0',
+                    MonthData: formattedDates[0] || '0',
                 },
             ],
+            
             DayDataOstatki: [
                 {
-                    DayDataOstatki: formattedDate || '0',
+                    DayDataOstatki: formattedDates[0] || '0',
                     DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
                     DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
                 },
             ],
         };
 
-        if (shiftType == "day") {
-            formData.DayDataDetails = [
-                {
-                    DayInfo: {
-                        Day: true,
-                        SmenaDetails: {
-                            Note: note || "-",
-                            SmenaDataTonnaj: dayDataTonnaj || "0",
-                            SmenaDateDetails: formattedDate || '0',
-                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default",
-                            TC: TC || "-",
-                        },
-                    },
-                },
-            ];
+       formData.DayDataDetails = items.map((item, idx) => {
+            const status = 
+               statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : "Default";
+        
+            const commonDetails = {
+                Note: note?.[idx] || "-",
+                SmenaDataTonnaj: dayDataTonnaj?.[idx],
+                SmenaDateDetails: formattedDates?.[idx],
+                SmenaStatusWorker: status,
+                TC: TC?.[idx] || "-"
+            };
 
-        } else if (shiftType == "night") {
-            formData.DayDataDetails = [
-                {
-                    NightInfo: {
-                        Night: true,
-                        SmenaDetails: {
-                            Note: note || "-",
-                            SmenaDataTonnaj: dayDataTonnaj || "0",
-                            SmenaDateDetails: formattedDate || '0',
-                            SmenaStatusWorker: statusWorkerNotWorked || statusWorkerDayOff || statusWorkerEmpty || "Default",
-                            TC: TC || "-",
-                        },
-                    },
-                },
-            ];
-        }
+            return shiftType === 'day' 
+                ? { 
+                    DayInfo: { 
+                        Day: true, 
+                        SmenaDetails: commonDetails 
+                    } 
+                }
+                : { 
+                    NightInfo: { 
+                        Night: true, 
+                        SmenaDetails: commonDetails 
+                    } 
+                };
+        });
 
         try {
             const existingRecordId = await checkExistingRecord(objectUUID);

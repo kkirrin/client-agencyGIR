@@ -8,7 +8,7 @@ import useDateSingleStore from '../../store/CalendarSingleStore';
 registerLocale('ru', ru);
 
 
-export default function ComponentDate({ dateForRender = '' }) {
+export default function ComponentDate({ dateForRender = '', idx = '' }) {
     
     const { date, addDate } = useDateSingleStore(); 
     const [selectedDates, setSelectedDates] = useState(null);
@@ -34,17 +34,18 @@ export default function ComponentDate({ dateForRender = '' }) {
 
     const handleDateChange = (date) => {
         setSelectedDates(date);
-        addDate(date);
+        addDate(idx, date);
     };
 
     const handleClearDate = () => {
         setSelectedDates(null);
-        addDate(null);
+        addDate(idx, null);
     };
 
     return (
         <div className='date-wrapper'>
             <DatePicker
+                
                 showIcon
                 toggleCalendarOnIconClick
                 selected={selectedDates}
