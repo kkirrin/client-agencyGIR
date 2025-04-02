@@ -102,6 +102,28 @@ const DeleteDateItem = ({ id }) => {
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType, setItems }) {
     const { data } = useDataRequestStore();
+
+    const STATUS_CHECKBOXES = [
+        {
+            name: 'statusWorkerNotWorked',
+            value: 'Not working',
+            label: 'Не работал',
+            id: 'checkboxNotWorked'
+        },
+        {
+            name: 'statusWorkerDayOff',
+            value: 'Day Off',
+            label: 'Выходной',
+            id: 'checkboxDayOff'
+        },
+        {
+            name: 'statusWorkerEmpty',
+            value: 'Empty',
+            label: 'Пусто',
+            id: 'checkboxEmpty'
+        }
+    ];
+    
     return (
         <>
             <div>
@@ -218,7 +240,14 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
-                                                <ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} day={item.Day} night={item.Night} />
+
+                                                //<ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} day={item.Day} night={item.Night} />
+
+                                                <ChooseTimeBtn 
+                                                    idx={idx} 
+                                                    register={register} 
+                                                    shiftType={shiftType}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -227,36 +256,19 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <div className={styles.data}>
                                             <p>Данные</p>
                                             <div className={styles.data_wrapper}>
-                                                <CustomCheckBox
-                                                    errors={errors}
-                                                    register={register}
-                                                    type="checkbox"
-                                                    name={'statusWorkerNotWorked'}
-                                                    value={'Not working'}
-                                                    label="Не работал"
-                                                    checkboxId="checkboxNotWorked"
-                                                    idx={idx}
-                                                />
-                                                <CustomCheckBox
-                                                    errors={errors}
-                                                    register={register}
-                                                    type="checkbox"
-                                                    name={'statusWorkerDayOff'}
-                                                    value={'Day Off'}
-                                                    label="Выходной"
-                                                    checkboxId="checkboxDayOff"
-                                                    idx={idx}
-                                                />
-                                                <CustomCheckBox
-                                                    errors={errors}
-                                                    register={register}
-                                                    type="checkbox"
-                                                    name={'statusWorkerEmpty'}
-                                                    value={'Empty'}
-                                                    label="Пусто"
-                                                    checkboxId="checkboxEmpty"
-                                                    idx={idx}
-                                                />
+                                                {STATUS_CHECKBOXES.map((checkbox, index) => (
+                                                    <CustomCheckBox
+                                                        key={`${checkbox.id}-${index}`}
+                                                        errors={errors}
+                                                        register={register}
+                                                        type="checkbox"
+                                                        name={`${checkbox.name}`}
+                                                        value={checkbox.value}
+                                                        label={checkbox.label}
+                                                        checkboxId={`${checkbox.id}-${index}`}
+                                                        idx={index}
+                                                    />
+                                                ))}
                                             </div>
                                         </div>
 

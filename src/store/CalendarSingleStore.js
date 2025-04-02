@@ -1,8 +1,11 @@
 import { create } from 'zustand';
 
 const useDateSingleStore = create((set) => ({
-  date: new Date(), 
-  addDate: (newDate) => set({ date: newDate }), 
+  dates: {},
+  addDate: (idx, newDate) => set((state) => ({
+    dates: { ...state.dates, [idx]: newDate }
+  })),
+  getDate: (idx) => useDateSingleStore.getState().dates[idx],
 }));
 
 export default useDateSingleStore;
