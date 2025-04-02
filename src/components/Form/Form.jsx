@@ -121,28 +121,33 @@ export default function Form({ title, forWhat, setActive }) {
     const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
+    const shiftTypeArray = useWatch({ control, name: 'shiftType' });
 
     const statusValues = useWatch({
         control,
         name: ['statusWorkerNotWorked', 'statusWorkerDayOff', 'statusWorkerEmpty']
     });
 
-    console.log('statusValuesstatusValuesstatusValues', statusValues);
-
-
     // Следим за изменением значений
-    
-    const shiftType = useWatch({ control, name: 'shiftType' });
-    // const shiftType = 'night';
-    // console.log(shiftType)
+    // Получаем весь массив значений
+    let shiftType = '';
+
 
     useEffect(() => {
-        if (shiftType === 'day') {
-            setValue('btnNight', false);
-        } else if (shiftType === 'night') {
-            setValue('btnDay', false);
+    if (!shiftTypeArray) return;
+
+    // Проходим по всем элементам массива
+    shiftTypeArray.forEach((i, idx) => {
+        if (i === 'day') {
+        setValue(`btnNight.${idx}`, false);
+        } else if (i === 'night') {
+        setValue(`btnDay.${idx}`, false);
         }
-    }, [shiftType, setValue]);
+    });
+
+    }, [shiftTypeArray, setValue]);
+
+    console.log(shiftTypeArray);
 
 
     /**
@@ -164,9 +169,6 @@ export default function Form({ title, forWhat, setActive }) {
             setItems(itemsArray);
         }
     }, [data]);
-
-
-    console.log(formattedDates)
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -206,31 +208,32 @@ export default function Form({ title, forWhat, setActive }) {
         };
 
        formData.DayDataDetails = items.map((item, idx) => {
-            const status = 
-               statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : ["Default"];
+            const status = statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : ["Default"];
 
-           console.log(status)
             const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx],
                 SmenaDateDetails: formattedDates?.[idx],
                 SmenaStatusWorker: status[0],
                 TC: TC?.[idx] || "-"
-            };
-
-            return shiftType === 'day' 
+           };
+           
+           console.log(shiftTypeArray[idx]);
+            return shiftTypeArray[idx] && shiftTypeArray[idx] === 'day'
                 ? { 
                     DayInfo: { 
                         Day: true, 
                         SmenaDetails: commonDetails 
                     } 
                 }
-                : { 
-                    NightInfo: { 
-                        Night: true, 
-                        SmenaDetails: commonDetails 
-                    } 
-                };
+                : shiftTypeArray[idx] === 'night'
+                    ? { 
+                        NightInfo: { 
+                            Night: true, 
+                            SmenaDetails: commonDetails 
+                        } 
+                    }
+                : ''
         });
 
         try {
