@@ -49,6 +49,7 @@ export async function saveUserDateService(userData, url) {
 export default function Form({ title, forWhat, setActive }) {
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
+    const [shiftType, setShiftType] = useState([]);
     const {
         register,
         control,
@@ -82,13 +83,13 @@ export default function Form({ title, forWhat, setActive }) {
 
     const formattedDates = Object.values(dates)
         .filter(date => date instanceof Date && !isNaN(date))
-        .map(date => 
+        .map(date =>
             date.toLocaleDateString(
-                formatOptions.locale, 
+                formatOptions.locale,
                 formatOptions.options
             )
-    );
-    
+        );
+
     useEffect(() => {
         reset({
             Name: data.Name,
@@ -132,20 +133,24 @@ export default function Form({ title, forWhat, setActive }) {
 
     // Следим за изменением значений
     // Получаем весь массив значений
-    let shiftType = '';
-
 
     useEffect(() => {
-    if (!shiftTypeArray) return;
+        if (!shiftTypeArray) return;
 
-    // Проходим по всем элементам массива
-    shiftTypeArray.forEach((i, idx) => {
-        if (i === 'day') {
-        setValue(`btnNight.${idx}`, false);
-        } else if (i === 'night') {
-        setValue(`btnDay.${idx}`, false);
-        }
-    });
+        let newShiftType = [];
+
+        // Проходим по всем элементам массива
+        shiftTypeArray.forEach((i, idx) => {
+            if (i === 'day') {
+                setValue(`btnNight.${idx}`, false);
+                newShiftType.push('day');
+            } else if (i === 'night') {
+                setValue(`btnDay.${idx}`, false);
+                newShiftType.push('night');
+            }
+        });
+
+       setShiftType(newShiftType);
 
     }, [shiftTypeArray, setValue]);
 
@@ -196,7 +201,7 @@ export default function Form({ title, forWhat, setActive }) {
                     MonthData: formattedDates[0] || '0',
                 },
             ],
-            
+
             DayDataOstatki: [
                 {
                     DayDataOstatki: formattedDates[0] || '0',
@@ -206,42 +211,34 @@ export default function Form({ title, forWhat, setActive }) {
             ],
         };
 
-        /**
-         * 
-         * TODO: статусы SmenaStatusWorker пишет автоматически 
-         * Not working на первый день
-         */
 
        formData.DayDataDetails = items.map((item, idx) => {
            const status = statusValues[idx];
 
-           console.log(statusValues[idx])
-        
-
-            const commonDetails = {
+           const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx],
                 SmenaDateDetails: formattedDates?.[idx],
                 SmenaStatusWorker: status,
                 TC: TC?.[idx] || "-"
-           };
-           
-           console.log(shiftTypeArray[idx]);
+            };
+
+            console.log(shiftTypeArray[idx]);
             return shiftTypeArray[idx] && shiftTypeArray[idx] === 'day'
-                ? { 
-                    DayInfo: { 
-                        Day: true, 
-                        SmenaDetails: commonDetails 
-                    } 
+                ? {
+                    DayInfo: {
+                        Day: true,
+                        SmenaDetails: commonDetails
+                    }
                 }
                 : shiftTypeArray[idx] === 'night'
-                    ? { 
-                        NightInfo: { 
-                            Night: true, 
-                            SmenaDetails: commonDetails 
-                        } 
+                    ? {
+                        NightInfo: {
+                            Night: true,
+                            SmenaDetails: commonDetails
+                        }
                     }
-                : ''
+                    : ''
         });
 
         try {
