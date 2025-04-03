@@ -13,25 +13,24 @@ export default function CustomCheckBox({
 }) {
     // console.log(data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaStatusWorker);
     // console.log(data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaStatusWorker);
-
     return (
         <div className={styles.item}>
-            <input
+              <input 
                 name={name}
-                type={'radio'}
+                type={'radio'} 
                 id={checkboxId}
                 value={value}
                 hidden={hidden}
                 defaultChecked={defaultChecked} // Используем defaultChecked вместо checked
                 {...(
-                    typeof idx !== 'undefined'
+                    typeof idx !== 'undefined' 
                         ? register(name, {
                             validate: v => v?.toString().trim() !== '' || 'Поле не может быть пустым'
-                        })
+                          })
                         : register(name)
                 )}
             />
-            <label
+            <label 
                 htmlFor={checkboxId}
                 hidden={hidden}
             >

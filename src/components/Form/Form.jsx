@@ -57,7 +57,11 @@ export default function Form({ title, forWhat, setActive }) {
         formState: { errors },
         reset,
         setValue
-    } = useForm();
+    } = useForm({
+         defaultValues: {
+            statusWorker: ['Default'] 
+        }
+    });
 
 
     const { dates } = useDateSingleStore();
@@ -130,6 +134,10 @@ export default function Form({ title, forWhat, setActive }) {
         control,
         name: 'statusWorker'
     });
+
+    
+
+    console.log(statusValues);
 
     // Следим за изменением значений
     // Получаем весь массив значений
@@ -212,8 +220,8 @@ export default function Form({ title, forWhat, setActive }) {
         };
 
 
-       formData.DayDataDetails = items.map((item, idx) => {
-           const status = statusValues[idx];
+        formData.DayDataDetails = items.map((item, idx) => {
+           const status = statusValues[idx] ? statusValues[idx] : 'Default';
 
            const commonDetails = {
                 Note: note?.[idx] || "-",

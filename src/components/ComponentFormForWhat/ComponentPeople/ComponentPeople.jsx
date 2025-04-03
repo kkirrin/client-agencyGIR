@@ -209,6 +209,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
                 {items
                     .map((item, idx) => {
+                        console.log(idx)
                         return (
                             <>
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
@@ -244,7 +245,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                                     key={`${checkbox.id}-${index}`}
                                                     name={`${'statusWorker'}.${idx}`}
                                                     register={register}
-                                                    type="checkbox"
+                                                    type="radio"
                                                     value={checkbox.value}
                                                     label={checkbox.label}
                                                     checkboxId={`${checkbox.id}.${idx}`}
