@@ -11,8 +11,18 @@ export default function CustomCheckBox({
     data,
     idx,
 }) {
-    // console.log(data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaStatusWorker);
-    // console.log(data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaStatusWorker);
+
+    const getCurrentStatus = () => {
+        const dayDetail = data[0]?.DayDataDetails?.[idx];
+        
+        return dayDetail?.DayInfo?.SmenaDetails?.SmenaStatusWorker 
+        || dayDetail?.NightInfo?.SmenaDetails?.SmenaStatusWorker 
+        || 'Default';
+    };
+
+     // Определяем checked состояние
+    const isChecked = getCurrentStatus() === value;
+    
     return (
         <div className={styles.item}>
               <input 
@@ -21,7 +31,8 @@ export default function CustomCheckBox({
                 id={checkboxId}
                 value={value}
                 hidden={hidden}
-                defaultChecked={defaultChecked} // Используем defaultChecked вместо checked
+                defaultChecked={defaultChecked} 
+                checked={isChecked}
                 {...(
                     typeof idx !== 'undefined' 
                         ? register(name, {

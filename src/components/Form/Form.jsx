@@ -63,13 +63,10 @@ export default function Form({ title, forWhat, setActive }) {
         }
     });
 
-
     const { dates } = useDateSingleStore();
     const { id } = useParams();
     const { data } = useDataRequestStore();
-
-    console.log(data);
-
+    
     // Правильное определение формата
     const formatOptions = {
         locale: 'ru-RU',

@@ -209,7 +209,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
                 {items
                     .map((item, idx) => {
-                        console.log(idx)
                         return (
                             <>
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
