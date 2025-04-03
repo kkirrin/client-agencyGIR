@@ -8,9 +8,13 @@ export default function CustomCheckBox({
     label,
     value,
     name,
+    data,
     idx,
 })
 {
+    console.log(data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaStatusWorker);
+    console.log(data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaStatusWorker);
+
     return (
         <div className={styles.item}>
             <input 

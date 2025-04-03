@@ -4,6 +4,8 @@ import deleteSVG from '/delete.svg';
 import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
 
+import { STATUS_CHECKBOXES } from '../../../data.json';
+
 const DeleteDateItem = ({ id }) => {
 
     const { data } = useDataRequestStore();
@@ -102,30 +104,6 @@ const DeleteDateItem = ({ id }) => {
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType, setItems }) {
     const { data } = useDataRequestStore();
-
-    const STATUS_CHECKBOXES = [
-        {
-            value: 'Default',
-            label: '-',
-            id: 'statusDefault'
-        },
-        {
-            value: 'Not working',
-            label: 'Не работал',
-            id: 'checkboxNotWorked'
-        },
-        {
-            value: 'Day Off',
-            label: 'Выходной',
-            id: 'checkboxDayOff'
-        },
-        {
-            value: 'Empty',
-            label: 'Пусто',
-            id: 'checkboxEmpty'
-        }
-    ];
-    
     return (
         <>
             <div>
@@ -259,6 +237,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
                                                 {STATUS_CHECKBOXES.map((checkbox, index) => (
                                                     <CustomCheckBox
+                                                        data={data}
                                                         key={`${checkbox.id}-${index}`}
                                                         name={`${'statusWorker'}.${idx}`}
                                                         register={register}

@@ -63,6 +63,8 @@ export default function Form({ title, forWhat, setActive }) {
     const { id } = useParams();
     const { data } = useDataRequestStore();
 
+    console.log(data);
+
     // Правильное определение формата
     const formatOptions = {
         locale: 'ru-RU',
@@ -128,9 +130,6 @@ export default function Form({ title, forWhat, setActive }) {
         name: 'statusWorker'
     });
 
-    console.log(statusValues);
-
-
     // Следим за изменением значений
     // Получаем весь массив значений
     let shiftType = '';
@@ -149,9 +148,6 @@ export default function Form({ title, forWhat, setActive }) {
     });
 
     }, [shiftTypeArray, setValue]);
-
-    // console.log(shiftTypeArray);
-
 
     /**
      * Устанавливаем массив объектов DayDataDetails
