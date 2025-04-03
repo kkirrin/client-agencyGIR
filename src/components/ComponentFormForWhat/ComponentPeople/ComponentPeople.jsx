@@ -100,7 +100,7 @@ const DeleteDateItem = ({ id }) => {
     )
 };
 
-export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType, setItems }) {
+export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
     const { data } = useDataRequestStore();
 
     const STATUS_CHECKBOXES = [
@@ -123,7 +123,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
             id: 'checkboxEmpty'
         }
     ];
-    
+
     return (
         <>
             <div>
@@ -241,12 +241,12 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
 
-                                                //<ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} day={item.Day} night={item.Night} />
-
-                                                <ChooseTimeBtn 
-                                                    idx={idx} 
-                                                    register={register} 
+                                                <ChooseTimeBtn
+                                                    idx={idx}
+                                                    register={register}
                                                     shiftType={shiftType}
+                                                    day={item.Day}
+                                                    night={item.Night}
                                                 />
                                             </div>
                                         </div>
