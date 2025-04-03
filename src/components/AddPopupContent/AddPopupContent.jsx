@@ -24,10 +24,10 @@ export default function AddPopupContent({
     // ЭТО ПОВТОРЫЙ ЗАПРОС
     useEffect(() => {
 
-    if (active) {
-      const fetchAndSetData = async () => {
-        try {
-            const data = await fetchData(apiUrl);
+        if (active) {
+            const fetchAndSetData = async () => {
+                try {
+                    const data = await fetchData(apiUrl);
                     setDataRequest(data);
                 } catch (error) {
                     console.error("Ошибка при получении данных:", error);
@@ -76,6 +76,7 @@ export default function AddPopupContent({
                         title={title}
                         forWhat={'people'}
                         setActive={setActive}
+                        popupId={id}
                     />
                 </div>
             </div>

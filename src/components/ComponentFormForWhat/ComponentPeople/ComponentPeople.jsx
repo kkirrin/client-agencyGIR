@@ -102,7 +102,8 @@ const DeleteDateItem = ({ id }) => {
     )
 };
 
-export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
+export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType, popupId }) {
+
     const { data } = useDataRequestStore();
 
     const targetDate = new Date("2025-04-04"); // ISO формат
@@ -209,7 +210,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
                 {items
                     .map((item, idx) => {
-                        console.log(idx)
+                        // console.log(idx)
                         return (
                             <>
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
@@ -229,12 +230,13 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                                     shiftType={shiftType}
                                                     day={item.Day}
                                                     night={item.Night}
+                                                    popupId={popupId}
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
+                                {/* 
                                 <div className={styles.data_container}>
                                     <div className={styles.data}>
                                         <p>Данные</p>
@@ -301,7 +303,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         placeholder="Введите примечание"
                                         idx={idx}
                                     />
-                                </div>
+                                </div> */}
                             </>
                         )
                     })

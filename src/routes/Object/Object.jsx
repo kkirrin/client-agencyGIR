@@ -111,6 +111,10 @@ const Object = () => {
   // const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
   // const apiUrl = `http://89.104.67.119:1337/api/people?filters[Objects][id][$eq]=${id}${dateFilters}&${populateParams}`;
 
+  /**
+   * Разделить логику запроса на получение дробилок и техники
+   */
+
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {

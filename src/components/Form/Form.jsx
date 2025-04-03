@@ -46,7 +46,7 @@ export async function saveUserDateService(userData, url) {
     return { response, data };
 }
 
-export default function Form({ title, forWhat, setActive }) {
+export default function Form({ title, forWhat, setActive, popupId }) {
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
@@ -58,8 +58,8 @@ export default function Form({ title, forWhat, setActive }) {
         reset,
         setValue
     } = useForm({
-         defaultValues: {
-            statusWorker: ['Default'] 
+        defaultValues: {
+            statusWorker: ['Default']
         }
     });
 
@@ -68,7 +68,7 @@ export default function Form({ title, forWhat, setActive }) {
     const { id } = useParams();
     const { data } = useDataRequestStore();
 
-    console.log(data);
+    // console.log(data);
 
     // Правильное определение формата
     const formatOptions = {
@@ -135,10 +135,6 @@ export default function Form({ title, forWhat, setActive }) {
         name: 'statusWorker'
     });
 
-    
-
-    console.log(statusValues);
-
     // Следим за изменением значений
     // Получаем весь массив значений
 
@@ -155,10 +151,12 @@ export default function Form({ title, forWhat, setActive }) {
             } else if (i === 'night') {
                 setValue(`btnDay.${idx}`, false);
                 newShiftType.push('night');
+            } else {
+                newShiftType.push('day');
             }
         });
 
-       setShiftType(newShiftType);
+        setShiftType(newShiftType);
 
     }, [shiftTypeArray, setValue]);
 
@@ -219,11 +217,10 @@ export default function Form({ title, forWhat, setActive }) {
             ],
         };
 
-
         formData.DayDataDetails = items.map((item, idx) => {
-           const status = statusValues[idx] ? statusValues[idx] : 'Default';
+            const status = statusValues[idx] ? statusValues[idx] : 'Default';
 
-           const commonDetails = {
+            const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx],
                 SmenaDateDetails: formattedDates?.[idx],
@@ -299,6 +296,7 @@ export default function Form({ title, forWhat, setActive }) {
                         errors={errors}
                         shiftType={shiftType}
                         setItems={setItems}
+                        popupId={popupId}
                     />
                 )}
 
