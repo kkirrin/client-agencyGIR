@@ -125,8 +125,11 @@ export default function Form({ title, forWhat, setActive }) {
 
     const statusValues = useWatch({
         control,
-        name: ['statusWorkerNotWorked', 'statusWorkerDayOff', 'statusWorkerEmpty']
+        name: 'statusWorker'
     });
+
+    console.log(statusValues);
+
 
     // Следим за изменением значений
     // Получаем весь массив значений
@@ -147,12 +150,12 @@ export default function Form({ title, forWhat, setActive }) {
 
     }, [shiftTypeArray, setValue]);
 
-    console.log(shiftTypeArray);
+    // console.log(shiftTypeArray);
 
 
     /**
      * Устанавливаем массив объектов DayDataDetails
-     */
+    */
     const [items, setItems] = useState([]);
     useEffect(() => {
         if (data && data.length > 0) {
@@ -207,14 +210,23 @@ export default function Form({ title, forWhat, setActive }) {
             ],
         };
 
+        /**
+         * 
+         * TODO: статусы SmenaStatusWorker пишет автоматически 
+         * Not working на первый день
+         */
+
        formData.DayDataDetails = items.map((item, idx) => {
-            const status = statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : ["Default"];
+           const status = statusValues[idx];
+
+           console.log(statusValues[idx])
+        
 
             const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx],
                 SmenaDateDetails: formattedDates?.[idx],
-                SmenaStatusWorker: status[0],
+                SmenaStatusWorker: status,
                 TC: TC?.[idx] || "-"
            };
            

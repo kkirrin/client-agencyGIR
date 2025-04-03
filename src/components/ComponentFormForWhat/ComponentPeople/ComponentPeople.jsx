@@ -105,19 +105,21 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
 
     const STATUS_CHECKBOXES = [
         {
-            name: 'statusWorkerNotWorked',
+            value: 'Default',
+            label: '-',
+            id: 'statusDefault'
+        },
+        {
             value: 'Not working',
             label: 'Не работал',
             id: 'checkboxNotWorked'
         },
         {
-            name: 'statusWorkerDayOff',
             value: 'Day Off',
             label: 'Выходной',
             id: 'checkboxDayOff'
         },
         {
-            name: 'statusWorkerEmpty',
             value: 'Empty',
             label: 'Пусто',
             id: 'checkboxEmpty'
@@ -241,8 +243,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
 
-                                                //<ChooseTimeBtn register={register} idx={idx} shiftType={shiftType} day={item.Day} night={item.Night} />
-
                                                 <ChooseTimeBtn 
                                                     idx={idx} 
                                                     register={register} 
@@ -256,19 +256,22 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <div className={styles.data}>
                                             <p>Данные</p>
                                             <div className={styles.data_wrapper}>
+
                                                 {STATUS_CHECKBOXES.map((checkbox, index) => (
                                                     <CustomCheckBox
                                                         key={`${checkbox.id}-${index}`}
-                                                        errors={errors}
+                                                        name={`${'statusWorker'}.${idx}`}
                                                         register={register}
                                                         type="checkbox"
-                                                        name={`${checkbox.name}`}
                                                         value={checkbox.value}
                                                         label={checkbox.label}
-                                                        checkboxId={`${checkbox.id}-${index}`}
-                                                        idx={index}
+                                                        checkboxId={`${checkbox.id}.${idx}`}
+                                                        idx={idx}
+                                                        hidden={index === 0}
+                                                        defaultChecked={index === 0} // Отмечаем первый элемент
                                                     />
                                                 ))}
+                                                    
                                             </div>
                                         </div>
 
