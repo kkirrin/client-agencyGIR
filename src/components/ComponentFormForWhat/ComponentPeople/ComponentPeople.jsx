@@ -102,6 +102,7 @@ const DeleteDateItem = ({ id }) => {
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
     const { data } = useDataRequestStore();
+    const targetDate = new Date("2025-04-04"); // ISO формат
 
     const STATUS_CHECKBOXES = [
         {
@@ -225,109 +226,102 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                 </div>
 
 
-                {items.map((item, idx) => {
-                    return (
-                        item?.SmenaDetails?.SmenaStatusWorker == 'Default' || Number.isInteger(item) ?
-                            (
-                                <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
-                                    {data ? <DeleteDateItem id={item.id} /> : ''}
-                                    <div className={styles.date_wrapper}>
-                                        <div className={styles.date_content}>
-                                            <p>Дата</p>
-                                            <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
+                {items
+                    .map((item, idx) => {
+                        return (
+                            <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
+                                {data ? <DeleteDateItem id={item.id} /> : ''}
+                                <div className={styles.date_wrapper}>
+                                    <div className={styles.date_content}>
+                                        <p>Дата</p>
+                                        <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
+                                    </div>
+
+                                    <div className={styles.smena_content}>
+                                        <p>Смена</p>
+                                        <div className={styles.smena_btns}>
+
+                                            <ChooseTimeBtn
+                                                idx={idx}
+                                                register={register}
+                                                shiftType={shiftType}
+                                                day={item.Day}
+                                                night={item.Night}
+                                            />
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div className={styles.smena_content}>
-                                            <p>Смена</p>
-                                            <div className={styles.smena_btns}>
-
-                                                <ChooseTimeBtn
-                                                    idx={idx}
+                                <div className={styles.data_container}>
+                                    <div className={styles.data}>
+                                        <p>Данные</p>
+                                        <div className={styles.data_wrapper}>
+                                            {STATUS_CHECKBOXES.map((checkbox, index) => (
+                                                <CustomCheckBox
+                                                    key={`${checkbox.id}-${index}`}
+                                                    errors={errors}
                                                     register={register}
-                                                    shiftType={shiftType}
-                                                    day={item.Day}
-                                                    night={item.Night}
+                                                    type="checkbox"
+                                                    name={`${checkbox.name}`}
+                                                    value={checkbox.value}
+                                                    label={checkbox.label}
+                                                    checkboxId={`${checkbox.id}-${index}`}
+                                                    idx={index}
                                                 />
-                                            </div>
+                                            ))}
                                         </div>
                                     </div>
 
-                                    <div className={styles.data_container}>
-                                        <div className={styles.data}>
-                                            <p>Данные</p>
-                                            <div className={styles.data_wrapper}>
-                                                {STATUS_CHECKBOXES.map((checkbox, index) => (
-                                                    <CustomCheckBox
-                                                        key={`${checkbox.id}-${index}`}
-                                                        errors={errors}
-                                                        register={register}
-                                                        type="checkbox"
-                                                        name={`${checkbox.name}`}
-                                                        value={checkbox.value}
-                                                        label={checkbox.label}
-                                                        checkboxId={`${checkbox.id}-${index}`}
-                                                        idx={index}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        <div className={styles.data}>
-                                            <p style={{ marginBottom: '10px' }}>Тоннаж</p>
-                                            <CustomInput
-                                                data={data}
-                                                item={item}
-                                                id={6}
-                                                name={'DayDataTonnaj'}
-                                                errors={errors}
-                                                register={register}
-                                                type="number"
-                                                placeholder='Введите тн. '
-                                                idx={idx}
-                                            />
-                                        </div>
-
-                                        <div className={styles.data}>
-                                            <p style={{ marginBottom: '10px' }}>ТС</p>
-                                            <CustomInput
-                                                data={data}
-                                                item={item}
-                                                id={7}
-                                                name={'TC'}
-                                                errors={errors}
-                                                register={register}
-                                                type="text"
-                                                placeholder='Введите ТС '
-                                                idx={idx}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.note}>
-                                        <p>Примечание</p>
+                                    <div className={styles.data}>
+                                        <p style={{ marginBottom: '10px' }}>Тоннаж</p>
                                         <CustomInput
                                             data={data}
                                             item={item}
-                                            id={8}
-                                            name={'note'}
+                                            id={6}
+                                            name={'DayDataTonnaj'}
+                                            errors={errors}
+                                            register={register}
+                                            type="number"
+                                            placeholder='Введите тн. '
+                                            idx={idx}
+                                        />
+                                    </div>
+
+                                    <div className={styles.data}>
+                                        <p style={{ marginBottom: '10px' }}>ТС</p>
+                                        <CustomInput
+                                            data={data}
+                                            item={item}
+                                            id={7}
+                                            name={'TC'}
                                             errors={errors}
                                             register={register}
                                             type="text"
-                                            placeholder="Введите примечание"
+                                            placeholder='Введите ТС '
                                             idx={idx}
                                         />
                                     </div>
                                 </div>
-                            )
-                            : (
 
-                                <div>
-
+                                <div className={styles.note}>
+                                    <p>Примечание</p>
+                                    <CustomInput
+                                        data={data}
+                                        item={item}
+                                        id={8}
+                                        name={'note'}
+                                        errors={errors}
+                                        register={register}
+                                        type="text"
+                                        placeholder="Введите примечание"
+                                        idx={idx}
+                                    />
                                 </div>
-                            )
-                    )
+                            </div>
+                        )
+                    })
+                }
 
-                })}
 
                 <div style={{ height: '40px', marginTop: '20px' }}>
                     <AddMoreBtn

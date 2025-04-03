@@ -1,6 +1,4 @@
 import styles from './style.module.scss';
-import { useWatch } from 'react-hook-form';
-
 
 export default function ChooseTimeBtn({ register, idx, shiftType, day, night }) {
   const currentShift = shiftType[idx];
