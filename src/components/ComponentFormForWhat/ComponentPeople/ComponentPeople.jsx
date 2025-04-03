@@ -4,6 +4,8 @@ import deleteSVG from '/delete.svg';
 import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
 
+import { STATUS_CHECKBOXES } from '../../../data.json';
+
 const DeleteDateItem = ({ id }) => {
 
     const { data } = useDataRequestStore();
@@ -102,28 +104,8 @@ const DeleteDateItem = ({ id }) => {
 
 export default function ComponentPeople({ handleClickBtn, items, register, errors, shiftType }) {
     const { data } = useDataRequestStore();
-    const targetDate = new Date("2025-04-04"); // ISO формат
 
-    const STATUS_CHECKBOXES = [
-        {
-            name: 'statusWorkerNotWorked',
-            value: 'Not working',
-            label: 'Не работал',
-            id: 'checkboxNotWorked'
-        },
-        {
-            name: 'statusWorkerDayOff',
-            value: 'Day Off',
-            label: 'Выходной',
-            id: 'checkboxDayOff'
-        },
-        {
-            name: 'statusWorkerEmpty',
-            value: 'Empty',
-            label: 'Пусто',
-            id: 'checkboxEmpty'
-        }
-    ];
+    const targetDate = new Date("2025-04-04"); // ISO формат
 
     return (
         <>
@@ -226,6 +208,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                 </div>
 
 
+
                 {items
                     .map((item, idx) => {
                         return (
@@ -240,6 +223,38 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                     <div className={styles.smena_content}>
                                         <p>Смена</p>
                                         <div className={styles.smena_btns}>
+                                                <ChooseTimeBtn 
+                                                    idx={idx} 
+                                                    register={register} 
+                                                    shiftType={shiftType}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.data_container}>
+                                        <div className={styles.data}>
+                                            <p>Данные</p>
+                                            <div className={styles.data_wrapper}>
+
+                                                {STATUS_CHECKBOXES.map((checkbox, index) => (
+                                                    <CustomCheckBox
+                                                        data={data}
+                                                        key={`${checkbox.id}-${index}`}
+                                                        name={`${'statusWorker'}.${idx}`}
+                                                        register={register}
+                                                        type="checkbox"
+                                                        value={checkbox.value}
+                                                        label={checkbox.label}
+                                                        checkboxId={`${checkbox.id}.${idx}`}
+                                                        idx={idx}
+                                                        hidden={index === 0}
+                                                        defaultChecked={index === 0} // Отмечаем первый элемент
+                                                    />
+                                                ))}
+                                                    
+                                            </div>
+                                        </div>
 
                                             <ChooseTimeBtn
                                                 idx={idx}

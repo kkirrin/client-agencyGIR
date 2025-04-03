@@ -1,22 +1,41 @@
 import styles from './style.module.scss';
 
-export default function CustomCheckBox({ label, checkboxId, labelHtmlFor, register, errors, type, name, value, idx }) {
+export default function CustomCheckBox({
+    defaultChecked = false, 
+    hidden = false,
+    checkboxId,
+    register,
+    label,
+    value,
+    name,
+    data,
+    idx,
+})
+{
+    console.log(data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaStatusWorker);
+    console.log(data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaStatusWorker);
+
     return (
         <div className={styles.item}>
             <input 
                 name={name}
-                type={type} 
+                type={'radio'} 
                 id={checkboxId}
                 value={value}
+                hidden={hidden}
+                defaultChecked={defaultChecked} // Используем defaultChecked вместо checked
                 {...(
                     typeof idx !== 'undefined' 
-                        ? register(`${name}`, {
+                        ? register(name, {
                             validate: v => v?.toString().trim() !== '' || 'Поле не может быть пустым'
-                        })
+                          })
                         : register(name)
-                )}// Регистрируем чекбокс
+                )}
             />
-            <label htmlFor={checkboxId}>
+            <label 
+                htmlFor={checkboxId}
+                hidden={hidden}
+            >
                 {label}
             </label>
         </div>

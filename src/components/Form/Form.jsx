@@ -64,6 +64,8 @@ export default function Form({ title, forWhat, setActive }) {
     const { id } = useParams();
     const { data } = useDataRequestStore();
 
+    console.log(data);
+
     // Правильное определение формата
     const formatOptions = {
         locale: 'ru-RU',
@@ -126,7 +128,7 @@ export default function Form({ title, forWhat, setActive }) {
 
     const statusValues = useWatch({
         control,
-        name: ['statusWorkerNotWorked', 'statusWorkerDayOff', 'statusWorkerEmpty']
+        name: 'statusWorker'
     });
 
     // Следим за изменением значений
@@ -148,13 +150,13 @@ export default function Form({ title, forWhat, setActive }) {
             }
         });
 
-        setShiftType(newShiftType);
+       setShiftType(newShiftType);
 
     }, [shiftTypeArray, setValue]);
 
     /**
      * Устанавливаем массив объектов DayDataDetails
-     */
+    */
     const [items, setItems] = useState([]);
     useEffect(() => {
         if (data && data.length > 0) {
@@ -209,14 +211,15 @@ export default function Form({ title, forWhat, setActive }) {
             ],
         };
 
-        formData.DayDataDetails = items.map((item, idx) => {
-            const status = statusValues[idx] != false && statusValues[idx] != undefined ? statusValues[idx] : ["Default"];
 
-            const commonDetails = {
+       formData.DayDataDetails = items.map((item, idx) => {
+           const status = statusValues[idx];
+
+           const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx],
                 SmenaDateDetails: formattedDates?.[idx],
-                SmenaStatusWorker: status[0],
+                SmenaStatusWorker: status,
                 TC: TC?.[idx] || "-"
             };
 
