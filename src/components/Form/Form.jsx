@@ -305,6 +305,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         handleClickBtn={handleClick}
                         items={items}
                         register={register}
+                        errors={errors}
+                        shiftType={shiftType}
+                        setItems={setItems}
+                        popupId={popupId}
                     />
                 )}
 

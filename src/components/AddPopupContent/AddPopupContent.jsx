@@ -74,7 +74,7 @@ export default function AddPopupContent({
 
                     <Form
                         title={title}
-                        forWhat={'people'}
+                        forWhat={'tech'}
                         setActive={setActive}
                         popupId={id}
                     />

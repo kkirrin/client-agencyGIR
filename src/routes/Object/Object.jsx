@@ -184,7 +184,7 @@ const Object = () => {
       <div className="container">
         <div className={`${styles.header_wrapper} sticky-header`}>
           <header className={styles.top}>
-            <ObjectSelect />
+            <ObjectSelect setWorkers={setWorkers} />
             <div className={styles.top_wrapper}>
               <ComponentSearch />
               <ComponentDate />

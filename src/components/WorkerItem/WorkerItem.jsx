@@ -79,6 +79,7 @@ const WorkerDetails = ({
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
+
     if (!shift) return <p className="notWorking"></p>
 
     let status;
@@ -153,16 +154,24 @@ const WorkerDetails = ({
     if (isMissing) return <EmptyWorkerItemData key={date} />
 
     const dayData = worker?.DayDataDetails?.find(d => {
+      let dayDate;
+      let nightDate;
+      switch (pageId) {
+        case '12': {
+          dayDate = parseInt(d?.DayInfo?.date.split('.')[0] || '', 10);
+          nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
+        }
+          break;
 
-      // const dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
-      // const nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
-
-      const dayDate = parseInt(d?.DayInfo?.date.split('.')[0] || '', 10);
-      const nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
+        default: {
+          dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
+          nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
+        }
+          break;
+      }
 
       return dayDate === date || nightDate === date;
     })
-
 
     return (
       <div className={styles.item_table} key={date}>

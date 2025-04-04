@@ -23,6 +23,16 @@ function TotalComponent({ object, allDates }) {
             smenaStatus !== "Day Off";
     }).length;
 
+    // количество дневных смен, для техники
+    const totalAmountDaySmenaTech = object?.DayDataDetails?.filter(item => {
+        const smena = item?.DayInfo;
+        const date = smena?.date;
+        const smenaStatus = smena?.statusTech;
+
+        return smena && allDates.includes(date) &&
+            smenaStatus == "In working";
+    }).length;
+
     // количество ночных смен, когда он работал (уточнить у заказчика)
     const totalAmountNightSmena = object?.DayDataDetails?.filter(item => {
         const smena = item?.NightInfo?.SmenaDetails;
@@ -34,8 +44,15 @@ function TotalComponent({ object, allDates }) {
             smenaStatus !== "Day Off";;
     }).length;
 
-    // сумма смен всего, сколько работал
-    const totalAmountSmena = totalAmountDaySmena + totalAmountNightSmena;
+    // количество ночных смен, для техники
+    const totalAmountNightSmenaTech = object?.DayDataDetails?.filter(item => {
+        const smena = item?.NightInfo;
+        const date = smena?.date;
+        const smenaStatus = smena?.statusTech;
+
+        return smena && allDates.includes(date) &&
+            smenaStatus == "In working";
+    }).length;
 
     let totalSumTonnaj = 0;
     object?.DayDataDetails?.forEach(item => {
@@ -57,7 +74,6 @@ function TotalComponent({ object, allDates }) {
             totalSumTonnaj += isNaN(tonnaj) ? 0 : tonnaj;
         }
     });
-
 
     let totalSumTonnajPlan = 0;
     let totalSumOstatokGir = 0;
@@ -82,9 +98,9 @@ function TotalComponent({ object, allDates }) {
     switch (id) {
         case '12': {
             arr = [
-                { label: 'Дневные смены', value: totalAmountDaySmena },
-                { label: 'Ночные смены', value: totalAmountNightSmena },
-                { label: 'Всего смен', value: totalAmountSmena },
+                { label: 'Дневные смены', value: totalAmountDaySmenaTech },
+                { label: 'Ночные смены', value: totalAmountNightSmenaTech },
+                { label: 'Всего смен', value: totalAmountDaySmenaTech + totalAmountNightSmenaTech },
             ];
 
             break;
@@ -102,7 +118,7 @@ function TotalComponent({ object, allDates }) {
             arr = [
                 { label: 'Дневные смены', value: totalAmountDaySmena },
                 { label: 'Ночные смены', value: totalAmountNightSmena },
-                { label: 'Всего смен', value: totalAmountSmena },
+                { label: 'Всего смен', value: totalAmountDaySmena + totalAmountNightSmena },
                 { label: 'Общий тоннаж', value: totalSumTonnaj },
                 { label: 'Выставили', value: totalSumTonnajPlan },
                 { label: 'Ост. Порт', value: totalSumOstatokGir },
