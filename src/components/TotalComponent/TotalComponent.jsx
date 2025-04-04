@@ -1,6 +1,7 @@
 import styles from './style.module.scss';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { useParams } from 'react-router-dom';
 
 /**
  * allDates - сюда уже приходят отфильтрованные дни
@@ -9,6 +10,7 @@ import { format } from 'date-fns';
  */
 
 function TotalComponent({ object, allDates }) {
+    const { id } = useParams();
 
     // количество дневных смен, когда он работал (уточнить у заказчика)
     const totalAmountDaySmena = object?.DayDataDetails?.filter(item => {
@@ -57,14 +59,57 @@ function TotalComponent({ object, allDates }) {
     });
 
 
-    // число планое, сколько ему надо было выработать (на каждый месяц оно свое)
-    const totalSumTonnajPlan = object?.MonthDataTonnaj[0]?.AmountData;
+    let totalSumTonnajPlan = 0;
+    let totalSumOstatokGir = 0;
+    let totalSumOstatokPort = 0;
+
+    // число плановое, сколько ему надо было выработать (на каждый месяц оно свое)
+    if (Array.isArray(object?.MonthDataTonnaj) && object.MonthDataTonnaj[0]?.AmountData) {
+        totalSumTonnajPlan = object.MonthDataTonnaj[0].AmountData;
+    }
 
     // сумма тон осталась выработать в ГИР на конец месяца??? сумма выставии - тон смены
-    const totalSumOstatokGir = object?.DayDataOstatki[0]?.DayDataOstatkiGIR;
+    if (Array.isArray(object?.DayDataOstatki) && object.DayDataOstatki[0]?.DayDataOstatkiGIR) {
+        totalSumOstatokGir = object.DayDataOstatki[0].DayDataOstatkiGIR;
+    }
 
     // сумма тон осталась выработать в ПОРТ на конец месяца??? сумма выставии - тон смены
-    const totalSumOstatokPort = object?.DayDataOstatki[0]?.DayDataOstatkiPORT;
+    if (Array.isArray(object?.DayDataOstatki) && object.DayDataOstatki[0]?.DayDataOstatkiPORT) {
+        totalSumOstatokPort = object.DayDataOstatki[0].DayDataOstatkiPORT;
+    }
+
+    let arr = [];
+    switch (id) {
+        case '12': {
+            arr = [
+                { label: 'Дневные смены', value: totalAmountDaySmena },
+                { label: 'Ночные смены', value: totalAmountNightSmena },
+                { label: 'Всего смен', value: totalAmountSmena },
+            ];
+
+            break;
+        }
+        case '10': {
+            arr = [
+                { label: 'Общий тоннаж', value: totalSumTonnaj },
+                { label: 'Выставили', value: totalSumTonnajPlan },
+                { label: 'Ост. Порт', value: totalSumOstatokGir },
+                { label: 'Ост. ГиР', value: totalSumOstatokPort },
+            ];
+            break;
+        }
+        default: {
+            arr = [
+                { label: 'Дневные смены', value: totalAmountDaySmena },
+                { label: 'Ночные смены', value: totalAmountNightSmena },
+                { label: 'Всего смен', value: totalAmountSmena },
+                { label: 'Общий тоннаж', value: totalSumTonnaj },
+                { label: 'Выставили', value: totalSumTonnajPlan },
+                { label: 'Ост. Порт', value: totalSumOstatokGir },
+                { label: 'Ост. ГиР', value: totalSumOstatokPort },
+            ];
+        }
+    }
 
     return (
         <div className={styles.sum}>
@@ -73,15 +118,7 @@ function TotalComponent({ object, allDates }) {
                 <p className={styles.sum_month}>{format(new Date, 'LLLL', { locale: ru })}</p>
             </div>
 
-            {[
-                { label: 'Дневные смены', value: totalAmountDaySmena },
-                { label: 'Ночные смены', value: totalAmountNightSmena },
-                { label: 'Всего смен', value: totalAmountSmena },
-                { label: 'Общий тоннаж', value: totalSumTonnaj },
-                { label: 'Выставили', value: totalSumTonnajPlan },
-                { label: 'Ост. Порт', value: totalSumOstatokGir },
-                { label: 'Ост. ГиР', value: totalSumOstatokPort },
-            ].map((item, index) => (
+            {arr.map((item, index) => (
                 <div className={styles.sum_detail} key={item.label}>
                     <p>{item.label}</p>
                     <p>{Number(item.value).toLocaleString()}</p>

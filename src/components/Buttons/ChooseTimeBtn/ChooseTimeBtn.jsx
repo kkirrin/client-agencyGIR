@@ -2,18 +2,14 @@ import styles from './style.module.scss';
 
 export default function ChooseTimeBtn({ register, idx, shiftType, day, night, popupId }) {
 
-  /**
-   * day, night починить indefine shiftType-сформировать на верху
-   */
-
   // console.log('popupId', popupId);
-  console.log('day', day);
-  console.log('shiftType', shiftType);
-
+  // console.log('day', day);
+  // console.log('shiftType', shiftType);
 
   const currentShift = shiftType[idx];
   const isDayActive = currentShift ? currentShift === "day" : day;
   const isNightActive = currentShift ? currentShift === "night" : night;
+
 
   // Генерируем уникальные ID для каждого элемента
   const dayId = `day-${idx}-${popupId}`;
@@ -25,7 +21,7 @@ export default function ChooseTimeBtn({ register, idx, shiftType, day, night, po
         type="radio"
         id={dayId}
         value="day"
-        defaultChecked={day ? day : true}
+        defaultChecked={day}
         {...register(`shiftType.${idx}`)}
         className={`${styles.hidden}`}
       />
