@@ -99,6 +99,8 @@ const Object = () => {
   };
 
   const [workers, setWorkers] = useState([]);
+  console.log(workers);
+
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
 
@@ -119,7 +121,7 @@ const Object = () => {
   let path;
   switch (id) {
     case '12': {
-      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][dayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][nightInfo][populate]`;
+      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]`;
 
       break;
     }

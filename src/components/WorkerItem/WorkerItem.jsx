@@ -157,20 +157,19 @@ const WorkerDetails = ({
       // const dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
       // const nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
 
-      const dayDate = parseInt(d?.dayInfo?.date.split('.')[0] || '', 10);
-      const nightDate = parseInt(d?.nightInfo?.date?.split('.')[0] || '', 10);
+      const dayDate = parseInt(d?.DayInfo?.date.split('.')[0] || '', 10);
+      const nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
 
       return dayDate === date || nightDate === date;
     })
+
 
     return (
       <div className={styles.item_table} key={date}>
         {/* Дневная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-
-            {/* {renderShift(dayData?.DayInfo)} */}
-            {renderShift(dayData?.dayInfo)}
+            {renderShift(dayData?.DayInfo)}
           </div>
           <CheckNoteBtn handleClick={handleClickNote} />
         </div>
@@ -180,8 +179,7 @@ const WorkerDetails = ({
         {/* Ночная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {/* {renderShift(dayData?.NightInfo)} */}
-            {renderShift(dayData?.nightInfo)}
+            {renderShift(dayData?.NightInfo)}
           </div>
           <CheckNoteBtn handleClick={handleClickNote} />
         </div>
@@ -195,9 +193,9 @@ const WorkerDetails = ({
         <div className={styles.worker_data}>
           <div>
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
-            <p>{worker?.Job || "Данные отсутствуют"}</p>
+            <p>{worker?.Job || worker?.Order}</p>
           </div>
-          <p>Тоннаж</p>
+          {/* <p>Тоннаж</p> */}
         </div>
 
         {displayedDays.map(renderDate)}
@@ -239,7 +237,7 @@ export default function WorkerItem({
       /**
        * TODO здесь возможно сломается при добавлении дробилок
       */
-      acc.push(item?.dayInfo?.date);
+      acc.push(item?.DayInfo?.date);
     }
 
     // Добавляем дату ночной смены, если есть
@@ -249,7 +247,7 @@ export default function WorkerItem({
       /**
       * TODO здесь возможно сломается при добавлении дробилок
       */
-      acc.push(item?.nightInfo?.date);
+      acc.push(item?.NightInfo?.date);
     }
 
     return acc;
