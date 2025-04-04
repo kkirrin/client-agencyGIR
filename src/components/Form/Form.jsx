@@ -47,6 +47,9 @@ export async function saveUserDateService(userData, url) {
 }
 
 export default function Form({ title, forWhat, setActive, popupId }) {
+    // console.log(forWhat);
+
+
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
@@ -62,7 +65,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             statusWorker: ['Default']
         }
     });
-
 
     const { dates } = useDateSingleStore();
     const { id } = useParams();

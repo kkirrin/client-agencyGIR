@@ -244,7 +244,7 @@ export default function WorkerItem({
       acc.push(item?.DayInfo?.SmenaDetails.SmenaDateDetails);
     } else {
       /**
-       * TODO здесь возможно сломается при добавлении дробилок
+       * TODO здесь возможно (точно) сломается при добавлении дробилок
       */
       acc.push(item?.DayInfo?.date);
     }
@@ -254,7 +254,7 @@ export default function WorkerItem({
       acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
     } else {
       /**
-      * TODO здесь возможно сломается при добавлении дробилок
+      * TODO здесь возможно (точно) сломается при добавлении дробилок
       */
       acc.push(item?.NightInfo?.date);
     }

@@ -3,6 +3,7 @@ import styles from './style.module.scss';
 import fetchData from '../../utils/fetchData';
 import { useEffect } from 'react';
 import useDataRequestStore from '../../store/DataRequestStore';
+import { useParams } from 'react-router-dom';
 
 export default function AddPopupContent({
     id,
@@ -11,6 +12,26 @@ export default function AddPopupContent({
     title
 }) {
 
+    const params = useParams();
+    const pageId = params.id;
+
+    let formName;
+    switch (pageId) {
+        case '12': {
+            formName = "tech"
+        }
+            break;
+        case '10': {
+            formName = "drobilka"
+        }
+            break;
+
+        default: {
+            formName = "people"
+        }
+            break;
+    }
+
     const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
     const { setDataRequest, clearData } = useDataRequestStore();
 
@@ -18,6 +39,7 @@ export default function AddPopupContent({
      * 
      * TODO: сделать запрос UPDATE
      * если сотрудник уже создан
+     * добавить сюда запрос чтобы получать технику и сувать его в стор
      * 
      */
 
@@ -74,7 +96,7 @@ export default function AddPopupContent({
 
                     <Form
                         title={title}
-                        forWhat={'tech'}
+                        forWhat={formName}
                         setActive={setActive}
                         popupId={id}
                     />

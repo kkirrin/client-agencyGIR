@@ -7,6 +7,11 @@ export default function DeleteButton({ setActive }) {
     const userId = data[0]?.documentId;
 
     const url = `http://89.104.67.119:1337/api/people/${userId}`;
+    // const url = `http://89.104.67.119:1337/api/techicas/${userId}`;
+
+    /**
+     * в AddPopupContent добавить еще запрос на получение techicas
+     */
 
     const deleteHandle = async (e) => {
         e.preventDefault();
@@ -20,7 +25,7 @@ export default function DeleteButton({ setActive }) {
 
             if (window.confirm("Вы точно хотите удалить пользователя?")) {
                 setActive(false);
-                window.location.reload();
+                // window.location.reload();
             }
 
             if (!response.ok) {
@@ -35,7 +40,7 @@ export default function DeleteButton({ setActive }) {
 
     return (
         <button className={styles.btn_delete} onClick={deleteHandle}>
-            Удалить сотрудника
+            Удалить запись
             {/* {!isSending &&
                 <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.05507 1.43907L17.1536 1.43888M17.1536 1.43888L17.1536 14.3511M17.1536 1.43888L1.93782 16.6546" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

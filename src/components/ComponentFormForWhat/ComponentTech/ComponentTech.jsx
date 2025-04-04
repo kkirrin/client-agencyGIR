@@ -131,9 +131,6 @@ const DeleteDateItem = ({ id }) => {
 export default function ComponentTech({ handleClickBtn, items, register, errors, shiftType, popupId }) {
 
     const { data } = useDataRequestStore();
-
-    const targetDate = new Date("2025-04-04"); // ISO формат
-
     return (
         <>
             <div>
@@ -152,7 +149,7 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                             id={4}
                             name={'Name'}
                             type="text"
-                            placeholder="Введите ФИО"
+                            placeholder="Введите наименование"
                         />
                     </div>
 
@@ -168,9 +165,9 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                             errors={errors}
                             register={register}
                             id={5}
-                            name={'Job'}
+                            name={'Order'}
                             type="text"
-                            placeholder="Введите должность"
+                            placeholder="Введите номер"
                         />
                     </div>
                 </div>

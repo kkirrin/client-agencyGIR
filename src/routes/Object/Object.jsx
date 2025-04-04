@@ -99,7 +99,6 @@ const Object = () => {
   };
 
   const [workers, setWorkers] = useState([]);
-  console.log(workers);
 
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
@@ -118,10 +117,17 @@ const Object = () => {
    * id 12 - техника 
    * id 10 - дробилки
     */
+  let description = {};
   let path;
   switch (id) {
     case '12': {
       path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]`;
+
+      description = {
+        popupTitle: "Техника",
+        addButtonText: "Добавить технику",
+        pageTitle: "Техника"
+      };
 
       break;
     }
@@ -134,6 +140,12 @@ const Object = () => {
        * TODO: тут доработать получение остальных "объектов"
        */
       path = `?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`;
+
+      description = {
+        popupTitle: "Сотрудник",
+        addButtonText: "Добавить сотрудника",
+        pageTitle: "ФИО/должность"
+      };
     }
   }
   useEffect(() => {
@@ -193,7 +205,7 @@ const Object = () => {
           <div className={styles.table}>
             <div className={styles.table_header}>
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-                <li className={styles.title_table}>ФИО/должность</li>
+                <li className={styles.title_table}>{description.pageTitle}</li>
                 {displayedDays.map((day, idx) => {
                   const currentMonth = months.length > 0
                     ? months[idx].month
@@ -262,14 +274,14 @@ const Object = () => {
             setActive={setPopupActive}
             noteBodyActive={noteBodyActive}
             setNoteBodyActive={setNoteBodyActive}
-            title={'Сотрудник'}
+            title={description.popupTitle}
           />
         ))}
 
         <div className={styles.add_workers}>
           <AddMoreBtn
             onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
-            title={'Добавить сотрудника'}
+            title={description.addButtonText}
           />
         </div>
       </div>
