@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 
-import { CustomInput, ComponentDate, AddMoreBtn, CustomCheckBox, ChooseTimeBtn } from '../../../components';
+import { CustomInput, ComponentDate, AddMoreBtn, CustomRadio, ChooseTimeBtn } from '../../../components';
 
 export default function ComponentTech({ handleClickBtn, items }) {
 
@@ -48,10 +48,10 @@ export default function ComponentTech({ handleClickBtn, items }) {
                         <div className={styles.data}>
                             <p>Данные</p>
                             <div className={styles.data_wrapper}>
-                                <CustomCheckBox type="checkbox" label={"В работе"} checkboxId={`checkbox${idx}`} />
-                                <CustomCheckBox type="checkbox" label={"Ремонт/ТО"} checkboxId={`checkbox${idx}`} />
-                                <CustomCheckBox type="checkbox" label={"Отсутствие угля (О/У)"} checkboxId={`checkbox${idx}`} />
-                                <CustomCheckBox type="checkbox" label={"Запас"} checkboxId={`checkbox${idx}`} />                         
+                                <CustomRadio type="checkbox" label={"В работе"} checkboxId={`checkbox${idx}`} />
+                                <CustomRadio type="checkbox" label={"Ремонт/ТО"} checkboxId={`checkbox${idx}`} />
+                                <CustomRadio type="checkbox" label={"Отсутствие угля (О/У)"} checkboxId={`checkbox${idx}`} />
+                                <CustomRadio type="checkbox" label={"Запас"} checkboxId={`checkbox${idx}`} />                         
                             </div>
                         </div>
 

@@ -91,44 +91,50 @@ export default function Form({ title, forWhat, setActive }) {
             )
         );
 
+
+    /**
+     * 
+     * TODO: надо подумать, как при первом рендере
+     * показывать  то, что уже вбито в поля и чтобы они
+     * были перезаписываемы
+     */
     useEffect(() => {
-        reset({
-            Name: data.Name,
-            Job: data.Job,
-            // AmountData: data?.MonthDataTonnaj[0]?.AmountData,
-            // DayDataOstatkiPORT: data.DayDataOstatki[0]?.DayDataOstatkiPORT,
-            // DayDataOstatkiGIR: data.DayDataOstatki[0]?.DayDataOstatkiGIR,
-            // DayDataTonnaj: data?.MonthDataTonnaj[0]?.MonthData,
-            // TC: data?.DayDataDetails[0]?.SmenaDetails?.TC,
-            // note: data?.DayDataDetails[0]?.SmenaDetails?.Note,
-            // btnDay: data,
-            // btnNight: data,
-            // statusWorkerNotWorked: data,
-            // statusWorkerDayOff: data,
-            // statusWorkerEmpty: data,
+        if (data && data[0]) {
+            reset({
+                Name: data[0].Name || "",
+                Job: data[0].Job || "",
+                shiftType: data[0].DayDataDetails?.map(i => {
+                    if (i?.DayInfo?.Day) return "day";
+                    if (i?.NightInfo?.Night) return "night";
+                    return ""; // Дефолтное значение
+                }) || [],
+                statusWorker: data[0]?.DayDataDetails?.map(i => {
+                    i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
+                    i?.NightInfo?.SmenaDetails?.SmenaStatusWorker
+            }) || [],
+        })}
+    }, [data, reset]);
 
-        });
-    }, []);
-
+    
     /**
      *
      * TODO: нужно перебором делать проверку массива
-     */
-
-    const name = useWatch({ control, name: 'Name' });
-    const job = useWatch({ control, name: 'Job' });
-    const amountData = useWatch({ control, name: 'AmountData' });
-    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-    const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
-    const TC = useWatch({ control, name: 'TC' });
-    const note = useWatch({ control, name: 'note' });
-    const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-
-    const statusValues = useWatch({
-        control,
-        name: 'statusWorker'
-    });
+    */
+   
+   const name = useWatch({ control, name: 'Name' });
+   const job = useWatch({ control, name: 'Job' });
+   const amountData = useWatch({ control, name: 'AmountData' });
+   const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
+   const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
+   const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
+   const TC = useWatch({ control, name: 'TC' });
+   const note = useWatch({ control, name: 'note' });
+   const shiftTypeArray = useWatch({ control, name: 'shiftType' });
+   
+   const statusValues = useWatch({control, name: 'statusWorker'});
+   
+   console.log(shiftTypeArray);
+   console.log(statusValues);
 
 
     // Следим за изменением значений
@@ -153,6 +159,8 @@ export default function Form({ title, forWhat, setActive }) {
        setShiftType(newShiftType);
 
     }, [shiftTypeArray, setValue]);
+
+    console.log(shiftTypeArray);
 
     /**
      * Устанавливаем массив объектов DayDataDetails
@@ -184,7 +192,7 @@ export default function Form({ title, forWhat, setActive }) {
 
     /**
      * ПОИСК ДУБЛИКАТОВ 
-     */
+    */
 
     const dublicateDates = formattedDates.reduce((acc, d) => {
         acc[d] = (acc[d] || 0) + 1;
@@ -244,7 +252,7 @@ export default function Form({ title, forWhat, setActive }) {
                 e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
                 e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
             );
-        
+
             // если есть дубликат и уже сущ.
             if (isDuplicate && existingEntry) {
                 // Добавляем вторую смену к существующей записи
@@ -255,13 +263,21 @@ export default function Form({ title, forWhat, setActive }) {
                 }
                 // добавляет к массиву вот такой объект если все норм
             } else {
-                acc.push({
-                    ...(shiftTypeArray[idx] === 'day' 
-                        ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-                        : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-                    )
-                });
+                const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
+                if(typeof shiftType === 'undefined') {
+                    console.error('shiftType равен undefined для индекса', idx);
+                    return acc;
+                } else {
+                    console.log(true)
+                    acc.push({  
+                        ...(shiftType === 'day' 
+                            ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
+                            : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
+                        )
+                    }
+                )}
             }
+            
             
             console.log(acc);
             return acc;

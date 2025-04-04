@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 
-export default function CustomCheckBox({
+export default function CustomRadio({
     defaultChecked = false,
     hidden = false,
     checkboxId,

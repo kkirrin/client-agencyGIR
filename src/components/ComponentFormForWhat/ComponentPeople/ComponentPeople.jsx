@@ -1,7 +1,7 @@
 import styles from './style.module.scss';
 import deleteSVG from '/delete.svg';
 
-import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
+import { CustomInput, AddMoreBtn, CustomRadio, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
 
 import { STATUS_CHECKBOXES } from '../../../data.json';
@@ -239,7 +239,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                         <p>Данные</p>
                                         <div className={styles.data_wrapper}>
                                             {STATUS_CHECKBOXES.map((checkbox, index) => (
-                                                <CustomCheckBox
+                                                <CustomRadio
                                                     data={data}
                                                     key={`${checkbox.id}-${index}`}
                                                     name={`${'statusWorker'}.${idx}`}
