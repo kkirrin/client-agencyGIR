@@ -187,7 +187,8 @@ const WorkerDetails = ({
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
             <p>{worker?.Job || "Данные отсутствуют"}</p>
           </div>
-          <p>Тоннаж</p>
+          <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData} тонн <br /> Дата выставления тоннажа <br />{worker?.MonthDataTonnaj[0]?.MonthData}</p>
+          <p> </p>
         </div>
 
         {displayedDays.map(renderDate)}
