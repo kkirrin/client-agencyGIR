@@ -15,7 +15,7 @@ import styles from './style.module.scss';
 const domain = 'http://89.104.67.119:1337';
 const url = `${domain}/api/objects?populate=*`;
 
-export default function ObjectSelect() {
+export default function ObjectSelect({ setWorkers }) {
     const [objectList, setObjectList] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -24,6 +24,7 @@ export default function ObjectSelect() {
         const id = event.target.value;
         const selectedOption = event.target.options[event.target.selectedIndex];
         const name = selectedOption.getAttribute('data-name');
+        setWorkers([]);
         navigate(`/object/${id}`);
         objectDataStore.getState().setData(id, name);
     };

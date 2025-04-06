@@ -401,8 +401,22 @@ legend {
   background-color: var(--light-pink);
 }
 
-.empty {
-
+.inworking {
+  display: block;
+  background-color: #d4f4c6;
 }
 
+.repair {
+  display: block;
+  background-color: #ffeed4;
+}
 
+.noCoal {
+  display: block;
+  background-color: #ffd5d5;
+}
+
+.stock {
+  display: block;
+  background-color: #c9d5ff;
+}

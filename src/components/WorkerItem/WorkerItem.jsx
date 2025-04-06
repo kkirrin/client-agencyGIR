@@ -7,13 +7,7 @@ import { CheckNoteBtn, NoteBody } from '../../components';
 import { motion } from 'motion/react';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
-
-/**
- *
- * TODO:
- * сделать проверки типов данных, наличие данных (не пустыеЮ возможно, стоит сделать JSON.parse());
- *
- */
+import { useParams } from 'react-router-dom';
 
 const EmptyWorkerItemData = ({ handleClickNote }) => {
   return (
@@ -76,6 +70,8 @@ const WorkerDetails = ({
   setNoteBodyActive,
   noteBodyActive
 }) => {
+  const params = useParams();
+  const pageId = params.id;
 
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
@@ -83,15 +79,31 @@ const WorkerDetails = ({
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
+
     if (!shift) return <p className="notWorking"></p>
 
-    const status = shift.SmenaDetails?.SmenaStatusWorker;
+    let status;
+    switch (pageId) {
+      case '12': {
+        status = shift?.statusTech;
+      }
+        break;
+
+      default: {
+        status = shift.SmenaDetails?.SmenaStatusWorker;
+      }
+        break;
+    }
 
     const statusMap = {
       null: null,
       'Not working': { text: 'Не работал', className: 'notWorking' },
       'Day Off': { text: 'Выходной', className: 'dayOf' },
-      'Empty': { text: '', className: '' }
+      'Empty': { text: '', className: '' },
+      'In working': { text: 'В работе', className: 'inworking' },
+      'Repair/to': { text: 'Ремонт/ТО', className: 'repair' },
+      'No Coal (OC)': { text: 'Отсутствие угля (О/У)', className: 'noCoal' },
+      'Stock': { text: 'Запас', className: 'stock' }
     }
 
     if (statusMap[status]) {
@@ -139,22 +151,27 @@ const WorkerDetails = ({
   // Рендер одной даты
   const renderDate = (date) => {
     const isMissing = missingDatesSet.has(date)
-    // console.log(date, missingDatesSet, isMissing);
     if (isMissing) return <EmptyWorkerItemData key={date} />
 
     const dayData = worker?.DayDataDetails?.find(d => {
+      let dayDate;
+      let nightDate;
+      switch (pageId) {
+        case '12': {
+          dayDate = parseInt(d?.DayInfo?.date.split('.')[0] || '', 10);
+          nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
+        }
+          break;
 
-      const dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
-      const nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
+        default: {
+          dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
+          nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
+        }
+          break;
+      }
 
-      // console.log(dayDate)
       return dayDate === date || nightDate === date;
-
-
-
     })
-
-    // console.log(dayData);
 
     return (
       <div className={styles.item_table} key={date}>
@@ -185,8 +202,9 @@ const WorkerDetails = ({
         <div className={styles.worker_data}>
           <div>
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
-            <p>{worker?.Job || "Данные отсутствуют"}</p>
+            <p>{worker?.Job || worker?.Order}</p>
           </div>
+
           <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData} тонн <br /> Дата выставления тоннажа <br />{worker?.MonthDataTonnaj[0]?.MonthData}</p>
           <p> </p>
         </div>
@@ -222,16 +240,25 @@ export default function WorkerItem({
   const allDates = daysFullDate;
   // console.log('allDates (дни всего месяца)', allDates);
 
-  // Даты из worker.DayDataDetails
   const workerDates = worker?.DayDataDetails?.reduce((acc, item) => {
     // Добавляем дату дневной смены, если есть
     if (item?.DayInfo?.SmenaDetails?.SmenaDateDetails) {
-      acc.push(item.DayInfo.SmenaDetails.SmenaDateDetails);
+      acc.push(item?.DayInfo?.SmenaDetails.SmenaDateDetails);
+    } else {
+      /**
+       * TODO здесь возможно (точно) сломается при добавлении дробилок
+      */
+      acc.push(item?.DayInfo?.date);
     }
 
     // Добавляем дату ночной смены, если есть
     if (item?.NightInfo?.SmenaDetails?.SmenaDateDetails) {
       acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
+    } else {
+      /**
+      * TODO здесь возможно (точно) сломается при добавлении дробилок
+      */
+      acc.push(item?.NightInfo?.date);
     }
 
     return acc;
@@ -264,7 +291,6 @@ export default function WorkerItem({
             <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} noteBodyActive={noteBodyActive} setNoteBodyActive={setNoteBodyActive}
               missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
           )}
-
         </motion.div>
       )
       }

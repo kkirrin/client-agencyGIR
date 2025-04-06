@@ -1,6 +1,7 @@
 import styles from './style.module.scss';
 import { ru } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { useParams } from 'react-router-dom';
 
 /**
  * allDates - сюда уже приходят отфильтрованные дни
@@ -9,6 +10,7 @@ import { format } from 'date-fns';
  */
 
 function TotalComponent({ object, allDates }) {
+    const { id } = useParams();
 
     // количество дневных смен, когда он работал (уточнить у заказчика)
     const totalAmountDaySmena = object?.DayDataDetails?.filter(item => {
@@ -19,6 +21,16 @@ function TotalComponent({ object, allDates }) {
         return smena && allDates.includes(date) &&
             smenaStatus !== "Not working" &&
             smenaStatus !== "Day Off";
+    }).length;
+
+    // количество дневных смен, для техники
+    const totalAmountDaySmenaTech = object?.DayDataDetails?.filter(item => {
+        const smena = item?.DayInfo;
+        const date = smena?.date;
+        const smenaStatus = smena?.statusTech;
+
+        return smena && allDates.includes(date) &&
+            smenaStatus == "In working";
     }).length;
 
     // количество ночных смен, когда он работал (уточнить у заказчика)
@@ -32,8 +44,15 @@ function TotalComponent({ object, allDates }) {
             smenaStatus !== "Day Off";;
     }).length;
 
-    // сумма смен всего, сколько работал
-    const totalAmountSmena = totalAmountDaySmena + totalAmountNightSmena;
+    // количество ночных смен, для техники
+    const totalAmountNightSmenaTech = object?.DayDataDetails?.filter(item => {
+        const smena = item?.NightInfo;
+        const date = smena?.date;
+        const smenaStatus = smena?.statusTech;
+
+        return smena && allDates.includes(date) &&
+            smenaStatus == "In working";
+    }).length;
 
     let totalSumTonnaj = 0;
     object?.DayDataDetails?.forEach(item => {
@@ -56,15 +75,57 @@ function TotalComponent({ object, allDates }) {
         }
     });
 
+    let totalSumTonnajPlan = 0;
+    let totalSumOstatokGir = 0;
+    let totalSumOstatokPort = 0;
 
-    // число планое, сколько ему надо было выработать (на каждый месяц оно свое)
-    const totalSumTonnajPlan = object?.MonthDataTonnaj[0]?.AmountData;
+    // число плановое, сколько ему надо было выработать (на каждый месяц оно свое)
+    if (Array.isArray(object?.MonthDataTonnaj) && object.MonthDataTonnaj[0]?.AmountData) {
+        totalSumTonnajPlan = object.MonthDataTonnaj[0].AmountData;
+    }
 
     // сумма тон осталась выработать в ГИР на конец месяца??? сумма выставии - тон смены
-    const totalSumOstatokGir = object?.DayDataOstatki[0]?.DayDataOstatkiGIR;
+    if (Array.isArray(object?.DayDataOstatki) && object.DayDataOstatki[0]?.DayDataOstatkiGIR) {
+        totalSumOstatokGir = object.DayDataOstatki[0].DayDataOstatkiGIR;
+    }
 
     // сумма тон осталась выработать в ПОРТ на конец месяца??? сумма выставии - тон смены
-    const totalSumOstatokPort = object?.DayDataOstatki[0]?.DayDataOstatkiPORT;
+    if (Array.isArray(object?.DayDataOstatki) && object.DayDataOstatki[0]?.DayDataOstatkiPORT) {
+        totalSumOstatokPort = object.DayDataOstatki[0].DayDataOstatkiPORT;
+    }
+
+    let arr = [];
+    switch (id) {
+        case '12': {
+            arr = [
+                { label: 'Дневные смены', value: totalAmountDaySmenaTech },
+                { label: 'Ночные смены', value: totalAmountNightSmenaTech },
+                { label: 'Всего смен', value: totalAmountDaySmenaTech + totalAmountNightSmenaTech },
+            ];
+
+            break;
+        }
+        case '10': {
+            arr = [
+                { label: 'Общий тоннаж', value: totalSumTonnaj },
+                { label: 'Выставили', value: totalSumTonnajPlan },
+                { label: 'Ост. Порт', value: totalSumOstatokGir },
+                { label: 'Ост. ГиР', value: totalSumOstatokPort },
+            ];
+            break;
+        }
+        default: {
+            arr = [
+                { label: 'Дневные смены', value: totalAmountDaySmena },
+                { label: 'Ночные смены', value: totalAmountNightSmena },
+                { label: 'Всего смен', value: totalAmountDaySmena + totalAmountNightSmena },
+                { label: 'Общий тоннаж', value: totalSumTonnaj },
+                { label: 'Выставили', value: totalSumTonnajPlan },
+                { label: 'Ост. Порт', value: totalSumOstatokGir },
+                { label: 'Ост. ГиР', value: totalSumOstatokPort },
+            ];
+        }
+    }
 
     return (
         <div className={styles.sum}>
@@ -73,15 +134,7 @@ function TotalComponent({ object, allDates }) {
                 <p className={styles.sum_month}>{format(new Date, 'LLLL', { locale: ru })}</p>
             </div>
 
-            {[
-                { label: 'Дневные смены', value: totalAmountDaySmena },
-                { label: 'Ночные смены', value: totalAmountNightSmena },
-                { label: 'Всего смен', value: totalAmountSmena },
-                { label: 'Общий тоннаж', value: totalSumTonnaj },
-                { label: 'Выставили', value: totalSumTonnajPlan },
-                { label: 'Ост. Порт', value: totalSumOstatokGir },
-                { label: 'Ост. ГиР', value: totalSumOstatokPort },
-            ].map((item, index) => (
+            {arr.map((item, index) => (
                 <div className={styles.sum_detail} key={item.label}>
                     <p>{item.label}</p>
                     <p>{Number(item.value).toLocaleString()}</p>

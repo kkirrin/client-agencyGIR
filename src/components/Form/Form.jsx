@@ -46,7 +46,10 @@ export async function saveUserDateService(userData, url) {
     return { response, data };
 }
 
-export default function Form({ title, forWhat, setActive }) {
+export default function Form({ title, forWhat, setActive, popupId }) {
+    // console.log(forWhat);
+
+
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
@@ -58,15 +61,15 @@ export default function Form({ title, forWhat, setActive }) {
         reset,
         setValue
     } = useForm({
-         defaultValues: {
-            statusWorker: ['Default'] 
+        defaultValues: {
+            statusWorker: ['Default']
         }
     });
 
     const { dates } = useDateSingleStore();
     const { id } = useParams();
     const { data } = useDataRequestStore();
-    
+
     // Правильное определение формата
     const formatOptions = {
         locale: 'ru-RU',
@@ -180,10 +183,12 @@ export default function Form({ title, forWhat, setActive }) {
             } else if (i === 'night') {
                 setValue(`btnDay.${idx}`, false);
                 newShiftType.push('night');
+            } else {
+                newShiftType.push('day');
             }
         });
 
-       setShiftType(newShiftType);
+        setShiftType(newShiftType);
 
     }, [shiftTypeArray, setValue]);
 
@@ -358,6 +363,7 @@ export default function Form({ title, forWhat, setActive }) {
                         errors={errors}
                         shiftType={shiftType}
                         setItems={setItems}
+                        popupId={popupId}
                     />
                 )}
 
@@ -366,6 +372,10 @@ export default function Form({ title, forWhat, setActive }) {
                         handleClickBtn={handleClick}
                         items={items}
                         register={register}
+                        errors={errors}
+                        shiftType={shiftType}
+                        setItems={setItems}
+                        popupId={popupId}
                     />
                 )}
 

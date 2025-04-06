@@ -99,6 +99,7 @@ const Object = () => {
   };
 
   const [workers, setWorkers] = useState([]);
+
   const [popupActive, setPopupActive] = useState(false);
   const [noteBodyActive, setNoteBodyActive] = useState(false);
 
@@ -111,11 +112,51 @@ const Object = () => {
   // const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
   // const apiUrl = `http://89.104.67.119:1337/api/people?filters[Objects][id][$eq]=${id}${dateFilters}&${populateParams}`;
 
+  /**
+   * Разделить логику запроса на получение дробилок и техники
+   * id 12 - техника 
+   * id 10 - дробилки
+    */
+  let description = {};
+  let path;
+  switch (id) {
+    case '12': {
+      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]`;
+
+      description = {
+        popupTitle: "Техника",
+        addButtonText: "Добавить технику",
+        pageTitle: "Техника"
+      };
+
+      break;
+    }
+    case '10': {
+      console.log('дробилки 10');
+      break;
+    }
+    default: {
+      /** 
+       * TODO: тут доработать получение остальных "объектов"
+       */
+      path = `?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`;
+
+      description = {
+        popupTitle: "Сотрудник",
+        addButtonText: "Добавить сотрудника",
+        pageTitle: "ФИО/должность"
+      };
+    }
+  }
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
-        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`);
-        setWorkers(data[0].workers);
+        const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
+        if (id == '12') {
+          setWorkers(data[0].techicas);
+        } else {
+          setWorkers(data[0].workers);
+        }
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
@@ -155,7 +196,7 @@ const Object = () => {
       <div className="container">
         <div className={`${styles.header_wrapper} sticky-header`}>
           <header className={styles.top}>
-            <ObjectSelect />
+            <ObjectSelect setWorkers={setWorkers} />
             <div className={styles.top_wrapper}>
               <ComponentSearch />
               <ComponentDate />
@@ -164,7 +205,7 @@ const Object = () => {
           <div className={styles.table}>
             <div className={styles.table_header}>
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-                <li className={styles.title_table}>ФИО/должность</li>
+                <li className={styles.title_table}>{description.pageTitle}</li>
                 {displayedDays.map((day, idx) => {
                   const currentMonth = months.length > 0
                     ? months[idx].month
@@ -233,14 +274,14 @@ const Object = () => {
             setActive={setPopupActive}
             noteBodyActive={noteBodyActive}
             setNoteBodyActive={setNoteBodyActive}
-            title={'Сотрудник'}
+            title={description.popupTitle}
           />
         ))}
 
         <div className={styles.add_workers}>
           <AddMoreBtn
             onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
-            title={'Добавить сотрудника'}
+            title={description.addButtonText}
           />
         </div>
       </div>
