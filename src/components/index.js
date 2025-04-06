@@ -15,7 +15,7 @@ export { default as CheckNoteBtn } from './Buttons/CheckNoteBtn/CheckNoteBtn';
 export { default as ChooseTimeBtn } from './Buttons/ChooseTimeBtn/ChooseTimeBtn';
 
 export { default as CustomInput } from './Inputs/CustomInput/CustomInput';
-export { default as CustomCheckBox } from './Inputs/CustomCheckBox/CustomCheckBox';
+export { default as CustomRadio } from './Inputs/CustomRadio/CustomRadio';
 export { default as CustomInputDate } from './Inputs/CustomInputDate/CustomInputDate';
 
 export { default as ComponentTech } from './ComponentFormForWhat/ComponentTech/ComponentTech';

@@ -1,8 +1,8 @@
 import styles from './style.module.scss';
 import deleteSVG from '/delete.svg';
 
-import { CustomInput, AddMoreBtn, CustomCheckBox, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 import useDataRequestStore from '../../../store/DataRequestStore';
+import { CustomInput, ComponentDate, AddMoreBtn, CustomRadio, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 
 const STATUS_CHECKBOXES = [
     {
@@ -183,7 +183,6 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                             <p>Дата</p>
                                             <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
                                         </div>
-
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
                                             <div className={styles.smena_btns}>
@@ -200,12 +199,13 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                     </div>
                                 </div>
 
+
                                 <div className={styles.data_container}>
                                     <div className={styles.data}>
                                         <p>Данные</p>
                                         <div className={styles.data_wrapper}>
                                             {STATUS_CHECKBOXES.map((checkbox, index) => (
-                                                <CustomCheckBox
+                                                <CustomRadio
                                                     data={data}
                                                     key={`${checkbox.id}-${index}`}
                                                     name={`${'statusWorker'}.${idx}`}

@@ -87,6 +87,7 @@ export default function CustomInput({
         type={type}
         hidden={hidden}
         placeholder={value ? String(value) : placeholder}
+        defaultValue={value ? value : ''}
         {...(
           typeof idx !== 'undefined' 
             ? register(`${name}.${idx}`, {

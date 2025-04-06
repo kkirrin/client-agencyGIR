@@ -4,7 +4,7 @@
     gap: 10px;
 }
 
-.item input[type="checkbox"] {
+.item input[type="radio"] {
     appearance: none;
     position: relative;
     width: 20px;
@@ -17,12 +17,12 @@
     cursor: pointer;
 }
 
-.item input[type="checkbox"]:checked {
+.item input[type="radio"]:checked {
     background: var(--main); 
     border-color: #FFFFFF; 
 }
 
-.item input[type="checkbox"]::after {
+.item input[type="radio"]::after {
     content: "✔";
     color: var(--white);
     position: absolute;
@@ -35,7 +35,7 @@
     opacity: 0;
 }
 
-.item input[type="checkbox"]:checked::after {
+.item input[type="radio"]:checked::after {
     width: 20px; 
     height: 20px;
     opacity: 1; 

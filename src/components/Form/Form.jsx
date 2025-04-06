@@ -70,15 +70,13 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const { id } = useParams();
     const { data } = useDataRequestStore();
 
-    // console.log(data);
-
     // Правильное определение формата
     const formatOptions = {
         locale: 'ru-RU',
-        options: {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
+        options: { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric' 
         }
     };
 
@@ -87,41 +85,76 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     // 2. Преобразования объекта dates в массив
     // 3. Корректного использования toLocaleDateString
 
-    const formattedDates = Object.values(dates)
-        .filter(date => date instanceof Date && !isNaN(date))
-        .map(date =>
-            date.toLocaleDateString(
-                formatOptions.locale,
-                formatOptions.options
-            )
-        );
+    const [ datesFromData, setDatesFromData ] = useState([]);
+
 
     useEffect(() => {
-        reset({
-            Name: data.Name,
-            Job: data.Job,
-            // AmountData: data?.MonthDataTonnaj[0]?.AmountData,
-            // DayDataOstatkiPORT: data.DayDataOstatki[0]?.DayDataOstatkiPORT,
-            // DayDataOstatkiGIR: data.DayDataOstatki[0]?.DayDataOstatkiGIR,
-            // DayDataTonnaj: data?.MonthDataTonnaj[0]?.MonthData,
-            // TC: data?.DayDataDetails[0]?.SmenaDetails?.TC,
-            // note: data?.DayDataDetails[0]?.SmenaDetails?.Note,
-            // btnDay: data,
-            // btnNight: data,
-            // statusWorkerNotWorked: data,
-            // statusWorkerDayOff: data,
-            // statusWorkerEmpty: data,
+      // Получаем даты из данных
+      const dates = data[0]?.DayDataDetails?.map(d => 
+        d?.DayInfo?.SmenaDetails?.SmenaDateDetails ||
+        d?.NightInfo?.SmenaDetails?.SmenaDateDetails
+      ) || [];
+      
+      setDatesFromData(dates);
+    }, [data]);
 
-        });
-    }, []);
+    console.log('datesFromData!!!!!!!!!!', datesFromData)
+    
+    // Формируем итоговый массив дат
+    const formattedDates = (() => {
 
-    // console.log(data?.name);
+      // Объединяем данные из двух источников
+      const allDates = [
+        ...datesFromData,
+        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
+      ];
 
+      // предположительно тут конфилкт 
+      console.log('allDates!!!!!!!', allDates);
+    
+      // Фильтруем и форматируем
+    console.log(allDates)
+    return allDates;
+    })();
+
+    console.log(Object.values(dates));
+    console.log(datesFromData);
+    console.log(datesFromData, formattedDates)
+
+    /**
+     * 
+     * TODO: надо подумать, как при первом рендере
+     * показывать  то, что уже вбито в поля и чтобы они
+     * были перезаписываемы
+     */
+    useEffect(() => {
+        if (data && data[0]) {
+            reset({
+                Name: data[0].Name || "",
+                Job: data[0].Job || "",
+
+                shiftType: data[0].DayDataDetails?.map(i => {
+                    if (i?.DayInfo?.Day) return "day";
+                    if (i?.NightInfo?.Night) return "night";
+                    return ""; // Дефолтное значение
+                }) || [],
+                statusWorker: data[0]?.DayDataDetails?.map(i => {
+                    i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
+                    i?.NightInfo?.SmenaDetails?.SmenaStatusWorker
+                }) || [],
+                note: data[0]?.DayDataDetails?.map(i => {
+                    i?.DayInfo?.SmenaDetails?.Note ||
+                    i?.NightInfo?.SmenaDetails?.Note
+                }) || []
+        })}
+    }, [data, reset]);
+
+    
     /**
      *
      * TODO: нужно перебором делать проверку массива
-     */
-
+    */
+   
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
@@ -131,14 +164,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
+    
+    const statusValues = useWatch({control, name: 'statusWorker'});
 
-    const statusValues = useWatch({
-        control,
-        name: 'statusWorker'
-    });
-
-    // Следим за изменением значений
-    // Получаем весь массив значений
+            // Следим за изменением значений
+        // Получаем весь массив значений
 
     useEffect(() => {
         if (!shiftTypeArray) return;
@@ -189,6 +219,15 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     const objectUUID = data[0]?.uuid
 
+    /**
+     * ПОИСК ДУБЛИКАТОВ 
+    */
+
+    const dublicateDates = formattedDates.reduce((acc, d) => {
+        acc[d] = (acc[d] || 0) + 1;
+        return acc;
+    }, {})
+
     const onSubmit = async () => {
         setIsSending(true);
         setError(null);
@@ -219,34 +258,60 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             ],
         };
 
-        formData.DayDataDetails = items.map((item, idx) => {
-            const status = statusValues[idx] ? statusValues[idx] : 'Default';
 
+        formData.DayDataDetails = items.reduce((acc, item, idx) => {
+            // текущая дата по индексу (с ней сранивается есть ли дубликат)
+            const currentDate = formattedDates[idx];
+            // Проверка даты на дубликат
+            const isDuplicate = dublicateDates[currentDate] > 1;
+            // записывается статус по индексу
+            const status = statusValues[idx] || 'Default';
+        
+            // формирую данные сотрудника общие
             const commonDetails = {
                 Note: note?.[idx] || "-",
-                SmenaDataTonnaj: dayDataTonnaj?.[idx],
-                SmenaDateDetails: formattedDates?.[idx],
+                SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
+                SmenaDateDetails: currentDate || '0', 
                 SmenaStatusWorker: status,
                 TC: TC?.[idx] || "-"
             };
+        
+            // Находим существующую запись для этой даты
+            const existingEntry = acc.find(e => 
+                e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
+                e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
+            );
 
-            console.log(shiftTypeArray[idx]);
-            return shiftTypeArray[idx] && shiftTypeArray[idx] === 'day'
-                ? {
-                    DayInfo: {
-                        Day: true,
-                        SmenaDetails: commonDetails
-                    }
+            // если есть дубликат и уже сущ.
+            if (isDuplicate && existingEntry) {
+                // Добавляем вторую смену к существующей записи
+                if (shiftTypeArray[idx] === 'day') {
+                    existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
+                } else {
+                    existingEntry.NightInfo = { Night: true, SmenaDetails: commonDetails };
                 }
-                : shiftTypeArray[idx] === 'night'
-                    ? {
-                        NightInfo: {
-                            Night: true,
-                            SmenaDetails: commonDetails
-                        }
+                // добавляет к массиву вот такой объект если все норм
+            } else {
+                const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
+                if(typeof shiftType === 'undefined') {
+                    console.error('shiftType равен undefined для индекса', idx);
+                    return acc;
+                } else {
+                    console.log(true)
+                    acc.push({  
+                        ...(shiftType === 'day' 
+                            ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
+                            : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
+                        )
                     }
-                    : ''
-        });
+                )}
+            }
+            
+            
+            console.log(acc);
+            return acc;
+        }, []);
+
 
         try {
             const existingRecordId = await checkExistingRecord(objectUUID);
