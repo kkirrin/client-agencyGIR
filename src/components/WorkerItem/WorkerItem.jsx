@@ -204,8 +204,8 @@ const WorkerDetails = ({
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
             <p>{worker?.Job || worker?.Order}</p>
           </div>
-
-          <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData} тонн <br /> Дата выставления тоннажа <br />{worker?.MonthDataTonnaj[0]?.MonthData}</p>
+          {console.log(worker)}
+          <p>Тоннаж <br /> {worker.MonthDataTonnaj[0].AmountData ? worker.MonthDataTonnaj[0].AmountData : ''} тонн <br /> Дата выставления тоннажа <br />{worker.MonthDataTonnaj[0].MonthData ? worker.MonthDataTonnaj[0].MonthData : ''}</p>
           <p> </p>
         </div>
 
