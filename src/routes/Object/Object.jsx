@@ -101,7 +101,6 @@ const Object = () => {
   const [workers, setWorkers] = useState([]);
 
   const [popupActive, setPopupActive] = useState(false);
-  const [noteBodyActive, setNoteBodyActive] = useState(false);
 
   // Формирование URL
   // const dateFilters = daysFullDate
@@ -269,11 +268,8 @@ const Object = () => {
             daysFullDate={daysFullDate}
             displayedDays={displayedDays}
             handleClick={() => setPopupActive(worker.id)}
-            handleClickNote={() => setNoteBodyActive(true)}
             active={popupActive === worker.id}
             setActive={setPopupActive}
-            noteBodyActive={noteBodyActive}
-            setNoteBodyActive={setNoteBodyActive}
             title={description.popupTitle}
           />
         ))}

@@ -68,9 +68,6 @@ export default function CustomInput({
 
   const value = getValue();
 
-  // console.log(value);
-
-
   /**
    * 
    * TODO: баг в индексе, когда в name передаешь Index он подхватывает значение верное для каждого инпута

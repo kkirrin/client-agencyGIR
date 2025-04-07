@@ -47,8 +47,6 @@ export async function saveUserDateService(userData, url) {
 }
 
 export default function Form({ title, forWhat, setActive, popupId }) {
-    // console.log(forWhat);
-
 
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
@@ -97,8 +95,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
       
       setDatesFromData(dates);
     }, [data]);
-
-    console.log('datesFromData!!!!!!!!!!', datesFromData)
     
     // Формируем итоговый массив дат
     const formattedDates = (() => {
@@ -107,19 +103,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
       const allDates = [
         ...datesFromData,
         ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
-      ];
-
-      // предположительно тут конфилкт 
-      console.log('allDates!!!!!!!', allDates);
-    
+        ];
+        
       // Фильтруем и форматируем
-    console.log(allDates)
     return allDates;
     })();
-
-    console.log(Object.values(dates));
-    console.log(datesFromData);
-    console.log(datesFromData, formattedDates)
 
     /**
      * 
@@ -297,7 +285,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     console.error('shiftType равен undefined для индекса', idx);
                     return acc;
                 } else {
-                    console.log(true)
                     acc.push({  
                         ...(shiftType === 'day' 
                             ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
@@ -307,8 +294,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 )}
             }
             
-            
-            console.log(acc);
             return acc;
         }, []);
 
