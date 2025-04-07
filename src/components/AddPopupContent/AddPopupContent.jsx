@@ -16,9 +16,11 @@ export default function AddPopupContent({
     const pageId = params.id;
 
     let formName;
+    let apiUrl;
     switch (pageId) {
         case '12': {
             formName = "tech"
+            apiUrl = `http://89.104.67.119:1337/api/techicas?filters[id][$eq]=28&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*`;
         }
             break;
         case '10': {
@@ -28,11 +30,10 @@ export default function AddPopupContent({
 
         default: {
             formName = "people"
+            apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
         }
             break;
     }
-
-    const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
     const { setDataRequest, clearData } = useDataRequestStore();
 
     /** 

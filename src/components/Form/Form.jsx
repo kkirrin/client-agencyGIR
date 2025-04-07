@@ -73,10 +73,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     // Правильное определение формата
     const formatOptions = {
         locale: 'ru-RU',
-        options: { 
-          day: '2-digit', 
-          month: '2-digit', 
-          year: 'numeric' 
+        options: {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
         }
     };
 
@@ -85,41 +85,41 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     // 2. Преобразования объекта dates в массив
     // 3. Корректного использования toLocaleDateString
 
-    const [ datesFromData, setDatesFromData ] = useState([]);
+    const [datesFromData, setDatesFromData] = useState([]);
 
 
     useEffect(() => {
-      // Получаем даты из данных
-      const dates = data[0]?.DayDataDetails?.map(d => 
-        d?.DayInfo?.SmenaDetails?.SmenaDateDetails ||
-        d?.NightInfo?.SmenaDetails?.SmenaDateDetails
-      ) || [];
-      
-      setDatesFromData(dates);
+        // Получаем даты из данных
+        const dates = data[0]?.DayDataDetails?.map(d =>
+            d?.DayInfo?.SmenaDetails?.SmenaDateDetails ||
+            d?.NightInfo?.SmenaDetails?.SmenaDateDetails
+        ) || [];
+
+        setDatesFromData(dates);
     }, [data]);
 
-    console.log('datesFromData!!!!!!!!!!', datesFromData)
-    
+    // console.log('datesFromData!!!!!!!!!!', datesFromData)
+
     // Формируем итоговый массив дат
     const formattedDates = (() => {
 
-      // Объединяем данные из двух источников
-      const allDates = [
-        ...datesFromData,
-        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
-      ];
+        // Объединяем данные из двух источников
+        const allDates = [
+            ...datesFromData,
+            ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date => date.toLocaleDateString(formatOptions.locale, formatOptions.options))
+        ];
 
-      // предположительно тут конфилкт 
-      console.log('allDates!!!!!!!', allDates);
-    
-      // Фильтруем и форматируем
-    console.log(allDates)
-    return allDates;
+        // предположительно тут конфилкт 
+        //   console.log('allDates!!!!!!!', allDates);
+
+        // Фильтруем и форматируем
+        // console.log(allDates)
+        return allDates;
     })();
 
-    console.log(Object.values(dates));
-    console.log(datesFromData);
-    console.log(datesFromData, formattedDates)
+    // console.log(Object.values(dates));
+    // console.log(datesFromData);
+    // console.log(datesFromData, formattedDates)
 
     /**
      * 
@@ -140,21 +140,22 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 }) || [],
                 statusWorker: data[0]?.DayDataDetails?.map(i => {
                     i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
-                    i?.NightInfo?.SmenaDetails?.SmenaStatusWorker
+                        i?.NightInfo?.SmenaDetails?.SmenaStatusWorker
                 }) || [],
                 note: data[0]?.DayDataDetails?.map(i => {
                     i?.DayInfo?.SmenaDetails?.Note ||
-                    i?.NightInfo?.SmenaDetails?.Note
+                        i?.NightInfo?.SmenaDetails?.Note
                 }) || []
-        })}
+            })
+        }
     }, [data, reset]);
 
-    
+
     /**
      *
      * TODO: нужно перебором делать проверку массива
     */
-   
+
     const name = useWatch({ control, name: 'Name' });
     const job = useWatch({ control, name: 'Job' });
     const amountData = useWatch({ control, name: 'AmountData' });
@@ -164,11 +165,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-    
-    const statusValues = useWatch({control, name: 'statusWorker'});
 
-            // Следим за изменением значений
-        // Получаем весь массив значений
+    const statusValues = useWatch({ control, name: 'statusWorker' });
+
+    // Следим за изменением значений
+    // Получаем весь массив значений
 
     useEffect(() => {
         if (!shiftTypeArray) return;
@@ -266,18 +267,18 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             const isDuplicate = dublicateDates[currentDate] > 1;
             // записывается статус по индексу
             const status = statusValues[idx] || 'Default';
-        
+
             // формирую данные сотрудника общие
             const commonDetails = {
                 Note: note?.[idx] || "-",
                 SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
-                SmenaDateDetails: currentDate || '0', 
+                SmenaDateDetails: currentDate || '0',
                 SmenaStatusWorker: status,
                 TC: TC?.[idx] || "-"
             };
-        
+
             // Находим существующую запись для этой даты
-            const existingEntry = acc.find(e => 
+            const existingEntry = acc.find(e =>
                 e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
                 e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
             );
@@ -293,21 +294,22 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 // добавляет к массиву вот такой объект если все норм
             } else {
                 const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
-                if(typeof shiftType === 'undefined') {
+                if (typeof shiftType === 'undefined') {
                     console.error('shiftType равен undefined для индекса', idx);
                     return acc;
                 } else {
                     console.log(true)
-                    acc.push({  
-                        ...(shiftType === 'day' 
+                    acc.push({
+                        ...(shiftType === 'day'
                             ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
                             : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
                         )
                     }
-                )}
+                    )
+                }
             }
-            
-            
+
+
             console.log(acc);
             return acc;
         }, []);
