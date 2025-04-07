@@ -1,7 +1,6 @@
 import styles from './style.module.scss';
 
 export default function NoteBody({ id, active, setActive, worker, data }) {
-    console.log(id)
     const job = worker?.Job;
     const name = worker?.Name;
 

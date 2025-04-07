@@ -12,16 +12,16 @@ export default function CustomRadio({
     idx,
 }) {
 
-    // const getCurrentStatus = () => {
-    //     const dayDetail = data[0]?.DayDataDetails?.[idx];
-        
-    //     return dayDetail?.DayInfo?.SmenaDetails?.SmenaStatusWorker 
-    //     || dayDetail?.NightInfo?.SmenaDetails?.SmenaStatusWorker 
-    //     || 'Default';
-    // };
+    const getCurrentStatus = () => {
+        const dayDetail = data[0]?.DayDataDetails?.[idx] || data[0]?.DayDataDetails;
 
-    //  // Определяем checked состояние
-    // const isChecked = getCurrentStatus() === value;
+        return dayDetail?.DayInfo?.SmenaDetails?.SmenaStatusWorker || dayDetail?.NightInfo?.SmenaDetails?.SmenaStatusWorker || dayDetail?.NightInfo?.statusTech
+        // || dayDetail?.DayInfo?.statusTech || dayDetail?.NightInfo?.statusTech 
+        || 'Default';
+    };
+
+     // Определяем checked состояние
+    const isChecked = getCurrentStatus() === value;
     
     return (
         <div className={styles.item}>
@@ -31,8 +31,7 @@ export default function CustomRadio({
                 id={checkboxId}
                 value={value}
                 hidden={hidden}
-                defaultChecked={defaultChecked} 
-                // checked={isChecked}
+                defaultChecked={isChecked} 
                 {...(
                     typeof idx !== 'undefined' 
                         ? register(name, {

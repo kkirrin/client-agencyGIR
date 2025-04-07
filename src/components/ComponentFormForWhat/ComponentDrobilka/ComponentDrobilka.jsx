@@ -238,7 +238,7 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                                 <CustomRadio
                                                     data={data}
                                                     key={`${checkbox.id}-${index}`}
-                                                    name={`${'statusWorker'}.${idx}`}
+                                                    name={`${'statusTech'}.${idx}`}
                                                     register={register}
                                                     type="radio"
                                                     value={checkbox.value}
@@ -267,20 +267,6 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                         />
                                     </div>
 
-                                    {/* <div className={styles.data}>
-                                        <p style={{ marginBottom: '10px' }}>ТС</p>
-                                        <CustomInput
-                                            data={data}
-                                            item={item}
-                                            id={7}
-                                            name={'TC'}
-                                            errors={errors}
-                                            register={register}
-                                            type="text"
-                                            placeholder='Введите ТС '
-                                            idx={idx}
-                                        />
-                                    </div> */}
                                 </div>
 
                                 <div className={styles.note}>
