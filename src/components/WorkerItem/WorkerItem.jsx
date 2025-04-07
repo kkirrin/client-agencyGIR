@@ -204,7 +204,9 @@ const WorkerDetails = ({
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
             <p>{worker?.Job || worker?.Order}</p>
           </div>
-          <p>Тоннаж <br /> {worker.MonthDataTonnaj[0].AmountData ? worker.MonthDataTonnaj[0].AmountData : ''} тонн <br /> Дата выставления тоннажа <br />{worker.MonthDataTonnaj[0].MonthData ? worker.MonthDataTonnaj[0].MonthData : ''}</p>
+          <p>Тоннаж <br /> {worker.MonthDataTonnaj[0]?.AmountData ? worker.MonthDataTonnaj[0]?.AmountData : ''}
+            тонн <br /> Дата выставления тоннажа <br />
+            {worker.MonthDataTonnaj[0]?.MonthData ? worker.MonthDataTonnaj[0]?.MonthData : ''}</p>
           <p> </p>
         </div>
 
@@ -244,9 +246,6 @@ export default function WorkerItem({
     if (item?.DayInfo?.SmenaDetails?.SmenaDateDetails) {
       acc.push(item?.DayInfo?.SmenaDetails.SmenaDateDetails);
     } else {
-      /**
-       * TODO здесь возможно (точно) сломается при добавлении дробилок
-      */
       acc.push(item?.DayInfo?.date);
     }
 
@@ -254,9 +253,6 @@ export default function WorkerItem({
     if (item?.NightInfo?.SmenaDetails?.SmenaDateDetails) {
       acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
     } else {
-      /**
-      * TODO здесь возможно (точно) сломается при добавлении дробилок
-      */
       acc.push(item?.NightInfo?.date);
     }
 

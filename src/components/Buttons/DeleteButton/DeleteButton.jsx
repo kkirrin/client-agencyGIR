@@ -14,6 +14,7 @@ export default function DeleteButton({ setActive }) {
         }
             break;
         case '10': {
+            url = `http://89.104.67.119:1337/api/drobilkas/${userId}`;
         }
             break;
 

@@ -37,8 +37,6 @@ const DeleteDateItem = ({ id }) => {
     const { data } = useDataRequestStore();
     const userId = data[0]?.documentId;
     const dayDataDetails = data[0]?.DayDataDetails;
-    console.log(dayDataDetails);
-
 
     const url = `http://89.104.67.119:1337/api/techicas/${userId}`;
 
@@ -168,6 +166,8 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
 
                 {items
                     .map((item, idx) => {
+                        console.log(item);
+
                         return (
                             <>
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
@@ -175,7 +175,7 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                     <div className={styles.date_wrapper}>
                                         <div className={styles.date_content}>
                                             <p>Дата</p>
-                                            <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
+                                            <ComponentDateSingle idx={idx} dateForRender={item?.date} />
                                         </div>
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
@@ -184,8 +184,8 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                                     idx={idx}
                                                     register={register}
                                                     shiftType={shiftType}
-                                                    day={item.Day}
-                                                    night={item.Night}
+                                                    day={item.day}
+                                                    night={item.night}
                                                     popupId={popupId}
                                                 />
                                             </div>
