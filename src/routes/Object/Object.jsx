@@ -99,7 +99,6 @@ const Object = () => {
   };
 
   const [workers, setWorkers] = useState([]);
-
   const [popupActive, setPopupActive] = useState(false);
 
   // Формирование URL
@@ -115,6 +114,7 @@ const Object = () => {
    * Разделить логику запроса на получение дробилок и техники
    * id 12 - техника 
    * id 10 - дробилки
+   * drobilkas
     */
   let description = {};
   let path;
@@ -131,7 +131,13 @@ const Object = () => {
       break;
     }
     case '10': {
-      console.log('дробилки 10');
+      path = `?filters[id][$eq]=${id}&populate[drobilkas][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[drobilkas][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[drobilkas][populate][MonthDataTonnaj]=*`;
+
+      description = {
+        popupTitle: "Дробилка",
+        addButtonText: "Добавить дробилку",
+        pageTitle: "Дробилка"
+      };
       break;
     }
     default: {
@@ -147,12 +153,15 @@ const Object = () => {
       };
     }
   }
+
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
         const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
         if (id == '12') {
           setWorkers(data[0].techicas);
+        } else if (id == '10') {
+          setWorkers(data[0].drobilkas);
         } else {
           setWorkers(data[0].workers);
         }
@@ -160,9 +169,10 @@ const Object = () => {
         console.error("Ошибка при получении данных:", error);
       }
     };
-    fetchAndSetData();
 
+    fetchAndSetData();
   }, [dates, currentPage, id]);
+
 
   useEffect(() => {
     setCurrentPage(1);

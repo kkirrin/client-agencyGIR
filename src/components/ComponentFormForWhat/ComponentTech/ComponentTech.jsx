@@ -37,7 +37,8 @@ const DeleteDateItem = ({ id }) => {
     const { data } = useDataRequestStore();
     const userId = data[0]?.documentId;
     const dayDataDetails = data[0]?.DayDataDetails;
-    const url = `http://89.104.67.119:1337/api/people/${userId}`;
+
+    const url = `http://89.104.67.119:1337/api/techicas/${userId}`;
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -78,24 +79,16 @@ const DeleteDateItem = ({ id }) => {
             .filter(day => day.DayInfo !== null || day.NightInfo !== null)
             .map(day => ({
                 DayInfo: day.DayInfo ? {
-                    Day: day.DayInfo.Day,
-                    SmenaDetails: {
-                        SmenaStatusWorker: day.DayInfo.SmenaDetails?.SmenaStatusWorker,
-                        SmenaDataTonnaj: day.DayInfo.SmenaDetails?.SmenaDataTonnaj,
-                        Note: day.DayInfo.SmenaDetails?.Note,
-                        TC: day.DayInfo.SmenaDetails?.TC,
-                        SmenaDateDetails: day.DayInfo.SmenaDetails?.SmenaDateDetails,
-                    }
+                    date: day.DayInfo.date,
+                    day: day.DayInfo.day,
+                    note: day.DayInfo.note,
+                    statusTech: day.DayInfo.statusTech,
                 } : null,
                 NightInfo: day.NightInfo ? {
-                    Night: day.NightInfo.Night,
-                    SmenaDetails: {
-                        SmenaStatusWorker: day.NightInfo.SmenaDetails?.SmenaStatusWorker,
-                        SmenaDataTonnaj: day.NightInfo.SmenaDetails?.SmenaDataTonnaj,
-                        Note: day.NightInfo.SmenaDetails?.Note,
-                        TC: day.NightInfo.SmenaDetails?.TC,
-                        SmenaDateDetails: day.NightInfo.SmenaDetails?.SmenaDateDetails,
-                    }
+                    night: day.NightInfo.night,
+                    date: day.NightInfo.date,
+                    note: day.NightInfo.note,
+                    statusTech: day.NightInfo.statusTech,
                 } : null
             }));
 
@@ -129,7 +122,6 @@ const DeleteDateItem = ({ id }) => {
 };
 
 export default function ComponentTech({ handleClickBtn, items, register, errors, shiftType, popupId }) {
-
     const { data } = useDataRequestStore();
     return (
         <>
@@ -174,6 +166,8 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
 
                 {items
                     .map((item, idx) => {
+                        console.log(item);
+
                         return (
                             <>
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
@@ -181,7 +175,7 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                     <div className={styles.date_wrapper}>
                                         <div className={styles.date_content}>
                                             <p>Дата</p>
-                                            <ComponentDateSingle idx={idx} dateForRender={item?.SmenaDetails?.SmenaDateDetails} />
+                                            <ComponentDateSingle idx={idx} dateForRender={item?.date} />
                                         </div>
                                         <div className={styles.smena_content}>
                                             <p>Смена</p>
@@ -190,8 +184,8 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                                     idx={idx}
                                                     register={register}
                                                     shiftType={shiftType}
-                                                    day={item.Day}
-                                                    night={item.Night}
+                                                    day={item.day}
+                                                    night={item.night}
                                                     popupId={popupId}
                                                 />
                                             </div>

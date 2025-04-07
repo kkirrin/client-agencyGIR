@@ -16,23 +16,25 @@ export default function AddPopupContent({
     const pageId = params.id;
 
     let formName;
+    let apiUrl;
     switch (pageId) {
         case '12': {
-            formName = "tech"
+            formName = "tech";
+            apiUrl = `http://89.104.67.119:1337/api/techicas?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*`;
         }
             break;
         case '10': {
-            formName = "drobilka"
+            formName = "drobilka";
+            apiUrl = `http://89.104.67.119:1337/api/drobilkas?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
         }
             break;
 
         default: {
-            formName = "people"
+            formName = "people";
+            apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
         }
             break;
     }
-
-    const apiUrl = `http://89.104.67.119:1337/api/people?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
     const { setDataRequest, clearData } = useDataRequestStore();
 
     /** 
