@@ -25,7 +25,7 @@ export default function AddPopupContent({
             break;
         case '10': {
             formName = "drobilka";
-            apiUrl = `http://89.104.67.119:1337/api/drobilkas?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*`;
+            apiUrl = `http://89.104.67.119:1337/api/drobilkas?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
         }
             break;
 
