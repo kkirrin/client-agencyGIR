@@ -93,24 +93,18 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
         setDatesFromData(dates);
     }, [data]);
-
-    // console.log('datesFromData!!!!!!!!!!', datesFromData)
-
+    
     // Формируем итоговый массив дат
     const formattedDates = (() => {
 
-        // Объединяем данные из двух источников
-        const allDates = [
-            ...datesFromData,
-            ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date => date.toLocaleDateString(formatOptions.locale, formatOptions.options))
+      // Объединяем данные из двух источников
+      const allDates = [
+        ...datesFromData,
+        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
         ];
-
-        // предположительно тут конфилкт 
-        //   console.log('allDates!!!!!!!', allDates);
-
-        // Фильтруем и форматируем
-        // console.log(allDates)
-        return allDates;
+        
+      // Фильтруем и форматируем
+    return allDates;
     })();
 
     /**
@@ -290,9 +284,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     console.error('shiftType равен undefined для индекса', idx);
                     return acc;
                 } else {
-                    console.log(true)
-                    acc.push({
-                        ...(shiftType === 'day'
+
+                    acc.push({  
+                        ...(shiftType === 'day' 
                             ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
                             : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
                         )
@@ -300,9 +294,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     )
                 }
             }
-
-
-            console.log(acc);
             return acc;
         }, []);
 

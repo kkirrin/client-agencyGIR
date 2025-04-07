@@ -75,7 +75,7 @@ export default function AddPopupContent({
         <div
             id={id}
             className={`${styles.popup} ${active ? styles.popupActive : styles.popupNone}`}
-            onClick={() => { setActive(false) }}
+            onClick={() => setActive(false) }
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >

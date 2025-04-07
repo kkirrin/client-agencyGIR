@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './style.module.scss';
 import { AddPopupContent, TotalComponent } from '../../components';
 
@@ -63,19 +63,19 @@ const WorkerDetails = ({
   id,
   worker,
   displayedDays,
-  handleClick,
-  handleClickNote,
   allDates,
+  handleClick,
   missingDates,
-  setNoteBodyActive,
-  noteBodyActive
+
 }) => {
+  
   const params = useParams();
   const pageId = params.id;
 
+  const [activeNote, setActiveNote] = useState(null);
+
   // Преобразуем missingDates в Set чисел для быстрого поиска
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
-  // console.log(missingDatesSet, missingDates)
 
   // Мемоизация рендера смены
   const renderShift = (shift, type) => {
@@ -122,36 +122,20 @@ const WorkerDetails = ({
         <p className={`${styles.details_nostatic} working`}>
           {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
         </p>
-
-        <NoteBody
-          active={noteBodyActive}
-          setActive={setNoteBodyActive}
-          data={worker}
-          date={shift.SmenaDetails?.SmenaDateDetails}
-        />
       </>
     )
   }
 
-  /**
-   *
-   * TODO: НАШЕЛ БАГУ
-   * ДЕло в том, что при загрузке первых 5 дней, происходит ошибка, допустим есть с 1 по 5 число, потом с 6 числа не работает логика
-   * При добавлении из админки 10 числа и последующих - не отображаются сотрудники
-   */
-
-
-  /**
-  *
-  * TODO: НАШЕЛ БАГУ
-  * При создании человека, надо наверно отправлять правильную дату формата 3.03.2025, а не 03.03.2025
-  *
-  */
-
   // Рендер одной даты
   const renderDate = (date) => {
+
+
     const isMissing = missingDatesSet.has(date)
     if (isMissing) return <EmptyWorkerItemData key={date} />
+    
+    const handleNoteClick = (id) => {
+      setActiveNote(id);
+    };
 
     const dayData = worker?.DayDataDetails?.find(d => {
       let dayDate;
@@ -180,7 +164,14 @@ const WorkerDetails = ({
           <div className={styles.detail}>
             {renderShift(dayData?.DayInfo)}
           </div>
-          <CheckNoteBtn handleClick={handleClickNote} />
+          <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.DayInfo?.id)} />
+          <NoteBody
+            id={dayData?.DayInfo?.id}
+            active={activeNote === dayData?.DayInfo?.id}  // Проверяем соответствие ID
+            setActive={setActiveNote}
+            worker={worker}
+            data={dayData?.DayInfo}
+          />
         </div>
 
         <div className='border_top_gray'></div>
@@ -190,7 +181,16 @@ const WorkerDetails = ({
           <div className={styles.detail}>
             {renderShift(dayData?.NightInfo)}
           </div>
-          <CheckNoteBtn handleClick={handleClickNote} />
+          {/* {console.log(dayData)}; */}
+          <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.NightInfo?.id)} />
+          
+          <NoteBody
+            id={dayData?.NightInfo?.id}
+            active={activeNote === dayData?.NightInfo?.id} // Проверяем соответствие ID
+            setActive={setActiveNote}
+            worker={worker}
+            data={dayData?.NightInfo}
+          />
         </div>
       </div>
     )
@@ -207,11 +207,12 @@ const WorkerDetails = ({
           <p>Тоннаж <br /> {worker.MonthDataTonnaj[0]?.AmountData ? worker.MonthDataTonnaj[0]?.AmountData : ''}
             тонн <br /> Дата выставления тоннажа <br />
             {worker.MonthDataTonnaj[0]?.MonthData ? worker.MonthDataTonnaj[0]?.MonthData : ''}</p>
+
           <p> </p>
         </div>
 
         {displayedDays.map(renderDate)}
-
+        
         <a href="#popup" className={styles.edit} onClick={handleClick}>
           <img src='/edit.svg' alt='' />
         </a>
@@ -232,14 +233,10 @@ export default function WorkerItem({
   worker,
   displayedDays,
   handleClick,
-  handleClickNote,
-  noteBodyActive,
-  setNoteBodyActive
 }) {
 
   // Все даты месяца
   const allDates = daysFullDate;
-  // console.log('allDates (дни всего месяца)', allDates);
 
   const workerDates = worker?.DayDataDetails?.reduce((acc, item) => {
     // Добавляем дату дневной смены, если есть
@@ -268,6 +265,7 @@ export default function WorkerItem({
   );
 
   const isWorkerEmpty = worker.name === '';
+
   return (
     <>
       {workers.length > 0 && worker && (
@@ -281,10 +279,22 @@ export default function WorkerItem({
           className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
         >
           {isWorkerEmpty ? (
-            <EmptyWorkerItem id={worker.uuid ? worker.uuid : worker.id} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+            <EmptyWorkerItem 
+              id={worker.uuid ? worker.uuid : worker.id} 
+              worker={worker} 
+              displayedDays={displayedDays} 
+              // handleClickNote={handleClickNote} 
+              handleClick={handleClick} 
+            />
           ) : (
-            <WorkerDetails id={worker.uuid ? worker.uuid : worker.id} noteBodyActive={noteBodyActive} setNoteBodyActive={setNoteBodyActive}
-              missingDates={missingDates} allDates={allDates} worker={worker} displayedDays={displayedDays} handleClickNote={handleClickNote} handleClick={handleClick} />
+            <WorkerDetails 
+              id={worker.uuid ? worker.uuid : worker.id} 
+              missingDates={missingDates} 
+              allDates={allDates} 
+              worker={worker} displayedDays={displayedDays} 
+              // handleClickNote={handleClickNote} 
+              handleClick={handleClick} 
+            />
           )}
         </motion.div>
       )

@@ -2,10 +2,6 @@ import styles from './style.module.scss';
 
 export default function ChooseTimeBtn({ register, idx, shiftType, day, night, popupId }) {
 
-  // console.log('popupId', popupId);
-  // console.log('day', day);
-  // console.log('shiftType', shiftType);
-
   const currentShift = shiftType[idx];
   const isDayActive = currentShift ? currentShift === "day" : day;
   const isNightActive = currentShift ? currentShift === "night" : night;

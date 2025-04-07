@@ -1,20 +1,40 @@
 import styles from './style.module.scss';
 
-export default function NoteBody({ active, setActive, data, date }) {
+export default function NoteBody({ id, active, setActive, worker, data }) {
+    console.log(id)
+    const job = worker?.Job;
+    const name = worker?.Name;
 
-    const Job = data?.Job;
-    const Name = data?.Name;
     const createdAt = data?.createdAt;
     const documentId = data?.documentId;
 
-    const dateWorkered = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDateDetails;
-    const Note = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.Note;
-    const SmenaDataTonnaj = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj;
-    const SmenaStatusWorker = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.SmenaStatusWorker;
-    const TC = data?.DayDataDetails[0]?.DayInfo?.SmenaDetails?.TC;
+    const dateWorkered = data?.SmenaDetails?.SmenaDateDetails;
 
-    const id = data?.id;
+    const note = data?.SmenaDetails?.Note;
 
+    const smenaDataTonnaj = data?.SmenaDetails?.SmenaDataTonnaj;
+    const smenaStatusWorker = data?.SmenaDetails?.SmenaStatusWorker;
+
+    let smenaRussian = ''
+
+    switch (smenaStatusWorker) {
+        case 'Default':
+            smenaRussian = 'Работал'
+            break;
+        
+        case 'Not working':
+            smenaRussian = "Не работал"
+            break;
+
+        case 'Day Off':
+            smenaRussian = "Выходной"
+            break;
+        
+        case 'Empty':
+            smenaRussian = "Пусто"
+            break;
+    }
+        
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
             setActive(false);
@@ -24,8 +44,9 @@ export default function NoteBody({ active, setActive, data, date }) {
     return (
 
         <div
+            id={id}
             className={`${styles.popup} ${active ? styles.popupActive : styles.popupNone}`}
-            onClick={() => { setActive(false) }}
+            onClick={() => setActive(false)}
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
@@ -46,17 +67,18 @@ export default function NoteBody({ active, setActive, data, date }) {
                         </svg>
                     </button>
                     <div>
-                        <h3 className={styles.name_worker_name}>{Name}</h3>
-                        <p className={styles.name_worker_job}>{Job}</p>
-                        <p className={styles.name_worker_date}>{date}</p>
-                        <p className={styles.name_worker_status}>{SmenaStatusWorker}</p>
+                        <h3 className={styles.name_worker_name}>{name}</h3>
+                        <p className={styles.name_worker_job}>{job}</p> 
+                        <p className={styles.name_worker_date}>{dateWorkered}</p> 
+                       
+                        <p className={styles.name_worker_status}>{smenaRussian}</p>
 
                         <div className={styles.name_worker_note}>
                             <p className={styles.note_title}>Примечание</p>
                             <div className={styles.name_worker_note_back}>
-                                <p className=''>{Note}</p>
+                                <p className=''>{note}</p>
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>
