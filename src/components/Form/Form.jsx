@@ -47,9 +47,6 @@ export async function saveUserDateService(userData, url) {
 }
 
 export default function Form({ title, forWhat, setActive, popupId }) {
-    // console.log(forWhat);
-
-
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
@@ -87,7 +84,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     const [datesFromData, setDatesFromData] = useState([]);
 
-
     useEffect(() => {
         // Получаем даты из данных
         const dates = data[0]?.DayDataDetails?.map(d =>
@@ -116,10 +112,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         // console.log(allDates)
         return allDates;
     })();
-
-    // console.log(Object.values(dates));
-    // console.log(datesFromData);
-    // console.log(datesFromData, formattedDates)
 
     /**
      * 
