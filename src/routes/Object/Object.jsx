@@ -120,7 +120,7 @@ const Object = () => {
   let path;
   switch (id) {
     case '12': {
-      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*&populate[techicas][populate][MonthDataTonnaj]=*`;
+      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*`;
 
       description = {
         popupTitle: "Техника",

@@ -6,17 +6,22 @@ import useDataRequestStore from '../../../store/DataRequestStore';
 
 const STATUS_CHECKBOXES = [
     {
-        "value": "repairto",
+        "value": "Default",
+        "label": "-",
+        "id": "checkboxdefault"
+    },
+    {
+        "value": "Repair/to",
         "label": "Ремонт/ТО",
         "id": "checkboxrepairto"
     },
     {
-        "value": "nocoal",
+        "value": "No Coal (OC)",
         "label": "Отсутствие угля (О/У)",
         "id": "checkboxnocoal"
     },
     {
-        "value": "stock",
+        "value": "Stock",
         "label": "Запас",
         "id": "checkboxstock"
     },
@@ -238,7 +243,7 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                                 <CustomRadio
                                                     data={data}
                                                     key={`${checkbox.id}-${index}`}
-                                                    name={`${'statusTech'}.${idx}`}
+                                                    name={`${'statusWorker'}.${idx}`}
                                                     register={register}
                                                     type="radio"
                                                     value={checkbox.value}

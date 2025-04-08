@@ -16,7 +16,7 @@ export default function CustomRadio({
         const dayDetail = data[0]?.DayDataDetails?.[idx] || data[0]?.DayDataDetails;
 
         return dayDetail?.DayInfo?.SmenaDetails?.SmenaStatusWorker || dayDetail?.NightInfo?.SmenaDetails?.SmenaStatusWorker || dayDetail?.NightInfo?.statusTech
-        // || dayDetail?.DayInfo?.statusTech || dayDetail?.NightInfo?.statusTech 
+        || dayDetail?.DayInfo?.statusTech || dayDetail?.NightInfo?.statusTech 
         || 'Default';
     };
 

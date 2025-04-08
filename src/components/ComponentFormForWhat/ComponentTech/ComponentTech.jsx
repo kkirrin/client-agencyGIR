@@ -2,7 +2,7 @@ import styles from './style.module.scss';
 import deleteSVG from '/delete.svg';
 
 import useDataRequestStore from '../../../store/DataRequestStore';
-import { CustomInput, ComponentDate, AddMoreBtn, CustomRadio, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
+import { CustomInput, AddMoreBtn, CustomRadio, ChooseTimeBtn, ComponentDateSingle } from '../../../components';
 
 const STATUS_CHECKBOXES = [
     {
@@ -11,22 +11,22 @@ const STATUS_CHECKBOXES = [
         "id": "statusDefault"
     },
     {
-        "value": "inworking",
+        "value": "In working",
         "label": "В работе",
         "id": "checkboxinworking"
     },
     {
-        "value": "repairto",
+        "value": "Repair/to",
         "label": "Ремонт/ТО",
         "id": "checkboxrepairto"
     },
     {
-        "value": "nocoal",
+        "value": "No Coal (OC)",
         "label": "Отсутствие угля (О/У)",
         "id": "checkboxnocoal"
     },
     {
-        "value": "stock",
+        "value": "Stock",
         "label": "Запас",
         "id": "checkboxstock"
     },
