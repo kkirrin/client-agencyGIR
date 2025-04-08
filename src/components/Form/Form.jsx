@@ -84,12 +84,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     useEffect(() => {
         // Получаем даты из данных
-        const dates = data[0]?.DayDataDetails?.map(d =>
-            d?.DayInfo?.SmenaDetails?.SmenaDateDetails
-            || d?.NightInfo?.SmenaDetails?.SmenaDateDetails 
-            || d?.DayInfo?.date
-            || d?.NightInfo?.date
-        )  || [];
+        const dates = data[0]?.DayDataDetails?.flatMap(d => {
+            const dates = []
+            if (d?.DayInfo?.SmenaDetails?.SmenaDateDetails) dates.push(d.DayInfo.SmenaDetails.SmenaDateDetails)
+            if (d?.NightInfo?.SmenaDetails?.SmenaDateDetails) dates.push(d.NightInfo.SmenaDetails.SmenaDateDetails)
+            if (d?.DayInfo?.date) dates.push(d.DayInfo.date)
+            if (d?.NightInfo?.date) dates.push(d.NightInfo.date)
+            return dates
+        }) || [];
 
         setDatesFromData(dates);
     }, [data]);
@@ -109,7 +111,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     return allDates;
     })();
 
-    console.log('formattedDates', formattedDates)
+    console.log('formattedDates', datesFromData)
 
     /**
      * 
