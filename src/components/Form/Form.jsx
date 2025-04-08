@@ -20,7 +20,6 @@ import useDateSingleStore from '../../store/CalendarSingleStore';
 export async function checkExistingRecord(uuid, url) {
 
     try {
-        console.log(url)
         const response = await fetch(`${url}?filters[uuid][$eq]=${uuid}`);
         const result = await response.json();
         // Для Strapi структура ответа: { data: [...] }
@@ -83,7 +82,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [datesFromData, setDatesFromData] = useState([]);
 
     useEffect(() => {
-        // Получаем даты из данных
+
         const dates = data[0]?.DayDataDetails?.flatMap(d => {
             const dates = []
             if (d?.DayInfo?.SmenaDetails?.SmenaDateDetails) dates.push(d.DayInfo.SmenaDetails.SmenaDateDetails)
@@ -95,30 +94,17 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
         setDatesFromData(dates);
     }, [data]);
-
-    console.log(datesFromData);
     
-    // Формируем итоговый массив дат
     const formattedDates = (() => {
 
-      // Объединяем данные из двух источников
       const allDates = [
         ...datesFromData,
         ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
         ];
         
-      // Фильтруем и форматируем
     return allDates;
     })();
 
-    console.log('formattedDates', datesFromData)
-
-    /**
-     * 
-     * TODO: надо подумать, как при первом рендере
-     * показывать  то, что уже вбито в поля и чтобы они
-     * были перезаписываемы
-     */
     useEffect(() => {
         if (data && data[0]) {
             reset({
@@ -143,11 +129,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     }, [data, reset]);
 
 
-    /**
-     *
-     * TODO: нужно перебором делать проверку массива
-    */
-
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
     const job = useWatch({ control, name: 'Job' });
@@ -161,15 +142,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     const statusValues = useWatch({ control, name: 'statusWorker' });
 
-    // Следим за изменением значений
-    // Получаем весь массив значений
 
     useEffect(() => {
         if (!shiftTypeArray) return;
 
         let newShiftType = [];
 
-        // Проходим по всем элементам массива
         shiftTypeArray.forEach((i, idx) => {
             if (i === 'day') {
                 setValue(`btnNight.${idx}`, false);
@@ -186,9 +164,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     }, [shiftTypeArray, setValue]);
 
-    /**
-     * Устанавливаем массив объектов DayDataDetails
-    */
     const [items, setItems] = useState([]);
     useEffect(() => {
         if (data && data.length > 0) {
@@ -221,8 +196,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         acc[d] = (acc[d] || 0) + 1;
         return acc;
     }, {})
-
-    console.log(formattedDates);
 
     const onSubmit = async () => {
         setIsSending(true);
@@ -260,14 +233,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 };
         
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
-                    // текущая дата по индексу (с ней сранивается есть ли дубликат)
                     const currentDate = formattedDates[idx];
-                    // Проверка даты на дубликат
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    // записывается статус по индексу
                     const status = statusValues[idx] || 'Default';
 
-                    // формирую данные сотрудника общие
                     const commonDetails = {
                         Note: note?.[idx] || "-",
                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
@@ -276,21 +245,17 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         TC: TC?.[idx] || "-"
                     };
 
-                    // Находим существующую запись для этой даты
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
                         e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
                     );
 
-                    // если есть дубликат и уже сущ.
                     if (isDuplicate && existingEntry) {
-                        // Добавляем вторую смену к существующей записи
                         if (shiftTypeArray[idx] === 'day') {
                             existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
                         } else {
                             existingEntry.NightInfo = { Night: true, SmenaDetails: commonDetails };
                         }
-                        // добавляет к массиву вот такой объект если все норм
                     } else {
                         const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
                         if (typeof shiftType === 'undefined') {
@@ -327,28 +292,22 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 };
 
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
-                    // текущая дата по индексу (с ней сранивается есть ли дубликат)
                     const currentDate = formattedDates[idx];
-                    // Проверка даты на дубликат
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    // записывается статус по индексу
                     const status = statusValues[idx] || 'Default';                
 
-                    // Находим существующую запись для этой даты
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.date === currentDate ||
                         e.NightInfo?.date === currentDate
                     );
 
-                    // если есть дубликат и уже сущ.
                     if (isDuplicate && existingEntry) {
-                        // Добавляем вторую смену к существующей записи
                         if (shiftTypeArray[idx] === 'day') {
                             existingEntry.DayInfo = { day: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
                         } else {
                             existingEntry.NightInfo = { night: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
                         }
-                        // добавляет к массиву вот такой объект если все норм
+
                     } else {
                         const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
                         if (typeof shiftType === 'undefined') {
@@ -399,11 +358,8 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 };
 
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
-                    // текущая дата по индексу (с ней сранивается есть ли дубликат)
                     const currentDate = formattedDates[idx];
-                    // Проверка даты на дубликат
                     const isDuplicate = dublicateDates[currentDate] >= 1;
-                    // записывается статус по индексу
                     const status = statusValues[idx] || 'Default';
 
                      if (!currentDate) {
@@ -411,7 +367,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         return acc;
                     }
 
-                    // формирую данные сотрудника общие
                     const commonDetails = {
                         Note: note?.[idx] || "-",
                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
@@ -420,18 +375,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         TC: TC?.[idx] || "-"
                     };
 
-                    // Находим существующую запись для этой даты
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
                         e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
                     );
 
-                    // если есть дубликат и уже сущ.
                     if (isDuplicate && existingEntry) {
-                        console.log(isDuplicate, existingEntry)
                         const shiftType = shiftTypeArray[idx];
                         
-                        // Добавляем только если смена не существует
                         if (shiftType === 'day' && !existingEntry.DayInfo) {
                             existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
                         } 
