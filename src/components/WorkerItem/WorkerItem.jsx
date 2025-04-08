@@ -68,7 +68,7 @@ const WorkerDetails = ({
   missingDates,
 
 }) => {
-  
+
   const params = useParams();
   const pageId = params.id;
 
@@ -132,7 +132,7 @@ const WorkerDetails = ({
 
     const isMissing = missingDatesSet.has(date)
     if (isMissing) return <EmptyWorkerItemData key={date} />
-    
+
     const handleNoteClick = (id) => {
       setActiveNote(id);
     };
@@ -183,7 +183,7 @@ const WorkerDetails = ({
           </div>
           {/* {console.log(dayData)}; */}
           <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.NightInfo?.id)} />
-          
+
           <NoteBody
             id={dayData?.NightInfo?.id}
             active={activeNote === dayData?.NightInfo?.id} // Проверяем соответствие ID
@@ -204,7 +204,7 @@ const WorkerDetails = ({
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
             <p>{worker?.Job || worker?.Order}</p>
           </div>
-          {
+{
             worker.MonthDataTonnaj != undefined && (
               
               <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData ? worker?.MonthDataTonnaj[0]?.AmountData : ''}
@@ -214,11 +214,10 @@ const WorkerDetails = ({
             {worker?.MonthDataTonnaj[0]?.MonthData ? worker?.MonthDataTonnaj[0]?.MonthData : ''}</p>
             )
           }
-          <p> </p>
         </div>
 
         {displayedDays.map(renderDate)}
-        
+
         <a href="#popup" className={styles.edit} onClick={handleClick}>
           <img src='/edit.svg' alt='' />
         </a>
@@ -285,21 +284,21 @@ export default function WorkerItem({
           className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
         >
           {isWorkerEmpty ? (
-            <EmptyWorkerItem 
-              id={worker.uuid ? worker.uuid : worker.id} 
-              worker={worker} 
-              displayedDays={displayedDays} 
+            <EmptyWorkerItem
+              id={worker.uuid ? worker.uuid : worker.id}
+              worker={worker}
+              displayedDays={displayedDays}
               // handleClickNote={handleClickNote} 
-              handleClick={handleClick} 
+              handleClick={handleClick}
             />
           ) : (
-            <WorkerDetails 
-              id={worker.uuid ? worker.uuid : worker.id} 
-              missingDates={missingDates} 
-              allDates={allDates} 
-              worker={worker} displayedDays={displayedDays} 
+            <WorkerDetails
+              id={worker.uuid ? worker.uuid : worker.id}
+              missingDates={missingDates}
+              allDates={allDates}
+              worker={worker} displayedDays={displayedDays}
               // handleClickNote={handleClickNote} 
-              handleClick={handleClick} 
+              handleClick={handleClick}
             />
           )}
         </motion.div>
