@@ -85,9 +85,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     useEffect(() => {
         // Получаем даты из данных
         const dates = data[0]?.DayDataDetails?.map(d =>
-            d?.DayInfo?.SmenaDetails?.SmenaDateDetails ||
-            d?.NightInfo?.SmenaDetails?.SmenaDateDetails
-        ) || [];
+            d?.DayInfo?.SmenaDetails?.SmenaDateDetails
+            || d?.NightInfo?.SmenaDetails?.SmenaDateDetails 
+            || d?.DayInfo?.date
+            || d?.NightInfo?.date
+        )  || [];
 
         setDatesFromData(dates);
     }, [data]);
