@@ -29,6 +29,23 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
             smenaRussian = "Выходной"
             break;
         
+        case 'Repair/to':
+            smenaRussian = "В ремонте"
+            break;
+        
+        case 'No Coal (OC)':
+            smenaRussian = "Отсутствие угля"
+            break;
+        
+        case 'Stock':
+            smenaRussian = "Запас"
+            break;
+        
+        case 'In working':
+            smenaRussian = "В работе"
+            break;
+        
+        
         case 'Empty':
             smenaRussian = "Пусто"
             break;

@@ -1,7 +1,7 @@
-const url = 'http://89.104.67.119:1337/api/people';
+
 
 // Функция для обновления
-export const updateUserDateService = async (recordId, data) => {
+export const updateUserDateService = async (recordId, data, url) => {
     try {
         const response = await fetch(`${url}/${recordId}`, {
             method: 'PUT',

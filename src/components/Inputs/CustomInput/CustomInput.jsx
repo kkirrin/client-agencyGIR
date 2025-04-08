@@ -60,6 +60,9 @@ export default function CustomInput({
 
       case 'note':
         return note;
+      
+      case 'order':
+        return order;
 
       default:
         return '';
