@@ -1,12 +1,7 @@
-/**
- * TODO: Поиск пока только по Person и Job
- * 1. поиск по Drobilka, Techica
- * 2. зЧто делать с результатами поиска?
- * 3. Искать персону внутри объекта?
- */
 import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom';
-import fetchData from '../../utils/fetchData'
+import fetchData from '../../utils/fetchData';
+import useDataRequestStore from '../../store/DataRequestStore';
 
 import styles from './style.module.scss'
 
@@ -15,8 +10,10 @@ const domain = 'http://89.104.67.119:1337'
 const ComponentSearch = () => {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [dataList, setData] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
+
+  const { setDataRequest } = useDataRequestStore();
 
   const { id } = useParams();
   const debounceTimeout = useRef(null)
@@ -24,6 +21,10 @@ const ComponentSearch = () => {
   const handleChange = (e) => {
     setInputValue(e.target.value)
   }
+
+  const handleClick = (person) => {
+    setDataRequest(person);
+  };
 
   useEffect(() => {
     if (debounceTimeout.current) {
@@ -40,12 +41,28 @@ const ComponentSearch = () => {
       try {
         // Фильтрация по персоне - получает всю инфу по челику
         // const queryUrl = `${domain}/api/people?filters[$or][0][Name][$containsi]=${encodeURIComponent(inputValue)}&filters[$or][1][Job][$containsi]=${encodeURIComponent(inputValue)}&populate[People][populate]=*`
+        // const queryUrl = `${domain}/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*&filters[workers][Name][$containsi]=${encodeURIComponent(inputValue)}`;
 
-        const queryUrl = `${domain}/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*&filters[workers][Name][$containsi]=${encodeURIComponent(inputValue)}`;
+        const peopleUrl = `${domain}/api/people?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate=*`
+        const techicaUrl = `${domain}/api/techicas?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate=*`
+        const drobilkaUrl = `${domain}/api/drobilkas?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate=*`
 
+        const [peopleData, techicaData, drobilkaData] = await Promise.all([
+          fetchData(peopleUrl),
+          fetchData(techicaUrl),
+          fetchData(drobilkaUrl)
+        ]);
 
-        const res = await fetchData(queryUrl);
-        setData(res);
+        const combinedResults = [
+          ...peopleData,
+          ...techicaData,
+          ...drobilkaData
+        ];
+
+        setData(combinedResults);
+
+        // const res = await fetchData(drobilkaUrl);
+        // setData(res);
         setLoading(false);
       } catch (error) {
         console.error('Ошибка загрузки Объектов:', error)
@@ -67,27 +84,26 @@ const ComponentSearch = () => {
         className={styles.search}
         placeholder='Поиск'
       />
-      {isFocused && (
-        <ul className={styles.list}>
-          {inputValue.trim() === '' && <li>Начните печатать</li>}
-          {loading && <img src='/download.png' className={styles.image} />}
-          {!loading && data.length === 0 && inputValue.trim() !== '' && (
-            <li>Ничего не найдено</li>
-          )}
+      {
+        isFocused && (
+          <ul className={styles.list}>
+            {inputValue.trim() === '' && <li>Начните печатать</li>}
+            {loading && <img src='/download.png' className={styles.image} />}
+            {!loading && dataList.length === 0 && inputValue.trim() !== '' && (
+              <li>Ничего не найдено</li>
+            )}
 
-          {!loading &&
-            data[0]?.workers
-              .filter((person) =>
-                person?.Name?.toLowerCase().includes(inputValue.toLowerCase())
-              )
-              .map((person, index) => (
+            {
+              !loading &&
+              dataList.map((person, index) => (
                 <li key={person.id || index} className={styles.item}>
-                  {person.Name}
+                  <p onClick={() => handleClick(person)}>{person.Name}</p>
                 </li>
               ))
-          }
-        </ul>
-      )}
+            }
+          </ul>
+        )
+      }
     </div>
   )
 }

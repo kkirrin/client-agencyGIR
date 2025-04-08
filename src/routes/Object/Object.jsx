@@ -2,6 +2,7 @@ import styles from './style.module.scss';
 
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import useDataRequestStore from '../../store/DataRequestStore';
 
 import fetchData from '../../utils/fetchData';
 
@@ -20,7 +21,6 @@ function daysInMonth(month, year) {
 }
 
 const Object = () => {
-
   const currentDate = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
@@ -101,26 +101,11 @@ const Object = () => {
   const [workers, setWorkers] = useState([]);
   const [popupActive, setPopupActive] = useState(false);
 
-  // Формирование URL
-  // const dateFilters = daysFullDate
-  //   .slice(startIndex, endIndex)
-  //   .map((date, index) => `?filters[id][$eq]=${id}&filters[DayDataDetails][DayInfo][SmenaDetails][SmenaDateDetails][$in][${index}]=${date}`)
-  //   .join('&');
-
-  // const populateParams = `populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
-  // const apiUrl = `http://89.104.67.119:1337/api/people?filters[Objects][id][$eq]=${id}${dateFilters}&${populateParams}`;
-
-  /**
-   * Разделить логику запроса на получение дробилок и техники
-   * id 12 - техника 
-   * id 10 - дробилки
-   * drobilkas
-    */
   let description = {};
   let path;
   switch (id) {
     case '12': {
-      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*&populate[techicas][populate][MonthDataTonnaj]=*`;
+      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*`;
 
       description = {
         popupTitle: "Техника",
@@ -173,6 +158,16 @@ const Object = () => {
     fetchAndSetData();
   }, [dates, currentPage, id]);
 
+  // ======================================================================
+  const { data } = useDataRequestStore();
+
+  useEffect(() => {
+    console.log("workers2:", workers);
+    setWorkers([]);
+    setWorkers([data]);
+  }, [data]);
+  console.log("worker3s:", workers);
+  // ======================================================================
 
   useEffect(() => {
     setCurrentPage(1);
