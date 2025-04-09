@@ -44,6 +44,10 @@ export async function saveUserDateService(userData, url) {
 }
 
 export default function Form({ title, forWhat, setActive, popupId }) {
+    const { data } = useDataRequestStore();
+    const { dates } = useDateSingleStore();
+    const { id } = useParams();
+
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
@@ -54,15 +58,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         formState: { errors },
         reset,
         setValue
-    } = useForm({
-        defaultValues: {
-            statusWorker: ['Default']
-        }
-    });
-
-    const { dates } = useDateSingleStore();
-    const { id } = useParams();
-    const { data } = useDataRequestStore();
+    } = useForm();
 
     // Правильное определение формата
     const formatOptions = {
@@ -73,11 +69,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             year: 'numeric'
         }
     };
-
-    // Форматирование дат с учетом:
-    // 1. Проверки на валидность даты
-    // 2. Преобразования объекта dates в массив
-    // 3. Корректного использования toLocaleDateString
 
     const [datesFromData, setDatesFromData] = useState([]);
 
@@ -110,24 +101,24 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             reset({
                 Name: data[0].Name || "",
                 Job: data[0].Job || "",
+                Order: data[0]?.Order || '',
 
                 shiftType: data[0].DayDataDetails?.map(i => {
                     if (i?.DayInfo?.Day) return "day";
                     if (i?.NightInfo?.Night) return "night";
                     return ""; // Дефолтное значение
                 }) || [],
-                statusWorker: data[0]?.DayDataDetails?.map(i => {
-                    i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
-                        i?.NightInfo?.SmenaDetails?.SmenaStatusWorker
-                }) || [],
-                note: data[0]?.DayDataDetails?.map(i => {
-                    i?.DayInfo?.SmenaDetails?.Note ||
-                        i?.NightInfo?.SmenaDetails?.Note
-                }) || []
+                statusWorker: data[0]?.DayDataDetails?.map(i => 
+                        i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
+                        i?.NightInfo?.SmenaDetails?.SmenaStatusWorker ||
+                        i?.DayInfo?.statusTech ||
+                        i?.DayInfo?.statusTech
+                ) || [],
+                note: data[0]?.DayDataDetails?.map(i => i?.DayInfo?.SmenaDetails?.Note || i?.NightInfo?.SmenaDetails?.Note || i?.DayInfo?.note || i?.NightInfo?.note
+                ) || []
             })
         }
     }, [data, reset]);
-
 
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
@@ -139,9 +130,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-
+    
     const statusValues = useWatch({ control, name: 'statusWorker' });
-
+    
 
     useEffect(() => {
         if (!shiftTypeArray) return;
@@ -235,14 +226,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'Default';
+                    const status = statusValues[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default' ;
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0",
                         SmenaDateDetails: currentDate || '0',
                         SmenaStatusWorker: status,
-                        TC: TC?.[idx] || "-"
+                        TC: TC?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.TC || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.TC || "-"
                     };
 
                     const existingEntry = acc.find(e =>
@@ -283,7 +274,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
                     uuid: objectUUID ? objectUUID : uuidv4(),
                     Name: name || "",
-                    Order: order || "",
+                    Order: order || data[0]?.Order,
                     objects: [
                         {
                             id: id,
@@ -294,7 +285,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'Default';                
+                    const status = statusValues[idx] || 'In working';                
 
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.date === currentDate ||
