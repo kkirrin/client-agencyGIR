@@ -226,7 +226,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || data[0].DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0].DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default' ;
+                    const status = statusValues[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default' ;
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
