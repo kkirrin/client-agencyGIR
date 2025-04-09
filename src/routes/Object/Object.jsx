@@ -263,6 +263,8 @@ const Object = () => {
           </div>
         </div>
 
+        
+       
         {workers.map((worker, idx) => (
           <WorkerItem
             key={idx}
@@ -276,6 +278,7 @@ const Object = () => {
             active={popupActive === worker.id}
             setActive={setPopupActive}
             title={description.popupTitle}
+            forWhat={description.popupTitle}
           />
         ))}
 

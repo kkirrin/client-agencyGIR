@@ -66,6 +66,7 @@ const WorkerDetails = ({
   allDates,
   handleClick,
   missingDates,
+  forWhat
 
 }) => {
 
@@ -78,7 +79,7 @@ const WorkerDetails = ({
   const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
 
   // Мемоизация рендера смены
-  const renderShift = (shift, type) => {
+  const renderShift = (shift, type, forWhat) => {
 
     if (!shift) return <p className="notWorking"></p>
 
@@ -118,10 +119,15 @@ const WorkerDetails = ({
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
         {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
-        <p className={styles.details_static}>ТС</p>
-        <p className={`${styles.details_nostatic} working`}>
-          {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
-        </p>
+        {console.log('forWhatforWhatforWhat', forWhat)}
+        {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
+          <>
+            <p className={styles.details_static}>ТС</p>
+              <p className={`${styles.details_nostatic} working`}>
+              {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
+            </p>
+          </>
+        )}
       </>
     )
   }
@@ -162,7 +168,7 @@ const WorkerDetails = ({
         {/* Дневная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {renderShift(dayData?.DayInfo)}
+            {renderShift(dayData?.DayInfo, '', forWhat)}
           </div>
           <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.DayInfo?.id)} />
           <NoteBody
@@ -179,7 +185,7 @@ const WorkerDetails = ({
         {/* Ночная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {renderShift(dayData?.NightInfo)}
+            {renderShift(dayData?.NightInfo, '', forWhat)}
           </div>
           {/* {console.log(dayData)}; */}
           <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.NightInfo?.id)} />
@@ -238,6 +244,7 @@ export default function WorkerItem({
   worker,
   displayedDays,
   handleClick,
+  forWhat
 }) {
 
   // Все даты месяца
@@ -292,14 +299,15 @@ export default function WorkerItem({
               handleClick={handleClick}
             />
           ) : (
-            <WorkerDetails
-              id={worker.uuid ? worker.uuid : worker.id}
-              missingDates={missingDates}
-              allDates={allDates}
-              worker={worker} displayedDays={displayedDays}
-              // handleClickNote={handleClickNote} 
-              handleClick={handleClick}
-            />
+              <WorkerDetails
+                forWhat={forWhat}
+                id={worker.uuid ? worker.uuid : worker.id}
+                missingDates={missingDates}
+                allDates={allDates}
+                worker={worker} displayedDays={displayedDays}
+                // handleClickNote={handleClickNote} 
+                handleClick={handleClick}
+              />
           )}
         </motion.div>
       )
