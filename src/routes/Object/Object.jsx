@@ -161,6 +161,7 @@ const Object = () => {
   // ======================================================================
   const { data: storeDate, clearData } = useDataRequestStore();
   // console.log('storeDate ', storeDate);
+  // console.log('workers ', workers);
 
   // Эффект для загрузки данных
   useEffect(() => {
