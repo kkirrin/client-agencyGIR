@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom';
 import fetchData from '../../utils/fetchData';
 import useDataRequestStore from '../../store/DataRequestStore';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import styles from './style.module.scss'
 
@@ -12,8 +12,9 @@ const ComponentSearch = () => {
   const [loading, setLoading] = useState(false);
   const [dataList, setData] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
+  const navigate = useNavigate();
 
-  const { setDataRequest } = useDataRequestStore();
+  const { data, setDataRequest } = useDataRequestStore();
 
   const { id } = useParams();
   const debounceTimeout = useRef(null)
@@ -24,6 +25,22 @@ const ComponentSearch = () => {
 
   const handleClick = (person) => {
     setDataRequest(person);
+    const objectsArray = person.objects || person.Objects;
+    const name = objectsArray?.[0]?.Name;
+    switch (name) {
+      case 'Техника':
+        navigate(`/object/12`);
+        break;
+      case 'Дробильные установки':
+        navigate(`/object/10`);
+        break;
+
+      default:
+        navigate(`/object/2`);
+        break;
+    }
+
+    setInputValue('');
   };
 
   useEffect(() => {
@@ -43,9 +60,9 @@ const ComponentSearch = () => {
         // const queryUrl = `${domain}/api/people?filters[$or][0][Name][$containsi]=${encodeURIComponent(inputValue)}&filters[$or][1][Job][$containsi]=${encodeURIComponent(inputValue)}&populate[People][populate]=*`
         // const queryUrl = `${domain}/api/objects?filters[id][$eq]=${id}&populate[workers][populate]=*&filters[workers][Name][$containsi]=${encodeURIComponent(inputValue)}`;
 
-        const peopleUrl = `${domain}/api/people?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate=*`
-        const techicaUrl = `${domain}/api/techicas?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate=*`
-        const drobilkaUrl = `${domain}/api/drobilkas?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate=*`
+        const peopleUrl = `${domain}/api/people?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[Objects][populate]=*`;
+        const techicaUrl = `${domain}/api/techicas?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[objects][populate]=*`;
+        const drobilkaUrl = `${domain}/api/drobilkas?filters[Name][$containsi]=${encodeURIComponent(inputValue)}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[objects][populate]=*`;
 
         const [peopleData, techicaData, drobilkaData] = await Promise.all([
           fetchData(peopleUrl),
@@ -80,7 +97,7 @@ const ComponentSearch = () => {
         value={inputValue}
         onChange={handleChange}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setTimeout(() => setIsFocused(false), 150)} // задержка, чтобы кликнуть по элементу
+        onBlur={() => setTimeout(() => setIsFocused(false), 1000)} // задержка, чтобы кликнуть по элементу
         className={styles.search}
         placeholder='Поиск'
       />
