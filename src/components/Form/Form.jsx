@@ -44,6 +44,10 @@ export async function saveUserDateService(userData, url) {
 }
 
 export default function Form({ title, forWhat, setActive, popupId }) {
+    const { data } = useDataRequestStore();
+    const { dates } = useDateSingleStore();
+    const { id } = useParams();
+
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
@@ -54,15 +58,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         formState: { errors },
         reset,
         setValue
-    } = useForm({
-        defaultValues: {
-            statusWorker: ['Default']
-        }
-    });
+    } = useForm();
 
-    const { dates } = useDateSingleStore();
-    const { id } = useParams();
-    const { data } = useDataRequestStore();
+
+
 
     // Правильное определение формата
     const formatOptions = {
@@ -116,10 +115,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     if (i?.NightInfo?.Night) return "night";
                     return ""; // Дефолтное значение
                 }) || [],
-                statusWorker: data[0]?.DayDataDetails?.map(i => {
+                statusWorker: data[0]?.DayDataDetails?.map(i => 
                     i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
                         i?.NightInfo?.SmenaDetails?.SmenaStatusWorker
-                }) || [],
+                ) || [],
                 note: data[0]?.DayDataDetails?.map(i => {
                     i?.DayInfo?.SmenaDetails?.Note ||
                         i?.NightInfo?.SmenaDetails?.Note
@@ -127,6 +126,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             })
         }
     }, [data, reset]);
+
+    console.log(shiftType);
+
 
 
     const name = useWatch({ control, name: 'Name' });
@@ -235,14 +237,16 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'Default';
+                    const status = statusValues[idx] || data[0].DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0].DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default' ;
+
+                    console.log(status);
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0",
                         SmenaDateDetails: currentDate || '0',
                         SmenaStatusWorker: status,
-                        TC: TC?.[idx] || "-"
+                        TC: TC?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.TC || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.TC || "-"
                     };
 
                     const existingEntry = acc.find(e =>

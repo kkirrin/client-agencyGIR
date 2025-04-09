@@ -26,6 +26,7 @@ export default function CustomInput({
 
   const {
     Note: note = '',
+    Order: order = '',
     SmenaDataTonnaj: smenaDataTonnaj = '',
     SmenaDateDetails: smenaDateDetails = '',
     TC: tc = ''

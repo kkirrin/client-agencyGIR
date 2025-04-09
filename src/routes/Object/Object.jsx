@@ -161,12 +161,12 @@ const Object = () => {
   // ======================================================================
   const { data } = useDataRequestStore();
 
-  useEffect(() => {
-    console.log("workers2:", workers);
-    setWorkers([]);
-    setWorkers([data]);
-  }, [data]);
-  console.log("worker3s:", workers);
+  // useEffect(() => {
+  //   console.log("workers2:", workers);
+  //   setWorkers([]);
+  //   setWorkers([data]);
+  // }, [data]);
+  // console.log("worker3s:", workers);
   // ======================================================================
 
   useEffect(() => {
