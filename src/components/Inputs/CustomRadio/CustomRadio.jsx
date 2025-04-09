@@ -15,11 +15,10 @@ export default function CustomRadio({
     const getCurrentStatus = () => {
         const dayDetail = data[0]?.DayDataDetails?.[idx] || data[0]?.DayDataDetails;
         
-        return dayDetail?.DayInfo?.SmenaDetails?.SmenaStatusWorker 
-            || dayDetail?.NightInfo?.SmenaDetails?.SmenaStatusWorker 
+        return dayDetail?.DayInfo?.SmenaDetails?.SmenaStatusWorker
+            || dayDetail?.NightInfo?.SmenaDetails?.SmenaStatusWorker
             || dayDetail?.NightInfo?.statusTech
-            || dayDetail?.DayInfo?.statusTech 
-            || 'Default';
+            || dayDetail?.DayInfo?.statusTech;
     };
 
      // Определяем checked состояние
@@ -33,7 +32,7 @@ export default function CustomRadio({
                 id={checkboxId}
                 value={value}
                 hidden={hidden}
-                defaultChecked={isChecked} 
+                // defaultChecked={isChecked} 
                 {...(
                     typeof idx !== 'undefined' 
                         ? register(name, {

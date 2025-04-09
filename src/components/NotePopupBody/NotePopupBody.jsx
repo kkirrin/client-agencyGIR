@@ -2,17 +2,20 @@ import styles from './style.module.scss';
 
 export default function NoteBody({ id, active, setActive, worker, data }) {
     const job = worker?.Job;
+    const order = worker?.Order;
     const name = worker?.Name;
+
+    console.log(data)
 
     const createdAt = data?.createdAt;
     const documentId = data?.documentId;
 
-    const dateWorkered = data?.SmenaDetails?.SmenaDateDetails;
+    const dateWorkered = data?.SmenaDetails?.SmenaDateDetails || data?.date;
 
-    const note = data?.SmenaDetails?.Note;
+    const note = data?.SmenaDetails?.Note || data?.note;
 
     const smenaDataTonnaj = data?.SmenaDetails?.SmenaDataTonnaj;
-    const smenaStatusWorker = data?.SmenaDetails?.SmenaStatusWorker;
+    const smenaStatusWorker = data?.SmenaDetails?.SmenaStatusWorker || data?.statusTech;
 
     let smenaRussian = ''
 
@@ -44,7 +47,6 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
         case 'In working':
             smenaRussian = "В работе"
             break;
-        
         
         case 'Empty':
             smenaRussian = "Пусто"
@@ -84,7 +86,7 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
                     </button>
                     <div>
                         <h3 className={styles.name_worker_name}>{name}</h3>
-                        <p className={styles.name_worker_job}>{job}</p> 
+                        <p className={styles.name_worker_job}>{job || order}</p> 
                         <p className={styles.name_worker_date}>{dateWorkered}</p> 
                        
                         <p className={styles.name_worker_status}>{smenaRussian}</p>

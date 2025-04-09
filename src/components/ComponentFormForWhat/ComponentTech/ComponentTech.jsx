@@ -90,7 +90,8 @@ const DeleteDateItem = ({ id }) => {
                     note: day.NightInfo.note,
                     statusTech: day.NightInfo.statusTech,
                 } : null
-            }));
+            }
+        ));
 
         try {
             const response = await fetch(url, {
@@ -166,7 +167,6 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
 
                 {items
                     .map((item, idx) => {
-                        console.log(item);
 
                         return (
                             <>
