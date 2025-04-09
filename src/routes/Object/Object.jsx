@@ -126,7 +126,7 @@ const Object = () => {
       break;
     }
     default: {
-      /** 
+      /**
        * TODO: тут доработать получение остальных "объектов"
        */
       path = `?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`;
@@ -139,35 +139,59 @@ const Object = () => {
     }
   }
 
+  // useEffect(() => {
+  //   const fetchAndSetData = async () => {
+  //     try {
+  //       const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
+  //       if (id == '12') {
+  //         setWorkers(data[0].techicas);
+  //       } else if (id == '10') {
+  //         setWorkers(data[0].drobilkas);
+  //       } else {
+  //         setWorkers(data[0].workers);
+  //       }
+  //     } catch (error) {
+  //       console.error("Ошибка при получении данных:", error);
+  //     }
+  //   };
+
+  //   fetchAndSetData();
+  // }, [dates, currentPage, id]);
+
+  // ======================================================================
+  const { data: storeDate, clearData } = useDataRequestStore();
+  // console.log('storeDate ', storeDate);
+
+  // Эффект для загрузки данных
   useEffect(() => {
     const fetchAndSetData = async () => {
       try {
-        const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
-        if (id == '12') {
-          setWorkers(data[0].techicas);
-        } else if (id == '10') {
-          setWorkers(data[0].drobilkas);
-        } else {
-          setWorkers(data[0].workers);
+        if (storeDate && !Array.isArray(storeDate)) {
+          setWorkers([storeDate]);
+          return;
         }
+
+        const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
+        let workersData = [];
+
+        if (id == '12') {
+          workersData = data[0].techicas;
+        } else if (id == '10') {
+          workersData = data[0].drobilkas;
+        } else {
+          workersData = data[0].workers;
+        }
+
+        setWorkers(workersData);
+
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
     };
 
     fetchAndSetData();
-  }, [dates, currentPage, id]);
-
-  // ======================================================================
-  const { data } = useDataRequestStore();
-
-  useEffect(() => {
-    console.log("workers2:", workers);
-    setWorkers([]);
-    setWorkers([data]);
-  }, [data]);
-  console.log("worker3s:", workers);
-  // ======================================================================
+  }, [dates, currentPage, id, storeDate]);
+  // // ======================================================================
 
   useEffect(() => {
     setCurrentPage(1);
@@ -186,13 +210,13 @@ const Object = () => {
   }, [dates]);
 
   /**
-   * 
-   * TODO: 
+   *
+   * TODO:
    * сейчас при загрузке страницы грузится текущий месяц и первые 5 дней от начала месяца (допустимо)
    * Нужно во-первых сделать так чтобы грузилась текущая дата
    * Во-вторых, нужно подумать, как ставить название месяца, при выборе конкретного дня (Или он не будет меняться и просто менять текст ?)
    * В третьих, при добавлении дней в dates должны отображаться дни (выбранные) с правильным месяцем (сейчас это работает но только до 5 дней, после - начинается повторение, что неверно)
-   * 
+   *
    */
 
   return (

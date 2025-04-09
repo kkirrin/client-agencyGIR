@@ -13,7 +13,7 @@ const ComponentSearch = () => {
   const [dataList, setData] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
 
-  const { setDataRequest } = useDataRequestStore();
+  const { data, setDataRequest } = useDataRequestStore();
 
   const { id } = useParams();
   const debounceTimeout = useRef(null)
