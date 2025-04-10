@@ -248,8 +248,6 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                                     label={checkbox.label}
                                                     checkboxId={`${checkbox.id}.${idx}`}
                                                     idx={idx}
-                                                    hidden={index === 0}
-                                                    defaultChecked={index === 0} // Отмечаем первый элемент
                                                 />
                                             ))}
                                         </div>

@@ -51,14 +51,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
-    const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        setValue
-    } = useForm();
+    const [items, setItems] = useState([]);
+
+    const { register, control, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
     // Правильное определение формата
     const formatOptions = {
@@ -96,30 +91,55 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     return allDates;
     })();
 
+    console.log(data[0]?.DayDataDetails)
     useEffect(() => {
         if (data && data[0]) {
-            reset({
+            const formValues = {
                 Name: data[0].Name || "",
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
-
-                shiftType: data[0].DayDataDetails?.map(i => {
-                    if (i?.DayInfo?.Day) return "day";
-                    if (i?.NightInfo?.Night) return "night";
-                    return ""; // Дефолтное значение
+                shiftType: [],
+                statusWorker: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) {
+                        result.push(
+                            i.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
+                            i.DayInfo?.statusTech ||
+                            ""
+                        );
+                    }
+                    if (i?.NightInfo) {
+                        result.push(
+                            i.NightInfo?.SmenaDetails?.SmenaStatusWorker || 
+                            i.NightInfo?.statusTech ||
+                            ""
+                        );
+                    }
+                    return result;
                 }) || [],
-                statusWorker: data[0]?.DayDataDetails?.map(i => 
-                        i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
-                        i?.NightInfo?.SmenaDetails?.SmenaStatusWorker ||
-                        i?.DayInfo?.statusTech ||
-                        i?.DayInfo?.statusTech
-                ) || [],
-                note: data[0]?.DayDataDetails?.map(i => i?.DayInfo?.SmenaDetails?.Note || i?.NightInfo?.SmenaDetails?.Note || i?.DayInfo?.note || i?.NightInfo?.note
-                ) || []
-            })
-        }
-    }, [data, reset]);
 
+                dayDataTonnaj: [],
+
+                TC: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) result.push(i.DayInfo?.SmenaDetails?.TC)
+                    if (i?.NightInfo) result.push(i.NightInfo?.SmenaDetails?.TC);
+                    return result;
+                }) || [],
+                
+                note: data[0]?.DayDataDetails?.map(i => 
+                    i?.DayInfo?.SmenaDetails?.Note || 
+                    i?.NightInfo?.SmenaDetails?.Note || 
+                    i?.DayInfo?.note || 
+                    i?.NightInfo?.note) || []
+                };
+
+            reset(formValues);
+            console.log("Инициализация формы:", formValues);
+
+        }
+        }, [data, reset]);
+    
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
     const job = useWatch({ control, name: 'Job' });
@@ -132,6 +152,8 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
     
     const statusValues = useWatch({ control, name: 'statusWorker' });
+    
+    console.log(statusValues)
     
 
     useEffect(() => {
@@ -155,7 +177,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     }, [shiftTypeArray, setValue]);
 
-    const [items, setItems] = useState([]);
     useEffect(() => {
         if (data && data.length > 0) {
             let itemsArray = [];
@@ -222,18 +243,24 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         },
                     ],
                 };
-        
+                
+                
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
-                    const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default' ;
+                    const isDuplicate = dublicateDates[currentDate] >= 1;
+                    const status = statusValues[idx] || 'Default';
+
+                     if (!currentDate) {
+                        console.error(`Дата не найдена для индекса ${idx}`);
+                        return acc;
+                    }
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0",
-                        SmenaDateDetails: currentDate || '0',
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
+                        SmenaDateDetails: currentDate,
                         SmenaStatusWorker: status,
-                        TC: TC?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.TC || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.TC || "-"
+                        TC: TC?.[idx] || "-"
                     };
 
                     const existingEntry = acc.find(e =>
@@ -242,11 +269,15 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     );
 
                     if (isDuplicate && existingEntry) {
-                        if (shiftTypeArray[idx] === 'day') {
+                        const shiftType = shiftTypeArray[idx];
+                        
+                        if (shiftType === 'day' && !existingEntry.DayInfo) {
                             existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
-                        } else {
+                        } 
+                        else if (shiftType === 'night' && !existingEntry.NightInfo) {
                             existingEntry.NightInfo = { Night: true, SmenaDetails: commonDetails };
                         }
+
                     } else {
                         const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
                         if (typeof shiftType === 'undefined') {
@@ -285,7 +316,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'In working';                
+                    const status = statusValues[idx] || 'In working';              
+                    
+                    console.log(statusValues[idx]);
 
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.date === currentDate ||

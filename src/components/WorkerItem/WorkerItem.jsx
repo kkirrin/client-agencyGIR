@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styles from './style.module.scss';
 import { AddPopupContent, TotalComponent } from '../../components';
-
 import { CheckNoteBtn, NoteBody } from '../../components';
-
 import { motion } from 'motion/react';
-import { ru } from 'date-fns/locale';
-import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 
 const EmptyWorkerItemData = ({ handleClickNote }) => {
@@ -118,9 +114,7 @@ const WorkerDetails = ({
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
-        {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
-        {console.log('forWhatforWhatforWhat', forWhat)}
-        {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
+         {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
           <>
             <p className={styles.details_static}>ТС</p>
               <p className={`${styles.details_nostatic} working`}>
@@ -210,7 +204,7 @@ const WorkerDetails = ({
             <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
             <p>{worker?.Job || worker?.Order}</p>
           </div>
-{
+          {
             worker.MonthDataTonnaj != undefined && (
               
               <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData ? worker?.MonthDataTonnaj[0]?.AmountData : ''}

@@ -6,11 +6,6 @@ import { CustomInput, AddMoreBtn, CustomRadio, ChooseTimeBtn, ComponentDateSingl
 
 const STATUS_CHECKBOXES = [
     {
-        "value": "Default",
-        "label": "-",
-        "id": "statusDefault"
-    },
-    {
         "value": "In working",
         "label": "В работе",
         "id": "checkboxinworking"
@@ -167,7 +162,6 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
 
                 {items
                     .map((item, idx) => {
-
                         return (
                             <>
                                 <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
@@ -209,8 +203,6 @@ export default function ComponentTech({ handleClickBtn, items, register, errors,
                                                     label={checkbox.label}
                                                     checkboxId={`${checkbox.id}.${idx}`}
                                                     idx={idx}
-                                                    hidden={index === 0}
-                                                    defaultChecked={index === 0} // Отмечаем первый элемент
                                                 />
                                             ))}
                                         </div>

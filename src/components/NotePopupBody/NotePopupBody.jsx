@@ -5,8 +5,6 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
     const order = worker?.Order;
     const name = worker?.Name;
 
-    console.log(data)
-
     const createdAt = data?.createdAt;
     const documentId = data?.documentId;
 
