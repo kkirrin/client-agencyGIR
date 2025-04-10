@@ -139,30 +139,7 @@ const Object = () => {
     }
   }
 
-  // useEffect(() => {
-  //   const fetchAndSetData = async () => {
-  //     try {
-  //       const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
-  //       if (id == '12') {
-  //         setWorkers(data[0].techicas);
-  //       } else if (id == '10') {
-  //         setWorkers(data[0].drobilkas);
-  //       } else {
-  //         setWorkers(data[0].workers);
-  //       }
-  //     } catch (error) {
-  //       console.error("Ошибка при получении данных:", error);
-  //     }
-  //   };
-
-  //   fetchAndSetData();
-  // }, [dates, currentPage, id]);
-
-  // ======================================================================
   const { data: storeDate, clearData } = useDataRequestStore();
-  // console.log('storeDate ', storeDate);
-  // console.log('workers ', workers);
-
   // Эффект для загрузки данных
   useEffect(() => {
     const fetchAndSetData = async () => {
@@ -287,8 +264,8 @@ const Object = () => {
           </div>
         </div>
 
-        
-       
+
+
         {workers.map((worker, idx) => (
           <WorkerItem
             key={idx}

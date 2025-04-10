@@ -85,40 +85,39 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
         setDatesFromData(dates);
     }, [data]);
-    
+
     const formattedDates = (() => {
 
-      const allDates = [
-        ...datesFromData,
-        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
+        const allDates = [
+            ...datesFromData,
+            ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date => date.toLocaleDateString(formatOptions.locale, formatOptions.options))
         ];
-        
-    return allDates;
+
+        return allDates;
     })();
 
     useEffect(() => {
         if (data && data[0]) {
+
             reset({
                 Name: data[0].Name || "",
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
 
-                shiftType: data[0].DayDataDetails?.map(i => {
-                    if (i?.DayInfo?.Day) return "day";
-                    if (i?.NightInfo?.Night) return "night";
-                    return ""; // Дефолтное значение
-                }) || [],
-                statusWorker: data[0]?.DayDataDetails?.map(i => 
-                        i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
-                        i?.NightInfo?.SmenaDetails?.SmenaStatusWorker ||
-                        i?.DayInfo?.statusTech ||
-                        i?.DayInfo?.statusTech
+                shiftType: [],
+                statusWorker: data[0]?.DayDataDetails?.map(i =>
+                    i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
+                    i?.NightInfo?.SmenaDetails?.SmenaStatusWorker ||
+                    i?.DayInfo?.statusTech ||
+                    i?.DayInfo?.statusTech
                 ) || [],
                 note: data[0]?.DayDataDetails?.map(i => i?.DayInfo?.SmenaDetails?.Note || i?.NightInfo?.SmenaDetails?.Note || i?.DayInfo?.note || i?.NightInfo?.note
                 ) || []
             })
         }
     }, [data, reset]);
+
+    console.log(shiftType);
 
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
@@ -130,15 +129,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-    
+
     const statusValues = useWatch({ control, name: 'statusWorker' });
-    
+
 
     useEffect(() => {
         if (!shiftTypeArray) return;
 
         let newShiftType = [];
-
         shiftTypeArray.forEach((i, idx) => {
             if (i === 'day') {
                 setValue(`btnNight.${idx}`, false);
@@ -150,12 +148,23 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 newShiftType.push('day');
             }
         });
-
         setShiftType(newShiftType);
+
+
+        // console.log('shiftTypeArray', shiftTypeArray);
+        // console.log('newShiftType', newShiftType);
+
 
     }, [shiftTypeArray, setValue]);
 
+    // console.log(shiftType);
+
+
     const [items, setItems] = useState([]);
+
+    // console.log(items);
+
+
     useEffect(() => {
         if (data && data.length > 0) {
             let itemsArray = [];
@@ -222,11 +231,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         },
                     ],
                 };
-        
+
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default' ;
+                    const status = statusValues[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default';
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
@@ -267,7 +276,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 }, []);
 
                 break;
-            
+
             case 'tech':
                 url = 'http://89.104.67.119:1337/api/techicas'
                 formData = {
@@ -279,13 +288,13 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         {
                             id: id,
                         }
-                    ],        
+                    ],
                 };
 
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'In working';                
+                    const status = statusValues[idx] || 'In working';
 
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.date === currentDate ||
@@ -294,9 +303,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
                     if (isDuplicate && existingEntry) {
                         if (shiftTypeArray[idx] === 'day') {
-                            existingEntry.DayInfo = { day: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
+                            existingEntry.DayInfo = { day: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
                         } else {
-                            existingEntry.NightInfo = { night: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
+                            existingEntry.NightInfo = { night: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
                         }
 
                     } else {
@@ -353,7 +362,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     const isDuplicate = dublicateDates[currentDate] >= 1;
                     const status = statusValues[idx] || 'Default';
 
-                     if (!currentDate) {
+                    if (!currentDate) {
                         console.error(`Дата не найдена для индекса ${idx}`);
                         return acc;
                     }
@@ -373,10 +382,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
                     if (isDuplicate && existingEntry) {
                         const shiftType = shiftTypeArray[idx];
-                        
+
                         if (shiftType === 'day' && !existingEntry.DayInfo) {
                             existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
-                        } 
+                        }
                         else if (shiftType === 'night' && !existingEntry.NightInfo) {
                             existingEntry.NightInfo = { Night: true, SmenaDetails: commonDetails };
                         }
