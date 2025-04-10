@@ -1,5 +1,6 @@
 .search {
     padding: 14px 20px;
+    padding-right: 40px;
 
     background-color: var(--white);
     border-radius: 10px;
@@ -47,4 +48,12 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.search_button {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
 }

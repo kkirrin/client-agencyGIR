@@ -139,9 +139,12 @@ const Object = () => {
     }
   }
 
-  const { data: storeDate, clearData } = useDataRequestStore();
+  // const { data: storeDate, clearData } = useDataRequestStore();
+  const storeDate = useDataRequestStore.getState().data;
+
   // Эффект для загрузки данных
   useEffect(() => {
+
     const fetchAndSetData = async () => {
       try {
         if (storeDate && !Array.isArray(storeDate)) {
@@ -161,7 +164,6 @@ const Object = () => {
         }
 
         setWorkers(workersData);
-
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
@@ -195,6 +197,11 @@ const Object = () => {
    * В третьих, при добавлении дней в dates должны отображаться дни (выбранные) с правильным месяцем (сейчас это работает но только до 5 дней, после - начинается повторение, что неверно)
    *
    */
+
+  const addWorkers = () => {
+    // setWorkers([...workers, { id: workers.length + 1, name: '' }]);
+    setWorkers(prevWorkers => [...prevWorkers, { id: prevWorkers.length + 1, name: '' }]);
+  }
 
   return (
     <section className={styles.main_section}>
@@ -264,8 +271,6 @@ const Object = () => {
           </div>
         </div>
 
-
-
         {workers.map((worker, idx) => (
           <WorkerItem
             key={idx}
@@ -285,7 +290,8 @@ const Object = () => {
 
         <div className={styles.add_workers}>
           <AddMoreBtn
-            onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
+            // onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
+            onHandleClick={addWorkers}
             title={description.addButtonText}
           />
         </div>

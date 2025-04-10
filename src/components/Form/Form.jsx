@@ -117,8 +117,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         }
     }, [data, reset]);
 
-    console.log(shiftType);
-
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
     const job = useWatch({ control, name: 'Job' });
@@ -150,21 +148,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         });
         setShiftType(newShiftType);
 
-
-        // console.log('shiftTypeArray', shiftTypeArray);
-        // console.log('newShiftType', newShiftType);
-
-
     }, [shiftTypeArray, setValue]);
 
-    // console.log(shiftType);
-
-
     const [items, setItems] = useState([]);
-
-    // console.log(items);
-
-
     useEffect(() => {
         if (data && data.length > 0) {
             let itemsArray = [];
