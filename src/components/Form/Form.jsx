@@ -118,7 +118,20 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     return result;
                 }) || [],
 
-                dayDataTonnaj: [],
+                dayDataTonnaj: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) {
+                        result.push(
+                            i.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "0"
+                        );
+                    }
+                    if (i?.NightInfo) {
+                        result.push(
+                            i.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0"
+                        );
+                    }
+                    return result;
+                }) || [],
 
                 TC: data[0]?.DayDataDetails?.flatMap(i => {
                     const result = [];
@@ -152,8 +165,8 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
     
     const statusValues = useWatch({ control, name: 'statusWorker' });
-    
-    console.log(statusValues)
+
+    console.log(dayDataTonnaj);
     
 
     useEffect(() => {
@@ -203,6 +216,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     /**
      * ПОИСК ДУБЛИКАТОВ 
     */
+    
+
+
 
     const dublicateDates = formattedDates.reduce((acc, d) => {
         acc[d] = (acc[d] || 0) + 1;
@@ -257,7 +273,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx],
                         SmenaDateDetails: currentDate,
                         SmenaStatusWorker: status,
                         TC: TC?.[idx] || "-"
