@@ -202,7 +202,7 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                             id={4}
                             name={'Name'}
                             type="text"
-                            placeholder="Введите ФИО"
+                            placeholder="Введите наименование"
                         />
                     </div>
                 </div>
