@@ -14,7 +14,7 @@ const ComponentSearch = () => {
   const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
 
-  const { data, setDataRequest } = useDataRequestStore();
+  const { data, setDataRequest, clearData } = useDataRequestStore();
 
   const { id } = useParams();
   const debounceTimeout = useRef(null)

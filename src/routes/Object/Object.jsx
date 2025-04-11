@@ -138,13 +138,12 @@ const Object = () => {
       };
     }
   }
-
   // const { data: storeDate, clearData } = useDataRequestStore();
+  const { clearData } = useDataRequestStore();
   const storeDate = useDataRequestStore.getState().data;
 
   // Эффект для загрузки данных
   useEffect(() => {
-
     const fetchAndSetData = async () => {
       try {
         if (storeDate && !Array.isArray(storeDate)) {
@@ -170,7 +169,15 @@ const Object = () => {
     };
 
     fetchAndSetData();
-  }, [dates, currentPage, id, storeDate]);
+  }, [dates, currentPage, id]);
+
+  useEffect(() => {
+    if (storeDate && !Array.isArray(storeDate)) {
+      setWorkers([storeDate]);
+      return;
+    }
+  }, [storeDate]);
+
 
   useEffect(() => {
     setCurrentPage(1);
@@ -199,8 +206,8 @@ const Object = () => {
    */
 
   const addWorkers = () => {
-    // setWorkers([...workers, { id: workers.length + 1, name: '' }]);
-    setWorkers(prevWorkers => [...prevWorkers, { id: prevWorkers.length + 1, name: '' }]);
+    setWorkers([...workers, { id: workers.length + 1, name: '' }]);
+    // setWorkers(prevWorkers => [...prevWorkers, { id: prevWorkers.length + 1, name: '' }]);
   }
 
   return (
