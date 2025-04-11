@@ -240,7 +240,6 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                         <p>Данные</p>
                                         <div className={styles.data_wrapper}>
                                             {STATUS_CHECKBOXES.map((checkbox, index) => { 
-                                                console.log(data)
                                                 return (
                                                     <CustomRadio
                                                     data={data}
