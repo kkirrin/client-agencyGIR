@@ -52,6 +52,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
     const [items, setItems] = useState([]);
+    const [formValues, setFormValues] = useState({});
 
     const { register, control, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
@@ -91,10 +92,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     return allDates;
     })();
 
-    console.log(data[0]?.DayDataDetails)
+
+
     useEffect(() => {
         if (data && data[0]) {
-            const formValues = {
+            const newFormDefault = {
                 Name: data[0].Name || "",
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
@@ -147,11 +149,15 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     i?.NightInfo?.note) || []
                 };
 
-            reset(formValues);
-            console.log("Инициализация формы:", formValues);
+            reset(newFormDefault);
+            setFormValues(newFormDefault);
+            console.log("Инициализация формы:", newFormDefault.dayDataTonnaj);
 
         }
         }, [data, reset]);
+
+    console.log('formValues!!!!', formValues.dayDataTonnaj);
+
     
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
@@ -166,7 +172,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     
     const statusValues = useWatch({ control, name: 'statusWorker' });
 
-    console.log(dayDataTonnaj);
+    console.log('Это данные которые лежат в dayDataTonnaj (они будут заполняться при измении одного из полей, изначально они undefiend): ', dayDataTonnaj);
     
 
     useEffect(() => {
@@ -218,7 +224,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     */
     
 
-
+    console.log('ХОЧУ распечать содержмимое каждой смены и проверить что лежит в SmenaDataTonnaj до отправки (не будет меняться при измении полей в форме)', data[0]?.DayDataDetails?.map(i => 
+        i?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || i?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "нихера там не лежит а должно ли???"
+    ));
 
     const dublicateDates = formattedDates.reduce((acc, d) => {
         acc[d] = (acc[d] || 0) + 1;
@@ -273,10 +281,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
                     const commonDetails = {
                         Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx],
+                        // ВАЖНЫЙ КОМЕНТ: будет или из ЗАПИСАННЫХ ЗНАЧЕНИЙ (если true) либо из ДЕФОЛТНЫХ
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
                         SmenaDateDetails: currentDate,
                         SmenaStatusWorker: status,
-                        TC: TC?.[idx] || "-"
+                        TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
                     };
 
                     const existingEntry = acc.find(e =>
