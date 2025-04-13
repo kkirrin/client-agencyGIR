@@ -1,9 +1,9 @@
 {
     "STATUS_CHECKBOXES": [
         {
-            "value": "Default",
-            "label": "-",
-            "id": "statusDefault"
+            "value": "Worked",
+            "label": "Работал",
+            "id": "checkboxInWorked"
         },
         {
             "value": "Not working",

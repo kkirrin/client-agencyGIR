@@ -51,14 +51,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
     const [shiftType, setShiftType] = useState([]);
-    const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        setValue
-    } = useForm();
+    const [items, setItems] = useState([]);
+    const [formValues, setFormValues] = useState({});
+
+    const { register, control, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
     // Правильное определение формата
     const formatOptions = {
@@ -85,38 +81,106 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
         setDatesFromData(dates);
     }, [data]);
-
+    
     const formattedDates = (() => {
 
-        const allDates = [
-            ...datesFromData,
-            ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date => date.toLocaleDateString(formatOptions.locale, formatOptions.options))
+      const allDates = [
+        ...datesFromData,
+        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
         ];
-
-        return allDates;
+        
+    return allDates;
     })();
+
+
 
     useEffect(() => {
         if (data && data[0]) {
-
-            reset({
+            const newFormDefault = {
                 Name: data[0].Name || "",
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
-
                 shiftType: [],
-                statusWorker: data[0]?.DayDataDetails?.map(i =>
-                    i?.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
-                    i?.NightInfo?.SmenaDetails?.SmenaStatusWorker ||
-                    i?.DayInfo?.statusTech ||
-                    i?.DayInfo?.statusTech
-                ) || [],
-                note: data[0]?.DayDataDetails?.map(i => i?.DayInfo?.SmenaDetails?.Note || i?.NightInfo?.SmenaDetails?.Note || i?.DayInfo?.note || i?.NightInfo?.note
-                ) || []
-            })
-        }
-    }, [data, reset]);
+                statusWorker: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) {
+                        result.push(
+                            i.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
+                            i.DayInfo?.statusTech ||
+                            ""
+                        );
+                    }
+                    if (i?.NightInfo) {
+                        result.push(
+                            i.NightInfo?.SmenaDetails?.SmenaStatusWorker || 
+                            i.NightInfo?.statusTech ||
+                            ""
+                        );
+                    }
+                    return result;
+                }) || [],
 
+                smenaDateDetails: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) {
+                        result.push(
+                            i.DayInfo?.SmenaDetails?.SmenaDateDetails || "0"
+                        );
+                    }
+                    if (i?.NightInfo) {
+                        result.push(
+                            i.NightInfo?.SmenaDetails?.SmenaDateDetails || "0"
+                        );
+                    }
+                    return result;
+                }) || [],
+
+                shiftTypeArray: data[0]?.DayDataDetails?.flatMap(i => {
+                    const res = [];
+                    if (i?.DayInfo) res.push("day");
+                    if (i?.NightInfo) res.push("night");
+                    return res;
+                }) || [],
+
+
+                dayDataTonnaj: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) {
+                        result.push(
+                            i.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "0"
+                        );
+                    }
+                    if (i?.NightInfo) {
+                        result.push(
+                            i.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0"
+                        );
+                    }
+                    return result;
+                }) || [],
+
+                TC: data[0]?.DayDataDetails?.flatMap(i => {
+                    const result = [];
+                    if (i?.DayInfo) result.push(i.DayInfo?.SmenaDetails?.TC)
+                    if (i?.NightInfo) result.push(i.NightInfo?.SmenaDetails?.TC);
+                    return result;
+                }) || [],
+                
+                note: data[0]?.DayDataDetails?.map(i => 
+                    i?.DayInfo?.SmenaDetails?.Note || 
+                    i?.NightInfo?.SmenaDetails?.Note || 
+                    i?.DayInfo?.note || 
+                    i?.NightInfo?.note) || []
+                };
+
+            reset(newFormDefault);
+            setFormValues(newFormDefault);
+            console.log("Инициализация формы:", newFormDefault.shiftTypeArray);
+
+        }
+        }, [data, reset]);
+
+    console.log('formValues!!!!', formValues.shiftTypeArray);
+    
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
     const job = useWatch({ control, name: 'Job' });
@@ -127,14 +191,16 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const TC = useWatch({ control, name: 'TC' });
     const note = useWatch({ control, name: 'note' });
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-
+    
     const statusValues = useWatch({ control, name: 'statusWorker' });
 
+    // console.log('Это данные которые лежат в dayDataTonnaj (они будут заполняться при измении одного из полей, изначально они undefiend): ', dayDataTonnaj);
 
     useEffect(() => {
         if (!shiftTypeArray) return;
 
         let newShiftType = [];
+
         shiftTypeArray.forEach((i, idx) => {
             if (i === 'day') {
                 setValue(`btnNight.${idx}`, false);
@@ -146,11 +212,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 newShiftType.push('day');
             }
         });
+
         setShiftType(newShiftType);
 
     }, [shiftTypeArray, setValue]);
 
-    const [items, setItems] = useState([]);
     useEffect(() => {
         if (data && data.length > 0) {
             let itemsArray = [];
@@ -177,6 +243,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     /**
      * ПОИСК ДУБЛИКАТОВ 
     */
+    
+
+    // console.log('ХОЧУ распечать содержмимое каждой смены и проверить что лежит в SmenaDateDetails до отправки (не будет меняться при измении полей в форме)', data[0]?.DayDataDetails?.map(i => 
+    //     i?.DayInfo?.SmenaDetails?.SmenaDateDetails || i?.NightInfo?.SmenaDetails?.SmenaDateDetails || "нихера там не лежит а должно ли???"
+    // ));
 
     const dublicateDates = formattedDates.reduce((acc, d) => {
         acc[d] = (acc[d] || 0) + 1;
@@ -189,6 +260,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         let formData = {};
         let url = '';
 
+        console.log('items !!!', items)
         switch (forWhat) {
             case 'people':
                 url = 'http://89.104.67.119:1337/api/people'
@@ -217,52 +289,76 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         },
                     ],
                 };
-
+                
+                
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
-                    const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.statusWorker || 'Default';
-
+                    const isDuplicate = dublicateDates[currentDate] >= 1;
+                    const status = statusValues[idx] || 'Default';
+                
+                    if (!currentDate) {
+                        console.error(`Дата не найдена для индекса ${idx}`);
+                        return acc;
+                    }
+                
                     const commonDetails = {
-                        Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.SmenaDataTonnaj || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0",
-                        SmenaDateDetails: currentDate || '0',
+                        Note: note?.[idx] || formValues?.note[idx],
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
+                        SmenaDateDetails: formValues.smenaDateDetails[idx] || currentDate,
                         SmenaStatusWorker: status,
-                        TC: TC?.[idx] || data[0]?.DayDataDetails[idx]?.DayInfo?.SmenaDetails?.TC || data[0]?.DayDataDetails[idx]?.NightInfo?.SmenaDetails?.TC || "-"
+                        TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
                     };
-
-                    const existingEntry = acc.find(e =>
-                        e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
-                        e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
-                    );
-
+                
+                    const existingEntry = acc.find(e => {
+                        console.log('existingEntry e', e);
+                        return (
+                            e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
+                            e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
+                        );
+                    });
+                
                     if (isDuplicate && existingEntry) {
-                        if (shiftTypeArray[idx] === 'day') {
-                            existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
+                        console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
+                        const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
+                        
+                        if (shiftType === 'day') {
+                            console.log('day')
+
+                            existingEntry.DayInfo = { 
+                                ...existingEntry.DayInfo,
+                                Day: true, 
+                                SmenaDetails: {
+                                    ...existingEntry.DayInfo?.SmenaDetails,
+                                    ...commonDetails
+                                } 
+                            };
+                        } else if (shiftType === 'night') {
+                            console.log('night')
+                            existingEntry.NightInfo = { 
+                                ...existingEntry.NightInfo,
+                                Night: true, 
+                                SmenaDetails: {
+                                    ...existingEntry.NightInfo?.SmenaDetails,
+                                    ...commonDetails
+                                } 
+                            };
                         } else {
-                            existingEntry.NightInfo = { Night: true, SmenaDetails: commonDetails };
+                            console.log('Пошел нахуй')
                         }
                     } else {
-                        const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
-                        if (typeof shiftType === 'undefined') {
-                            console.error('shiftType равен undefined для индекса', idx);
-                            return acc;
-                        } else {
-
-                            acc.push({
-                                ...(shiftType === 'day'
-                                    ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-                                    : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-                                )
-                            }
+                        const shiftType = shiftTypeArray[idx] || 'day';
+                        acc.push({
+                            ...(shiftType === 'day'
+                                ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
+                                : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
                             )
-                        }
+                        });
                     }
                     return acc;
                 }, []);
 
                 break;
-
+            
             case 'tech':
                 url = 'http://89.104.67.119:1337/api/techicas'
                 formData = {
@@ -274,13 +370,15 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         {
                             id: id,
                         }
-                    ],
+                    ],        
                 };
 
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'In working';
+                    const status = statusValues[idx] || 'In working';              
+                    
+                    console.log(statusValues[idx]);
 
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.date === currentDate ||
@@ -289,9 +387,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
                     if (isDuplicate && existingEntry) {
                         if (shiftTypeArray[idx] === 'day') {
-                            existingEntry.DayInfo = { day: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
+                            existingEntry.DayInfo = { day: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
                         } else {
-                            existingEntry.NightInfo = { night: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
+                            existingEntry.NightInfo = { night: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
                         }
 
                     } else {
@@ -347,50 +445,64 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] >= 1;
                     const status = statusValues[idx] || 'Default';
-
+                
                     if (!currentDate) {
                         console.error(`Дата не найдена для индекса ${idx}`);
                         return acc;
                     }
-
+                
                     const commonDetails = {
-                        Note: note?.[idx] || "-",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || "0",
-                        SmenaDateDetails: currentDate,
+                        Note: note?.[idx] || formValues?.note[idx],
+                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
+                        SmenaDateDetails: formValues.smenaDateDetails[idx] || currentDate,
                         SmenaStatusWorker: status,
-                        TC: TC?.[idx] || "-"
+                        TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
                     };
-
-                    const existingEntry = acc.find(e =>
-                        e.DayInfo?.SmenaDetails.SmenaDateDetails === currentDate ||
-                        e.NightInfo?.SmenaDetails.SmenaDateDetails === currentDate
-                    );
-
+                
+                    const existingEntry = acc.find(e => {
+                        console.log('existingEntry e', e);
+                        return (
+                            e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
+                            e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
+                        );
+                    });
+                
                     if (isDuplicate && existingEntry) {
-                        const shiftType = shiftTypeArray[idx];
+                        console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
+                        const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
+                        
+                        if (shiftType === 'day') {
+                            console.log('day')
 
-                        if (shiftType === 'day' && !existingEntry.DayInfo) {
-                            existingEntry.DayInfo = { Day: true, SmenaDetails: commonDetails };
-                        }
-                        else if (shiftType === 'night' && !existingEntry.NightInfo) {
-                            existingEntry.NightInfo = { Night: true, SmenaDetails: commonDetails };
-                        }
-
-                    } else {
-                        const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
-                        if (typeof shiftType === 'undefined') {
-                            console.error('shiftType равен undefined для индекса', idx);
-                            return acc;
+                            existingEntry.DayInfo = { 
+                                ...existingEntry.DayInfo,
+                                Day: true, 
+                                SmenaDetails: {
+                                    ...existingEntry.DayInfo?.SmenaDetails,
+                                    ...commonDetails
+                                } 
+                            };
+                        } else if (shiftType === 'night') {
+                            console.log('night')
+                            existingEntry.NightInfo = { 
+                                ...existingEntry.NightInfo,
+                                Night: true, 
+                                SmenaDetails: {
+                                    ...existingEntry.NightInfo?.SmenaDetails,
+                                    ...commonDetails
+                                } 
+                            };
                         } else {
-
-                            acc.push({
-                                ...(shiftType === 'day'
-                                    ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-                                    : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-                                )
-                            }
-                            )
+                            console.log('Пошел нахуй')
                         }
+                    } else {
+                        const shiftType = shiftTypeArray[idx] || 'day';
+                        acc.push({
+                            ...(shiftType === 'day'
+                                ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
+                                : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
+                            )
+                        });
                     }
                     return acc;
                 }, []);

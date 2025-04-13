@@ -6,9 +6,9 @@ import useDataRequestStore from '../../../store/DataRequestStore';
 
 const STATUS_CHECKBOXES = [
     {
-        "value": "Default",
-        "label": "-",
-        "id": "checkboxdefault"
+        "value": "In working",
+        "label": "В работе",
+        "id": "checkboxworking"
     },
     {
         "value": "Repair/to",
@@ -239,8 +239,9 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                     <div className={styles.data}>
                                         <p>Данные</p>
                                         <div className={styles.data_wrapper}>
-                                            {STATUS_CHECKBOXES.map((checkbox, index) => (
-                                                <CustomRadio
+                                            {STATUS_CHECKBOXES.map((checkbox, index) => { 
+                                                return (
+                                                    <CustomRadio
                                                     data={data}
                                                     key={`${checkbox.id}-${index}`}
                                                     name={`${'statusWorker'}.${idx}`}
@@ -250,10 +251,10 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                                     label={checkbox.label}
                                                     checkboxId={`${checkbox.id}.${idx}`}
                                                     idx={idx}
-                                                    hidden={index === 0}
-                                                    defaultChecked={index === 0} // Отмечаем первый элемент
                                                 />
-                                            ))}
+                                                )
+                                            }
+                                         )}
                                         </div>
                                     </div>
 
