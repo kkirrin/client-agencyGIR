@@ -138,30 +138,9 @@ const Object = () => {
       };
     }
   }
-
-  // useEffect(() => {
-  //   const fetchAndSetData = async () => {
-  //     try {
-  //       const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
-  //       if (id == '12') {
-  //         setWorkers(data[0].techicas);
-  //       } else if (id == '10') {
-  //         setWorkers(data[0].drobilkas);
-  //       } else {
-  //         setWorkers(data[0].workers);
-  //       }
-  //     } catch (error) {
-  //       console.error("Ошибка при получении данных:", error);
-  //     }
-  //   };
-
-  //   fetchAndSetData();
-  // }, [dates, currentPage, id]);
-
-  // ======================================================================
-  const { data: storeDate, clearData } = useDataRequestStore();
-  // console.log('storeDate ', storeDate);
-  // console.log('workers ', workers);
+  // const { data: storeDate, clearData } = useDataRequestStore();
+  const { clearData } = useDataRequestStore();
+  const storeDate = useDataRequestStore.getState().data;
 
   // Эффект для загрузки данных
   useEffect(() => {
@@ -184,14 +163,21 @@ const Object = () => {
         }
 
         setWorkers(workersData);
-
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
       }
     };
 
     fetchAndSetData();
-  }, [dates, currentPage, id, storeDate]);
+  }, [dates, currentPage, id]);
+
+  useEffect(() => {
+    if (storeDate && !Array.isArray(storeDate)) {
+      setWorkers([storeDate]);
+      return;
+    }
+  }, [storeDate]);
+
 
   useEffect(() => {
     setCurrentPage(1);
@@ -218,6 +204,11 @@ const Object = () => {
    * В третьих, при добавлении дней в dates должны отображаться дни (выбранные) с правильным месяцем (сейчас это работает но только до 5 дней, после - начинается повторение, что неверно)
    *
    */
+
+  const addWorkers = () => {
+    setWorkers([...workers, { id: workers.length + 1, name: '' }]);
+    // setWorkers(prevWorkers => [...prevWorkers, { id: prevWorkers.length + 1, name: '' }]);
+  }
 
   return (
     <section className={styles.main_section}>
@@ -287,8 +278,6 @@ const Object = () => {
           </div>
         </div>
 
-        
-       
         {workers.map((worker, idx) => (
           <WorkerItem
             key={idx}
@@ -308,7 +297,8 @@ const Object = () => {
 
         <div className={styles.add_workers}>
           <AddMoreBtn
-            onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
+            // onHandleClick={() => setWorkers([...workers, { id: workers.length + 1, name: '' }])}
+            onHandleClick={addWorkers}
             title={description.addButtonText}
           />
         </div>

@@ -117,7 +117,7 @@ const WorkerDetails = ({
          {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
           <>
             <p className={styles.details_static}>ТС</p>
-              <p className={`${styles.details_nostatic} working`}>
+            <p className={`${styles.details_nostatic} working`}>
               {shift?.SmenaDetails?.TC || "Данные отсутствуют"}
             </p>
           </>
@@ -142,7 +142,7 @@ const WorkerDetails = ({
       let nightDate;
       switch (pageId) {
         case '12': {
-          dayDate = parseInt(d?.DayInfo?.date.split('.')[0] || '', 10);
+          dayDate = parseInt(d?.DayInfo?.date?.split('.')[0] || '', 10);
           nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
         }
           break;
@@ -181,7 +181,6 @@ const WorkerDetails = ({
           <div className={styles.detail}>
             {renderShift(dayData?.NightInfo, '', forWhat)}
           </div>
-          {/* {console.log(dayData)}; */}
           <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.NightInfo?.id)} />
 
           <NoteBody
@@ -206,12 +205,12 @@ const WorkerDetails = ({
           </div>
           {
             worker.MonthDataTonnaj != undefined && (
-              
+
               <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData ? worker?.MonthDataTonnaj[0]?.AmountData : ''}
-            тонн <br /> Дата выставления тоннажа <br />
+                тонн <br /> Дата выставления тоннажа <br />
 
 
-            {worker?.MonthDataTonnaj[0]?.MonthData ? worker?.MonthDataTonnaj[0]?.MonthData : ''}</p>
+                {worker?.MonthDataTonnaj[0]?.MonthData ? worker?.MonthDataTonnaj[0]?.MonthData : ''}</p>
             )
           }
         </div>
@@ -293,15 +292,15 @@ export default function WorkerItem({
               handleClick={handleClick}
             />
           ) : (
-              <WorkerDetails
-                forWhat={forWhat}
-                id={worker.uuid ? worker.uuid : worker.id}
-                missingDates={missingDates}
-                allDates={allDates}
-                worker={worker} displayedDays={displayedDays}
-                // handleClickNote={handleClickNote} 
-                handleClick={handleClick}
-              />
+            <WorkerDetails
+              forWhat={forWhat}
+              id={worker.uuid ? worker.uuid : worker.id}
+              missingDates={missingDates}
+              allDates={allDates}
+              worker={worker} displayedDays={displayedDays}
+              // handleClickNote={handleClickNote} 
+              handleClick={handleClick}
+            />
           )}
         </motion.div>
       )

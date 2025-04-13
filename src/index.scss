@@ -358,13 +358,14 @@ legend {
   display: flex;
   align-items: center;
   width: 100%;
-
   background-color: var(--light-gray);
   text-align: start;
-
-  border-radius: 20px;
-
-  padding: 10px;
+  border-radius: 10px;
+  padding: 12px 24px;
+  padding-left: 50px;
+  background-image: url('/calendar.svg');
+  background-repeat: no-repeat;
+  background-position: left 20px center;
 }
 
 .date-wrapper__info {
@@ -374,11 +375,15 @@ legend {
 }
 
 .date-wrapper__info .month {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
   position: absolute;
-  top: 14px;
-  left: 50px;
+  top: 50%;
+  left: 55px;
   text-transform: capitalize;
   font-size: 20px;
+  transform: translateY(-45%);
 }
 
 .date-wrapper__info .year {

@@ -9,8 +9,8 @@ registerLocale('ru', ru);
 
 
 export default function ComponentDate({ dateForRender = '', idx = '' }) {
-    
-    const { date, addDate } = useDateSingleStore(); 
+
+    const { date, addDate } = useDateSingleStore();
     const [selectedDates, setSelectedDates] = useState(null);
 
     useEffect(() => {
@@ -25,12 +25,12 @@ export default function ComponentDate({ dateForRender = '', idx = '' }) {
                 initialDate = new Date(year, month - 1, day);
             }
         }
-        
+
         if (initialDate && !isNaN(initialDate.getTime())) {
             setSelectedDates(initialDate);
             addDate(initialDate);
         }
-    }, [dateForRender]);        
+    }, [dateForRender]);
 
     const handleDateChange = (date) => {
         setSelectedDates(date);
@@ -45,8 +45,7 @@ export default function ComponentDate({ dateForRender = '', idx = '' }) {
     return (
         <div className='date-wrapper'>
             <DatePicker
-                
-                showIcon
+                // showIcon
                 toggleCalendarOnIconClick
                 selected={selectedDates}
                 onChange={handleDateChange}

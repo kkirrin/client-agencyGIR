@@ -2,20 +2,20 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import { registerLocale } from 'react-datepicker';
-import { useEffect, useState } from 'react'; 
+import { useEffect, useState } from 'react';
 import useDateStore from '../../store/CalendarStore';
 import { format } from 'date-fns';
 
-registerLocale('ru', ru); 
+registerLocale('ru', ru);
 
 export default function ComponentDate() {
-    const { dates, addDate, removeDate } = useDateStore(); 
+    const { dates, addDate, removeDate } = useDateStore();
     const [selectedDates, setSelectedDates] = useState([]);
-    const [ currentMouth, setCurrentMonth ] = useState(new Date());
+    const [currentMouth, setCurrentMonth] = useState(new Date());
 
     // Обновление store
     useEffect(() => {
-        setSelectedDates(dates); 
+        setSelectedDates(dates);
         setCurrentMonth(new Date());
     }, [dates]);
 
@@ -24,31 +24,32 @@ export default function ComponentDate() {
         if (isDateSelected) {
             removeDate(selectedDate);
         } else {
-            addDate(selectedDate); 
+            addDate(selectedDate);
         }
     };
 
     return (
         <div className='date-wrapper'>
             <DatePicker
-                showIcon
+                // showIcon
                 toggleCalendarOnIconClick
                 selected={null}
                 onChange={handleDateChange}
                 dateFormat="MM YYYY"
-                locale="ru" 
+                locale="ru"
                 shouldCloseOnSelect={false}
                 withPortal
                 highlightDates={selectedDates.map(date => new Date(date))}
                 isClearable
+                className='date-wrapper-input'
             />
             <div className='date-wrapper__info'>
                 <div>
-                    <p className='month'>{format(currentMouth, 'LLLL', {locale: ru})}</p>
+                    <p className='month'>{format(currentMouth, 'LLLL', { locale: ru })}</p>
                 </div>
 
                 <div>
-                    <p className='year'>{format(currentMouth, 'yyyy', { locale: ru})}г</p>
+                    <p className='year'>{format(currentMouth, 'yyyy', { locale: ru })}г</p>
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
         case 'Default':
             smenaRussian = 'Работал'
             break;
-        
+
         case 'Not working':
             smenaRussian = "Не работал"
             break;
@@ -29,28 +29,28 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
         case 'Day Off':
             smenaRussian = "Выходной"
             break;
-        
+
         case 'Repair/to':
             smenaRussian = "В ремонте"
             break;
-        
+
         case 'No Coal (OC)':
             smenaRussian = "Отсутствие угля"
             break;
-        
+
         case 'Stock':
             smenaRussian = "Запас"
             break;
-        
+
         case 'In working':
             smenaRussian = "В работе"
             break;
-        
+
         case 'Empty':
             smenaRussian = "Пусто"
             break;
     }
-        
+
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
             setActive(false);
@@ -84,9 +84,9 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
                     </button>
                     <div>
                         <h3 className={styles.name_worker_name}>{name}</h3>
-                        <p className={styles.name_worker_job}>{job || order}</p> 
-                        <p className={styles.name_worker_date}>{dateWorkered}</p> 
-                       
+                        <p className={styles.name_worker_job}>{job || order}</p>
+                        <p className={styles.name_worker_date}>{dateWorkered}</p>
+
                         <p className={styles.name_worker_status}>{smenaRussian}</p>
 
                         <div className={styles.name_worker_note}>
@@ -94,7 +94,7 @@ export default function NoteBody({ id, active, setActive, worker, data }) {
                             <div className={styles.name_worker_note_back}>
                                 <p className=''>{note}</p>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
