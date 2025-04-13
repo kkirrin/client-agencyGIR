@@ -304,7 +304,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     const commonDetails = {
                         Note: note?.[idx] || formValues?.note[idx],
                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
-                        SmenaDateDetails: formValues.smenaDateDetails[idx] || currentDate,
+                        SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
                         SmenaStatusWorker: status,
                         TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
                     };
@@ -454,7 +454,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     const commonDetails = {
                         Note: note?.[idx] || formValues?.note[idx],
                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
-                        SmenaDateDetails: formValues.smenaDateDetails[idx] || currentDate,
+                        SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
                         SmenaStatusWorker: status,
                         TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
                     };
