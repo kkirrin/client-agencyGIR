@@ -29,6 +29,7 @@ const Object = () => {
 
   currentDate.setHours(0, 0, 0, 0);
   const { dates } = useDateStore();
+  const [monthsTonnaj, setMonthsTonnaj] = useState([]);
 
   // Генерация днеЙ
   const [days, setDays] = useState([]);
@@ -141,7 +142,7 @@ const Object = () => {
   // const { data: storeDate, clearData } = useDataRequestStore();
   const { clearData } = useDataRequestStore();
   const storeDate = useDataRequestStore.getState().data;
-
+  
   // Эффект для загрузки данных
   useEffect(() => {
     const fetchAndSetData = async () => {

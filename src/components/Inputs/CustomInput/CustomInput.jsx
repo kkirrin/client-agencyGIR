@@ -1,4 +1,9 @@
 import styles from './style.module.scss';
+import { format } from 'date-fns';
+import { registerLocale } from 'react-datepicker';
+import ru from 'date-fns/locale/ru';
+registerLocale('ru', ru);
+
 
 export default function CustomInput({
   data = [],
@@ -12,13 +17,39 @@ export default function CustomInput({
   item = {},
   idx
 }) {
+
+  /**
+   * TODO: по хорошему это вынести в store чтобы оттуда дергать, но мне лень - я тюлень
+   */
+
+  let currentMonth = format(new Date(), 'MM', { locale: ru });
+  // let currentMonth = '05';
+
+
   // Инициализация значений по умолчанию
   const workerData = data[0] || {};
   const smenaDetails = item?.SmenaDetails || {};
 
   // Извлечение данных с проверками
+  let { MonthDataTonnaj = [] } = workerData;
+
+  if (workerData !== undefined) { 
+    MonthDataTonnaj = workerData?.MonthDataTonnaj?.map(i => {
+      const [day, month, year] = i.MonthData.split('.').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      const itemMonth = format(dateObj, 'MM', { locale: ru });
+        if (itemMonth === currentMonth) {
+          return {
+              AmountData: i.AmountData,
+              MonthDataTonnaj: itemMonth 
+          };
+      }
+
+      return null
+    }).filter(item => item !== null)
+  }
+
   const {
-    MonthDataTonnaj = [],
     Name = '',
     Job = '',
     DayDataOstatki = []
@@ -32,12 +63,16 @@ export default function CustomInput({
     TC: tc = ''
   } = smenaDetails;
 
+
   // Получение значений с проверкой вложенных свойств
   const getValue = () => {
     switch (name) {
       case 'AmountData':
-        return MonthDataTonnaj[0]?.AmountData || '';
+        if (MonthDataTonnaj !== undefined) {
+          return MonthDataTonnaj[0]?.AmountData
+        };
 
+        break;
       case 'Name':
         return Name;
 
@@ -71,14 +106,6 @@ export default function CustomInput({
   };
 
   const value = getValue();
-
-  /**
-   * 
-   * TODO: баг в индексе, когда в name передаешь Index он подхватывает значение верное для каждого инпута
-   * но тогда ломается отправка
-   * сначала попробую отправить форму верно со всеми полями 
-   * а потом вернусь сюда и выведу их (9:40:00 02.04.2025)
-   */
   
   return (
     <div className={styles.input_container}>

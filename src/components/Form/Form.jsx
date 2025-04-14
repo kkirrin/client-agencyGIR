@@ -4,6 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
 import { updateUserDateService } from '../../services/update-service';
 import useDataRequestStore from '../../store/DataRequestStore';
+import { format } from 'date-fns';
+
+import { registerLocale } from 'react-datepicker';
+import ru from 'date-fns/locale/ru';
+registerLocale('ru', ru);
+
 
 import { useParams } from 'react-router-dom';
 import {
@@ -93,6 +99,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     })();
 
 
+    console.log(data[0])
+    let currentMonth = '05';
+    // let currentMonth = format(new Date(), 'MM', { locale: ru});
+    // 01.05.2025 - допустим в этот день поставили тоннаж
 
     useEffect(() => {
         if (data && data[0]) {
@@ -101,6 +111,23 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
                 shiftType: [],
+                MonthDataTonnaj: data[0]?.MonthDataTonnaj?.map(m => {
+                    const [day, month, year] = m.MonthData.split('.').map(Number);
+                    const dateObj = new Date(year, month - 1, day);
+                    const itemMonth = format(dateObj, 'MM', { locale: ru });
+                    console.log(itemMonth)
+        
+                    if (itemMonth === currentMonth) {
+                        return {
+                            AmountData: m.AmountData,
+                            MonthData: itemMonth
+                        }
+                    }
+
+                    return null;
+
+                }).filter(item => item != null),
+                
                 statusWorker: data[0]?.DayDataDetails?.flatMap(i => {
                     const result = [];
                     if (i?.DayInfo) {
@@ -174,12 +201,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
             reset(newFormDefault);
             setFormValues(newFormDefault);
-            console.log("Инициализация формы:", newFormDefault.shiftTypeArray);
+            console.log("Инициализация формы:", newFormDefault.MonthDataTonnaj);
 
         }
         }, [data, reset]);
 
-    console.log('formValues!!!!', formValues.shiftTypeArray);
+    console.log('formValues!!!!', formValues);
     
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
@@ -193,8 +220,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
     
     const statusValues = useWatch({ control, name: 'statusWorker' });
-
-    // console.log('Это данные которые лежат в dayDataTonnaj (они будут заполняться при измении одного из полей, изначально они undefiend): ', dayDataTonnaj);
 
     useEffect(() => {
         if (!shiftTypeArray) return;
@@ -240,15 +265,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     const objectUUID = data[0]?.uuid
 
-    /**
-     * ПОИСК ДУБЛИКАТОВ 
-    */
-    
-
-    // console.log('ХОЧУ распечать содержмимое каждой смены и проверить что лежит в SmenaDateDetails до отправки (не будет меняться при измении полей в форме)', data[0]?.DayDataDetails?.map(i => 
-    //     i?.DayInfo?.SmenaDetails?.SmenaDateDetails || i?.NightInfo?.SmenaDetails?.SmenaDateDetails || "нихера там не лежит а должно ли???"
-    // ));
-
     const dublicateDates = formattedDates.reduce((acc, d) => {
         acc[d] = (acc[d] || 0) + 1;
         return acc;
@@ -260,7 +276,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         let formData = {};
         let url = '';
 
-        console.log('items !!!', items)
         switch (forWhat) {
             case 'people':
                 url = 'http://89.104.67.119:1337/api/people'
@@ -274,10 +289,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                             id: id,
                         }
                     ],
+
                     MonthDataTonnaj: [
                         {
-                            AmountData: amountData || "0",
-                            MonthData: formattedDates[0] || '0',
+                            AmountData: amountData || formValues.MonthDataTonnaj.AmountData || "0",
+                            MonthData: formattedDates[0] || formValues.MonthDataTonnaj.MonthData || '0',
                         },
                     ],
 
@@ -425,12 +441,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                             id: id,
                         }
                     ],
+                    
                     MonthDataTonnaj: [
                         {
-                            AmountData: amountData || "0",
-                            MonthData: formattedDates[0] || '0',
+                            AmountData: amountData || formValues.MonthDataTonnaj.AmountData || "0",
+                            MonthData: formattedDates[0] || formValues.MonthDataTonnaj.MonthData || '0',
                         },
                     ],
+
 
                     DayDataOstatki: [
                         {
