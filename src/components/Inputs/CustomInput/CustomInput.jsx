@@ -20,33 +20,38 @@ export default function CustomInput({
 
   /**
    * TODO: по хорошему это вынести в store чтобы оттуда дергать, но мне лень - я тюлень
-   */
+   */ 
 
-  let currentMonth = format(new Date(), 'MM', { locale: ru });
-  // let currentMonth = '05';
+  let currentDate = format(new Date(), 'MM.yyyy', { locale: ru });
 
-
-  // Инициализация значений по умолчанию
   const workerData = data[0] || {};
   const smenaDetails = item?.SmenaDetails || {};
 
-  // Извлечение данных с проверками
-  let { MonthDataTonnaj = [] } = workerData;
+  let { MonthDataTonnaj = [] } = workerData || {};
 
   if (workerData !== undefined) { 
-    MonthDataTonnaj = workerData?.MonthDataTonnaj?.map(i => {
-      const [day, month, year] = i.MonthData.split('.').map(Number);
-      const dateObj = new Date(year, month - 1, day);
-      const itemMonth = format(dateObj, 'MM', { locale: ru });
-        if (itemMonth === currentMonth) {
-          return {
+    MonthDataTonnaj = workerData.MonthDataTonnaj
+      ?.map(i => {
+        try {
+          if (!i.MonthData) return null;
+          const [day, month, year] = i.MonthData.split('.').map(Number);
+          const dateObj = new Date(year, month - 1, day);
+          if (isNaN(dateObj.getTime())) return null;
+          const itemDate = format(dateObj, 'MM.yyyy', { locale: ru });
+          if (itemDate === currentDate) {
+            return {
+              ...i,
               AmountData: i.AmountData,
-              MonthDataTonnaj: itemMonth 
-          };
-      }
-
-      return null
-    }).filter(item => item !== null)
+              MonthDataTonnaj: day + itemDate 
+            };
+          }
+          return null;
+        } catch (error) {
+          console.error('Error processing date:', error);
+          return null;
+        }
+      })
+      ?.filter(Boolean) || [];
   }
 
   const {

@@ -81,15 +81,19 @@ const WorkerDetails = ({
 
     let status;
     switch (pageId) {
-      case '12': {
+      case '12':
         status = shift?.statusTech;
-      }
+        break;
+      
+      case '10': 
+        status = shift.SmenaDetails?.SmenaStatusWorker;
         break;
 
       default: {
         status = shift.SmenaDetails?.SmenaStatusWorker;
-      }
         break;
+      }
+        
     }
 
     const statusMap = {
@@ -112,7 +116,7 @@ const WorkerDetails = ({
         {/* <p>Дата: {shift.SmenaDetails?.SmenaDateDetails}</p> */}
         <p className={styles.details_static}>Тоннаж</p>
         <p className={`${styles.details_nostatic} working`}>
-          {shift.SmenaDetails?.SmenaDataTonnaj || "Данные отсутствуют"}
+          {shift.SmenaDetails.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
          {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
           <>
@@ -206,13 +210,10 @@ const WorkerDetails = ({
           {
             worker.MonthDataTonnaj != undefined && (
 
-              <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData ? worker?.MonthDataTonnaj[0]?.AmountData : ''}
-                тонн <br /> Дата выставления тоннажа <br />
-
-
-                {worker?.MonthDataTonnaj[0]?.MonthData ? worker?.MonthDataTonnaj[0]?.MonthData : ''}</p>
-            )
-          }
+              <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData ? worker?.MonthDataTonnaj[0]?.AmountData : ''} тонн
+                  
+            
+              </p>)}
         </div>
 
         {displayedDays.map(renderDate)}

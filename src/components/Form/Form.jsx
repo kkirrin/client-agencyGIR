@@ -98,11 +98,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     return allDates;
     })();
 
-
-    console.log(data[0])
-    let currentMonth = '05';
-    // let currentMonth = format(new Date(), 'MM', { locale: ru});
-    // 01.05.2025 - допустим в этот день поставили тоннаж
+    let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru});
 
     useEffect(() => {
         if (data && data[0]) {
@@ -111,22 +107,35 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
                 shiftType: [],
-                MonthDataTonnaj: data[0]?.MonthDataTonnaj?.map(m => {
-                    const [day, month, year] = m.MonthData.split('.').map(Number);
-                    const dateObj = new Date(year, month - 1, day);
-                    const itemMonth = format(dateObj, 'MM', { locale: ru });
-                    console.log(itemMonth)
-        
-                    if (itemMonth === currentMonth) {
-                        return {
-                            AmountData: m.AmountData,
-                            MonthData: itemMonth
+                // MonthDataTonnaj: data[0]?.MonthDataTonnaj
+                //     ?.map(m => {
+                //         const [day, month, year] = m.MonthData.split('.').map(Number);
+                //         const dateObj = new Date(year, month - 1, day);
+                //         const itemDate = format(dateObj, 'MM.yyyy', { locale: ru });
+                //         if (itemDate === currentMonthYear) {
+                //             return {
+                //                 ...m, 
+                //                 MonthData: m.MonthData 
+                //             };
+                //         }
+                //         return null;
+                //     })
+                //     ?.filter(Boolean) || [], 
+                
+                MonthDataTonnaj: data[0]?.MonthDataTonnaj
+                    ?.map(m => {
+                        const [day, month, year] = m.MonthData.split('.').map(Number);
+                        const dateObj = new Date(year, month - 1, day);
+                        const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
+                        if (itemDate) {
+                            return {
+                                ...m, 
+                                MonthData: m.MonthData 
+                            };
                         }
-                    }
-
-                    return null;
-
-                }).filter(item => item != null),
+                        return null;
+                    })
+                    ?.filter(Boolean) || [], 
                 
                 statusWorker: data[0]?.DayDataDetails?.flatMap(i => {
                     const result = [];
@@ -201,12 +210,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
             reset(newFormDefault);
             setFormValues(newFormDefault);
-            console.log("Инициализация формы:", newFormDefault.MonthDataTonnaj);
+            // console.log("Инициализация формы:", newFormDefault.MonthDataTonnaj);
 
         }
         }, [data, reset]);
 
-    console.log('formValues!!!!', formValues);
+    console.log('formValues!!!!', formValues.MonthDataTonnaj);
     
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
@@ -214,9 +223,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const amountData = useWatch({ control, name: 'AmountData' });
     const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
     const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' });
-    const TC = useWatch({ control, name: 'TC' });
-    const note = useWatch({ control, name: 'note' });
+    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' }) || '-';
+    const TC = useWatch({ control, name: 'TC' }) || '-';
+    const note = useWatch({ control, name: 'note' }) || '-';
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
     
     const statusValues = useWatch({ control, name: 'statusWorker' });
@@ -290,11 +299,30 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         }
                     ],
 
-                    MonthDataTonnaj: [
-                        {
-                            AmountData: amountData || formValues.MonthDataTonnaj.AmountData || "0",
-                            MonthData: formattedDates[0] || formValues.MonthDataTonnaj.MonthData || '0',
-                        },
+                   MonthDataTonnaj: [
+                        ...(formValues.MonthDataTonnaj?.map(item => {
+                            const [month, year] = item.MonthData.split(".").map(Number);
+                            const itemMonthYear = `${String(month).padStart(2, "0")}.${year}`;
+
+                            if (itemMonthYear === currentMonthYear) {
+                                return {
+                                    MonthData: item.MonthData,
+                                    AmountData: amountData || item.AmountData || "0"
+                                };
+                            }
+                            return { 
+                                MonthData: item.MonthData,
+                                AmountData: item.AmountData 
+                            };
+                        }) || []),
+
+                        ...(!formValues.MonthDataTonnaj?.some(item => {
+                            const [month, year] = item.MonthData.split(".").map(Number);
+                            return `${String(month).padStart(2, "0")}.${year}` === currentMonthYear;
+                        }) ? [{
+                            AmountData: amountData || "0",
+                            MonthData: formattedDates[0] || "0"
+                        }] : [])
                     ],
 
                     DayDataOstatki: [
@@ -326,7 +354,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     };
                 
                     const existingEntry = acc.find(e => {
-                        console.log('existingEntry e', e);
                         return (
                             e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
                             e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
@@ -334,11 +361,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     });
                 
                     if (isDuplicate && existingEntry) {
-                        console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
                         const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
                         
                         if (shiftType === 'day') {
-                            console.log('day')
 
                             existingEntry.DayInfo = { 
                                 ...existingEntry.DayInfo,
@@ -349,7 +374,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                 } 
                             };
                         } else if (shiftType === 'night') {
-                            console.log('night')
                             existingEntry.NightInfo = { 
                                 ...existingEntry.NightInfo,
                                 Night: true, 
@@ -358,8 +382,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                     ...commonDetails
                                 } 
                             };
-                        } else {
-                            console.log('Пошел нахуй')
                         }
                     } else {
                         const shiftType = shiftTypeArray[idx] || 'day';
@@ -394,8 +416,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     const isDuplicate = dublicateDates[currentDate] > 1;
                     const status = statusValues[idx] || 'In working';              
                     
-                    console.log(statusValues[idx]);
-
                     const existingEntry = acc.find(e =>
                         e.DayInfo?.date === currentDate ||
                         e.NightInfo?.date === currentDate
@@ -442,13 +462,31 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         }
                     ],
                     
-                    MonthDataTonnaj: [
-                        {
-                            AmountData: amountData || formValues.MonthDataTonnaj.AmountData || "0",
-                            MonthData: formattedDates[0] || formValues.MonthDataTonnaj.MonthData || '0',
-                        },
-                    ],
+                   MonthDataTonnaj: [
+                        ...(formValues.MonthDataTonnaj?.map(item => {
+                            const [month, year] = item.MonthData.split(".").map(Number);
+                            const itemMonthYear = `${String(month).padStart(2, "0")}.${year}`;
 
+                            if (itemMonthYear === currentMonthYear) {
+                                return {
+                                    MonthData: item.MonthData,
+                                    AmountData: amountData || item.AmountData || "0"
+                                };
+                            }
+                            return { 
+                                MonthData: item.MonthData,
+                                AmountData: item.AmountData 
+                            };
+                        }) || []),
+
+                        ...(!formValues.MonthDataTonnaj?.some(item => {
+                            const [month, year] = item.MonthData.split(".").map(Number);
+                            return `${String(month).padStart(2, "0")}.${year}` === currentMonthYear;
+                        }) ? [{
+                            AmountData: amountData || "0",
+                            MonthData: formattedDates[0] || "0"
+                        }] : [])
+                    ],
 
                     DayDataOstatki: [
                         {
@@ -470,7 +508,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     }
                 
                     const commonDetails = {
-                        Note: note?.[idx] || formValues?.note[idx],
+                        Note: note?.[idx] || formValues?.note[idx] || "default",
                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
                         SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
                         SmenaStatusWorker: status,
@@ -478,7 +516,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     };
                 
                     const existingEntry = acc.find(e => {
-                        console.log('existingEntry e', e);
                         return (
                             e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
                             e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
@@ -486,12 +523,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     });
                 
                     if (isDuplicate && existingEntry) {
-                        console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
+                        // console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
                         const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
                         
                         if (shiftType === 'day') {
-                            console.log('day')
-
                             existingEntry.DayInfo = { 
                                 ...existingEntry.DayInfo,
                                 Day: true, 
@@ -501,7 +536,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                 } 
                             };
                         } else if (shiftType === 'night') {
-                            console.log('night')
                             existingEntry.NightInfo = { 
                                 ...existingEntry.NightInfo,
                                 Night: true, 
@@ -510,8 +544,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                     ...commonDetails
                                 } 
                             };
-                        } else {
-                            console.log('Пошел нахуй')
                         }
                     } else {
                         const shiftType = shiftTypeArray[idx] || 'day';
