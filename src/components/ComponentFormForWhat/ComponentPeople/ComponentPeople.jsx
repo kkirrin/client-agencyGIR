@@ -306,7 +306,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                 <div style={{ height: '40px', marginTop: '20px' }}>
                     <AddMoreBtn
                         onHandleClick={handleClickBtn}
-                        title={'Добавить еще'}
+                        title={'Добавить смену'}
                     />
                 </div>
             </div >

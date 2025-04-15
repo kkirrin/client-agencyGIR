@@ -297,7 +297,7 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                 <div style={{ height: '40px', marginTop: '20px' }}>
                     <AddMoreBtn
                         onHandleClick={handleClickBtn}
-                        title={'Добавить еще'}
+                        title={'Добавить смену'}
                     />
                 </div>
             </div >

@@ -6,7 +6,7 @@ import useDataRequestStore from '../../store/DataRequestStore';
 
 import fetchData from '../../utils/fetchData';
 
-import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, NoteBody, ObjectSelect } from '../../components';
+import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, ComponentTonnaj, ObjectSelect } from '../../components';
 
 import useDateStore from '../../store/CalendarStore';
 
@@ -29,7 +29,7 @@ const Object = () => {
 
   currentDate.setHours(0, 0, 0, 0);
   const { dates } = useDateStore();
-  const [monthsTonnaj, setMonthsTonnaj] = useState([]);
+  // const [monthsTonnaj, setMonthsTonnaj] = useState([]);
 
   // Генерация днеЙ
   const [days, setDays] = useState([]);
@@ -67,17 +67,15 @@ const Object = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(days.length / daysPerPage);
 
-  const startIndex = (currentPage - 1) * daysPerPage;
-  const endIndex = startIndex + daysPerPage;
+  // const startIndex = (currentPage - 1) * daysPerPage;
+  // const endIndex = startIndex + daysPerPage;
 
-  // Вычисляем displayedDays при каждом изменении days или currentPage
   const displayedDays = useMemo(() => {
     const start = (currentPage - 1) * daysPerPage;
     const end = start + daysPerPage;
     return days.slice(start, end);
-  }, [days, currentPage]); // Добавляем days в зависимости
+  }, [days, currentPage]); 
 
-  // Автоскролл к текущей дате при монтировании
   useEffect(() => {
     if (dates.length === 0) {
       const currentDay = currentDate.getDate();
@@ -140,7 +138,7 @@ const Object = () => {
     }
   }
   // const { data: storeDate, clearData } = useDataRequestStore();
-  const { clearData } = useDataRequestStore();
+  // const { clearData } = useDataRequestStore();
   const storeDate = useDataRequestStore.getState().data;
   
   // Эффект для загрузки данных
@@ -218,6 +216,7 @@ const Object = () => {
           <header className={styles.top}>
             <ObjectSelect setWorkers={setWorkers} />
             <div className={styles.top_wrapper}>
+              <ComponentTonnaj />
               <ComponentSearch />
               <ComponentDate />
             </div>

@@ -267,312 +267,309 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             // console.log("Инициализация формы:", newFormDefault.MonthDataTonnaj);
 
         }
-    }, [data, reset]);
-    
+    }, [data, reset]);    
 
     const onSubmit = async () => {
         setIsSending(true);
         setError(null);
         let formData = {};
         let url = '';
+        try {
+            switch (forWhat) {
+                case 'people':
+                    url = 'http://89.104.67.119:1337/api/people'
+                    formData = {
 
-        switch (forWhat) {
-            case 'people':
-                url = 'http://89.104.67.119:1337/api/people'
-                formData = {
+                        uuid: objectUUID ? objectUUID : uuidv4(),
+                        Name: name || "",
+                        Job: job || "",
+                        Objects: [
+                            {
+                                id: id,
+                            }
+                        ],
 
-                    uuid: objectUUID ? objectUUID : uuidv4(),
-                    Name: name || "",
-                    Job: job || "",
-                    Objects: [
-                        {
-                            id: id,
-                        }
-                    ],
+                        MonthDataTonnaj: [
+                            // 1. Удаляем записи ТОЛЬКО текущего месяца
+                            ...(formValues.MonthDataTonnaj?.filter(item => {
+                                const [day, month, year] = item.MonthData.split('.');
+                                return `${month}.${year}` !== currentMonthYear;
+                            }).map(({ id, ...rest }) => rest) || []),
+                            
+                            // 2. Добавляем новую запись текущего месяца
+                            ...(amountData !== "0" ? [{
+                                MonthData: formattedDates[0],
+                                AmountData: amountData
+                            }] : [])
+                        ]
+                        // Сортировка по дате (если нужна)
+                        .sort((a, b) => new Date(
+                            a.MonthData.split('.').reverse().join('-')
+                        ) - new Date(
+                            b.MonthData.split('.').reverse().join('-')
+                        )),
 
-                    MonthDataTonnaj: [
-                        // 1. Удаляем записи ТОЛЬКО текущего месяца
-                        ...(formValues.MonthDataTonnaj?.filter(item => {
-                            const [day, month, year] = item.MonthData.split('.');
-                            return `${month}.${year}` !== currentMonthYear;
-                        }).map(({ id, ...rest }) => rest) || []),
-                        
-                        // 2. Добавляем новую запись текущего месяца
-                        ...(amountData !== "0" ? [{
-                            MonthData: formattedDates[0],
-                            AmountData: amountData
-                        }] : [])
-                    ]
-                    // Сортировка по дате (если нужна)
-                    .sort((a, b) => new Date(
-                        a.MonthData.split('.').reverse().join('-')
-                    ) - new Date(
-                        b.MonthData.split('.').reverse().join('-')
-                    )),
-
-                    DayDataOstatki: [
-                        {
-                            DayDataOstatki: formattedDates[0] || '0',
-                            DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-                            DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-                        },
-                    ],
-                };
-                
-                
-                formData.DayDataDetails = items.reduce((acc, item, idx) => {
-                    const currentDate = formattedDates[idx];
-                    const isDuplicate = dublicateDates[currentDate] >= 1;
-
-                    const status = Array.isArray(statusValues[idx]) && statusValues[idx].some(item => item !== undefined) 
-                        ? statusValues[idx] 
-                        : ''; 
-
-                
-                    if (!currentDate) {
-                        console.error(`Дата не найдена для индекса ${idx}`);
-                        return acc;
-                    }
-                
-                    const commonDetails = {
-                        Note: note?.[idx] || formValues?.note[idx],
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
-                        SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
-                        SmenaStatusWorker: status === undefined ? 'default' : status,
-                        TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
+                        DayDataOstatki: [
+                            {
+                                DayDataOstatki: formattedDates[0] || '0',
+                                DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
+                                DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
+                            },
+                        ],
                     };
-                
-                    const existingEntry = acc.find(e => {
-                        return (
-                            e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
-                            e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
-                        );
-                    });
-                
-                    if (isDuplicate && existingEntry) {
-                        const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
-                        
-                        if (shiftType === 'day') {
-
-                            existingEntry.DayInfo = { 
-                                ...existingEntry.DayInfo,
-                                Day: true, 
-                                SmenaDetails: {
-                                    ...existingEntry.DayInfo?.SmenaDetails,
-                                    ...commonDetails
-                                } 
-                            };
-                        } else if (shiftType === 'night') {
-                            existingEntry.NightInfo = { 
-                                ...existingEntry.NightInfo,
-                                Night: true, 
-                                SmenaDetails: {
-                                    ...existingEntry.NightInfo?.SmenaDetails,
-                                    ...commonDetails
-                                } 
-                            };
-                        }
-                    } else {
-                        const shiftType = shiftTypeArray[idx] || 'day';
-                        acc.push({
-                            ...(shiftType === 'day'
-                                ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-                                : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-                            )
-                        });
-                    }
-                    return acc;
-                }, []);
-
-                break;
-            
-            case 'tech':
-                url = 'http://89.104.67.119:1337/api/techicas'
-                formData = {
-
-                    uuid: objectUUID ? objectUUID : uuidv4(),
-                    Name: name || "",
-                    Order: order || data[0]?.Order,
-                    objects: [
-                        {
-                            id: id,
-                        }
-                    ],        
-                };
-
-                formData.DayDataDetails = items.reduce((acc, item, idx) => {
-                    const currentDate = formattedDates[idx];
-                    const isDuplicate = dublicateDates[currentDate] > 1;
-                    const status = statusValues[idx] || 'In working';              
                     
-                    const existingEntry = acc.find(e =>
-                        e.DayInfo?.date === currentDate ||
-                        e.NightInfo?.date === currentDate
-                    );
-
-                    if (isDuplicate && existingEntry) {
-                        if (shiftTypeArray[idx] === 'day') {
-                            existingEntry.DayInfo = { day: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
-                        } else {
-                            existingEntry.NightInfo = { night: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
-                        }
-
-                    } else {
-                        const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
-                        if (typeof shiftType === 'undefined') {
-                            console.error('shiftType равен undefined для индекса', idx);
+                    
+                    formData.DayDataDetails = items.reduce((acc, item, idx) => {
+                        const currentDate = formattedDates[idx];
+                        const isDuplicate = dublicateDates[currentDate] >= 1;
+                        const status = statusValues[idx] || "Default"
+                    
+                        if (!currentDate) {
+                            console.error(`Дата не найдена для индекса ${idx}`);
                             return acc;
-                        } else {
+                        }
+                    
+                        const commonDetails = {
+                            Note: note?.[idx] || formValues?.note[idx],
+                            SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "0",
+                            SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
+                            SmenaStatusWorker: status || 'Default',
+                            TC: TC?.[idx] || formValues?.TC[idx] || "0"
+                        };
+                    
+                        const existingEntry = acc.find(e => {
+                            return (
+                                e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
+                                e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
+                            );
+                        });
+                    
+                        if (isDuplicate && existingEntry) {
+                            const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
+                            
+                            if (shiftType === 'day') {
 
+                                existingEntry.DayInfo = { 
+                                    ...existingEntry.DayInfo,
+                                    Day: true, 
+                                    SmenaDetails: {
+                                        ...existingEntry.DayInfo?.SmenaDetails,
+                                        ...commonDetails
+                                    } 
+                                };
+                            } else if (shiftType === 'night') {
+                                existingEntry.NightInfo = { 
+                                    ...existingEntry.NightInfo,
+                                    Night: true, 
+                                    SmenaDetails: {
+                                        ...existingEntry.NightInfo?.SmenaDetails,
+                                        ...commonDetails
+                                    } 
+                                };
+                            }
+                        } else {
+                            const shiftType = shiftTypeArray[idx] || 'day';
                             acc.push({
                                 ...(shiftType === 'day'
-                                    ? { DayInfo: { day: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status } }
-                                    : { NightInfo: { night: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status } }
+                                    ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
+                                    : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
+                                )
+                            });
+                        }
+                        return acc;
+                    }, []);
+
+                    break;
+                
+                case 'tech':
+                    url = 'http://89.104.67.119:1337/api/techicas'
+                    formData = {
+
+                        uuid: objectUUID ? objectUUID : uuidv4(),
+                        Name: name || "",
+                        Order: order || data[0]?.Order,
+                        objects: [
+                            {
+                                id: id,
+                            }
+                        ],        
+                    };
+
+                    formData.DayDataDetails = items.reduce((acc, item, idx) => {
+                        const currentDate = formattedDates[idx];
+                        const isDuplicate = dublicateDates[currentDate] > 1;
+                        const status = statusValues[idx] || 'In working';              
+                        
+                        const existingEntry = acc.find(e =>
+                            e.DayInfo?.date === currentDate ||
+                            e.NightInfo?.date === currentDate
+                        );
+
+                        if (isDuplicate && existingEntry) {
+                            if (shiftTypeArray[idx] === 'day') {
+                                existingEntry.DayInfo = { day: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
+                            } else {
+                                existingEntry.NightInfo = { night: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
+                            }
+
+                        } else {
+                            const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
+                            if (typeof shiftType === 'undefined') {
+                                console.error('shiftType равен undefined для индекса', idx);
+                                return acc;
+                            } else {
+
+                                acc.push({
+                                    ...(shiftType === 'day'
+                                        ? { DayInfo: { day: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status } }
+                                        : { NightInfo: { night: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status } }
+                                    )
+                                }
                                 )
                             }
-                            )
                         }
-                    }
-                    return acc;
-                }, []);
-
-                break;
-
-            case 'drobilka':
-                url = 'http://89.104.67.119:1337/api/drobilkas'
-
-                formData = {
-
-                    uuid: objectUUID ? objectUUID : uuidv4(),
-                    Name: name || "",
-                    objects: [
-                        {
-                            id: id,
-                        }
-                    ],
-                    
-                  MonthDataTonnaj: [
-                        // 1. Удаляем записи ТОЛЬКО текущего месяца
-                        ...(formValues.MonthDataTonnaj?.filter(item => {
-                            const [day, month, year] = item.MonthData.split('.');
-                            return `${month}.${year}` !== currentMonthYear;
-                        }).map(({ id, ...rest }) => rest) || []),
-                        
-                        // 2. Добавляем новую запись текущего месяца
-                        ...(amountData !== "0" ? [{
-                            MonthData: formattedDates[0],
-                            AmountData: amountData
-                        }] : [])
-                    ]
-                    // Сортировка по дате (если нужна)
-                    .sort((a, b) => new Date(
-                        a.MonthData.split('.').reverse().join('-')
-                    ) - new Date(
-                        b.MonthData.split('.').reverse().join('-')
-                    )),
-
-                    DayDataOstatki: [
-                        {
-                            DayDataOstatki: formattedDates[0] || '0',
-                            DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-                            DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-                        },
-                    ],
-                };
-
-                formData.DayDataDetails = items.reduce((acc, item, idx) => {
-                    const currentDate = formattedDates[idx];
-                    const isDuplicate = dublicateDates[currentDate] >= 1;
-                    const status = statusValues[idx] || 'Default';
-                
-                    if (!currentDate) {
-                        console.error(`Дата не найдена для индекса ${idx}`);
                         return acc;
-                    }
-                
-                    const commonDetails = {
-                        Note: note?.[idx] || formValues?.note[idx] || "default",
-                        SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
-                        SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
-                        SmenaStatusWorker: status,
-                        TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
-                    };
-                
-                    const existingEntry = acc.find(e => {
-                        return (
-                            e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
-                            e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
-                        );
-                    });
-                
-                    if (isDuplicate && existingEntry) {
-                        // console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
-                        const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
+                    }, []);
+
+                    break;
+
+                case 'drobilka':
+                    url = 'http://89.104.67.119:1337/api/drobilkas'
+
+                    formData = {
+
+                        uuid: objectUUID ? objectUUID : uuidv4(),
+                        Name: name || "",
+                        objects: [
+                            {
+                                id: id,
+                            }
+                        ],
                         
-                        if (shiftType === 'day') {
-                            existingEntry.DayInfo = { 
-                                ...existingEntry.DayInfo,
-                                Day: true, 
-                                SmenaDetails: {
-                                    ...existingEntry.DayInfo?.SmenaDetails,
-                                    ...commonDetails
-                                } 
-                            };
-                        } else if (shiftType === 'night') {
-                            existingEntry.NightInfo = { 
-                                ...existingEntry.NightInfo,
-                                Night: true, 
-                                SmenaDetails: {
-                                    ...existingEntry.NightInfo?.SmenaDetails,
-                                    ...commonDetails
-                                } 
-                            };
+                    MonthDataTonnaj: [
+                            // 1. Удаляем записи ТОЛЬКО текущего месяца
+                            ...(formValues.MonthDataTonnaj?.filter(item => {
+                                const [day, month, year] = item.MonthData.split('.');
+                                return `${month}.${year}` !== currentMonthYear;
+                            }).map(({ id, ...rest }) => rest) || []),
+                            
+                            // 2. Добавляем новую запись текущего месяца
+                            ...(amountData !== "0" ? [{
+                                MonthData: formattedDates[0],
+                                AmountData: amountData
+                            }] : [])
+                        ]
+                        // Сортировка по дате (если нужна)
+                        .sort((a, b) => new Date(
+                            a.MonthData.split('.').reverse().join('-')
+                        ) - new Date(
+                            b.MonthData.split('.').reverse().join('-')
+                        )),
+
+                        DayDataOstatki: [
+                            {
+                                DayDataOstatki: formattedDates[0] || '0',
+                                DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
+                                DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
+                            },
+                        ],
+                    };
+
+                    formData.DayDataDetails = items.reduce((acc, item, idx) => {
+                        const currentDate = formattedDates[idx];
+                        const isDuplicate = dublicateDates[currentDate] >= 1;
+                        const status = statusValues[idx] || 'Default';
+                    
+                        if (!currentDate) {
+                            console.error(`Дата не найдена для индекса ${idx}`);
+                            return acc;
                         }
-                    } else {
-                        const shiftType = shiftTypeArray[idx] || 'day';
-                        acc.push({
-                            ...(shiftType === 'day'
-                                ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-                                : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-                            )
+                    
+                        const commonDetails = {
+                            Note: note?.[idx] || formValues?.note[idx] || "default",
+                            SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "0",
+                            SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
+                            SmenaStatusWorker: status,
+                            TC: TC?.[idx] || formValues?.TC[idx] || "0"
+                        };
+                    
+                        const existingEntry = acc.find(e => {
+                            return (
+                                e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
+                                e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
+                            );
                         });
-                    }
-                    return acc;
-                }, []);
-        }
-
-        try {
-            const existingRecordId = await checkExistingRecord(objectUUID, url);
-            let response;
-
-            if (existingRecordId) {
-                response = await updateUserDateService(
-
-                    existingRecordId,
-                    formData,
-                    url
-                );
-                if (response.status === 200) {
-                    setModalNotification(true); 
-                    setModalNotificationText('Данные обновлены');
-                    reset();
-                }
-
-                setModalNotification(true); 
-                setModalNotificationText('Данные обновлены');
-                console.log('Данные обновлены:', formData);
-
-            } else {
-                setModalNotification(true); 
-                setModalNotificationText('Создана новая сущность');
-                response = await saveUserDateService(formData, url);
-                console.log('Новая запись создана:', response, formData);
+                    
+                        if (isDuplicate && existingEntry) {
+                            // console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
+                            const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
+                            
+                            if (shiftType === 'day') {
+                                existingEntry.DayInfo = { 
+                                    ...existingEntry.DayInfo,
+                                    Day: true, 
+                                    SmenaDetails: {
+                                        ...existingEntry.DayInfo?.SmenaDetails,
+                                        ...commonDetails
+                                    } 
+                                };
+                            } else if (shiftType === 'night') {
+                                existingEntry.NightInfo = { 
+                                    ...existingEntry.NightInfo,
+                                    Night: true, 
+                                    SmenaDetails: {
+                                        ...existingEntry.NightInfo?.SmenaDetails,
+                                        ...commonDetails
+                                    } 
+                                };
+                            }
+                        } else {
+                            const shiftType = shiftTypeArray[idx] || 'day';
+                            acc.push({
+                                ...(shiftType === 'day'
+                                    ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
+                                    : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
+                                )
+                            });
+                        }
+                        return acc;
+                    }, []);
             }
 
+              try {
+                    const existingRecordId = await checkExistingRecord(objectUUID, url);
+                    let response;
+
+                    if (existingRecordId) {
+                        response = await updateUserDateService(
+
+                            existingRecordId,
+                            formData,
+                            url
+                        );
+                        if (response.status === 200) {
+                            setModalNotification(true); 
+                            setModalNotificationText('Форма отправлена ✅ Данные обновлены');
+                            reset();
+                        }
+                        console.log('Данные обновлены:', formData);
+
+                    } else {
+                        setModalNotification(true); 
+                        setModalNotificationText('Форма отправлена ✅ Создана новая сущность');
+                        response = await saveUserDateService(formData, url);
+                        console.log('Новая запись создана:', response, formData);
+                    }
+
+                } catch (error) {
+                    setError('Ошибка запроса, попробуйте позже', error);
+                } finally {
+                    setIsSending(false);
+                }
         } catch (error) {
-            setError('Ошибка запроса, попробуйте позже', error);
-        } finally {
-            setIsSending(false);
+            console.log(error)
+            setModalNotification(true); 
+            setModalNotificationText('Форма не будет отправлена ❌ Нужно заполнить статус');
         }
     };
 
@@ -633,7 +630,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 </div>
             </form>
             
-            <ModalNotification active={modalNotification} text={setModalNotificationText} />
+            <ModalNotification active={modalNotification} text={modalNotificationText} />
         </>
     )
 }

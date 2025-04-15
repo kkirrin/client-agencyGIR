@@ -19,6 +19,7 @@ export { default as CustomInput } from './Inputs/CustomInput/CustomInput';
 export { default as CustomRadio } from './Inputs/CustomRadio/CustomRadio';
 export { default as CustomInputDate } from './Inputs/CustomInputDate/CustomInputDate';
 
+export { default as ComponentTonnaj } from './ComponentTonnaj/ComponentTonnaj';
 export { default as ComponentTech } from './ComponentFormForWhat/ComponentTech/ComponentTech';
 export { default as ComponentPeople } from './ComponentFormForWhat/ComponentPeople/ComponentPeople';
 export { default as ComponentDrobilka } from './ComponentFormForWhat/ComponentDrobilka/ComponentDrobilka';

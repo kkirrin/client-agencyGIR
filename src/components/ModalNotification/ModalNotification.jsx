@@ -18,7 +18,7 @@ export default function ModalNotification({ active = false, text }) {
         }, 30);
 
         const reloadTimer = setTimeout(() => {
-            window.location.reload();
+            // window.location.reload();
         }, 3000);
 
         return () => {
@@ -39,7 +39,7 @@ export default function ModalNotification({ active = false, text }) {
             transition={{ duration: 0.3 }}
         >
         <div className={styles.modalContent}>
-                Форма отправлена ✅ {text}
+                {text}
             <motion.div
             className={styles.progressBar}
             initial={{ width: 0 }}
