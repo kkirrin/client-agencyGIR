@@ -60,11 +60,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [shiftType, setShiftType] = useState([]);
     const [items, setItems] = useState([]);
     const [formValues, setFormValues] = useState({});
-    const [modalNotification, setModalNotification] = useState([]);
+    const [modalNotification, setModalNotification] = useState(false);
 
     let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
-    const { register, control, handleSubmit, formState: { errors }, reset, setValue } = useForm();
+    const { register, control, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, reset, setValue } = useForm();
 
     // Правильное определение формата
     const formatOptions = {
@@ -564,6 +564,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     formData,
                     url
                 );
+                if (response.status === 200) {
+                    console.log(true)
+                    setModalNotification(true); 
+                    reset(); 
+                }
+                
                 console.log('Данные обновлены:', response);
 
             } else {

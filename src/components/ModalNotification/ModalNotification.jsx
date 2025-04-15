@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import styles from './style.module.scss';
 import { motion } from 'framer-motion';
 
-export default function ModalNotification({ active }) {
+export default function ModalNotification({ active = false }) {
     const [progress, setProgress] = useState(0);
-
+    
     useEffect(() => {
         if (active) {
-        // Анимация прогрессбара
         const timer = setInterval(() => {
             setProgress((prev) => {
             if (prev >= 100) {
@@ -18,30 +17,29 @@ export default function ModalNotification({ active }) {
             });
         }, 30);
 
-        //   const reloadTimer = setTimeout(() => {
-        //     window.location.reload();
-        //   }, 3000);
+        const reloadTimer = setTimeout(() => {
+            window.location.reload();
+        }, 1000);
 
-        //   return () => {
-        //     clearInterval(timer);
-        //     clearTimeout(reloadTimer);
-        //   };
+        return () => {
+            clearInterval(timer);
+            clearTimeout(reloadTimer);
+        };
         }
-  } , [active]);
+    }, [active]);
 
     return (
         <motion.div
-        className={`${styles.modalNotificationWrapper} ${active ? styles.active : ''}`}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{
+            className={`${styles.modalNotificationWrapper} ${active ? styles.active : ''}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
             opacity: active ? 1 : 0,
-            y: active ? 0 : 20
-        }}
-        transition={{ duration: 0.3 }}
+            x: active ? 0 : 1000
+            }}
+            transition={{ duration: 0.3 }}
         >
         <div className={styles.modalContent}>
-            Модалка
-            {/* Прогрессбар */}
+            Форма отправлена ✅
             <motion.div
             className={styles.progressBar}
             initial={{ width: 0 }}
