@@ -394,34 +394,48 @@ legend {
 .working {
   display: block;
   background-color: var(--light-green) !important;
+  padding: 3px;
+  border-radius: 5%;
 }
 
 .notWorking {
   display: block;
   background-color: var(--light-yellow);
+  padding: 3px;
+  border-radius: 5%;
 }
 
 .dayOf {
   display: block;
   background-color: var(--light-pink);
+  padding: 3px;
+  border-radius: 5%;
 }
 
 .inworking {
   display: block;
   background-color: #d4f4c6;
+  padding: 3px;
+  border-radius: 5%;
 }
 
 .repair {
   display: block;
   background-color: #ffeed4;
+  padding: 3px;
+  border-radius: 5%;
 }
 
 .noCoal {
   display: block;
   background-color: #ffd5d5;
+  padding: 3px;
+  border-radius: 5%;
 }
 
 .stock {
   display: block;
   background-color: #c9d5ff;
+  padding: 3px;
+  border-radius: 5%;
 }

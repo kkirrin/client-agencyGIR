@@ -1,4 +1,5 @@
 export { default as Form } from './Form/Form';
+export { default as ModalNotification } from './ModalNotification/ModalNotification';
 export { default as Loading } from './Loading/Loading';
 export { default as NoteBody } from './NotePopupBody/NotePopupBody';
 export { default as ComponentDate } from './DatePicker/ComponentDate';

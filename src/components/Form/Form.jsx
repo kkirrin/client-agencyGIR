@@ -17,7 +17,8 @@ import {
     DeleteButton,
     ComponentDrobilka,
     ComponentPeople,
-    ComponentTech
+    ComponentTech,
+    ModalNotification
 } from '../../components';
 
 import useDateSingleStore from '../../store/CalendarSingleStore';
@@ -59,6 +60,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [shiftType, setShiftType] = useState([]);
     const [items, setItems] = useState([]);
     const [formValues, setFormValues] = useState({});
+    const [modalNotification, setModalNotification] = useState([]);
+
+    let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
     const { register, control, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
@@ -74,6 +78,77 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
     const [datesFromData, setDatesFromData] = useState([]);
 
+    const formattedDates = (() => {
+
+      const allDates = [
+        ...datesFromData,
+        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
+        ];
+        
+    return allDates;
+    })();
+    
+    const name = useWatch({ control, name: 'Name' });
+    const order = useWatch({ control, name: 'Order' });
+    const job = useWatch({ control, name: 'Job' });
+    const amountData = useWatch({ control, name: 'AmountData' });
+    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
+    const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
+    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' }) || '-';
+    const TC = useWatch({ control, name: 'TC' }) || '-';
+    const note = useWatch({ control, name: 'note' }) || '-';
+    const shiftTypeArray = useWatch({ control, name: 'shiftType' });
+    const statusValues = useWatch({ control, name: 'statusWorker' });
+
+    const objectUUID = data[0]?.uuid
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        setItems([...items, items.length + 1]);
+    };
+
+    const dublicateDates = formattedDates.reduce((acc, d) => {
+        acc[d] = (acc[d] || 0) + 1;
+        return acc;
+    }, {})
+
+    useEffect(() => {
+        if (!shiftTypeArray) return;
+
+        let newShiftType = [];
+
+        shiftTypeArray.forEach((i, idx) => {
+            if (i === 'day') {
+                setValue(`btnNight.${idx}`, false);
+                newShiftType.push('day');
+            } else if (i === 'night') {
+                setValue(`btnDay.${idx}`, false);
+                newShiftType.push('night');
+            } else {
+                newShiftType.push('day');
+            }
+        });
+
+        setShiftType(newShiftType);
+
+    }, [shiftTypeArray, setValue]);
+
+    useEffect(() => {
+        if (data && data.length > 0) {
+            let itemsArray = [];
+            data[0].DayDataDetails.forEach(day => {
+                if (day.DayInfo) {
+                    itemsArray.push(day.DayInfo);
+                }
+                if (day.NightInfo) {
+                    itemsArray.push(day.NightInfo);
+                }
+            });
+
+            setItems(itemsArray);
+        }
+    }, [data]);
+
     useEffect(() => {
 
         const dates = data[0]?.DayDataDetails?.flatMap(d => {
@@ -87,18 +162,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
         setDatesFromData(dates);
     }, [data]);
-    
-    const formattedDates = (() => {
-
-      const allDates = [
-        ...datesFromData,
-        ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
-        ];
-        
-    return allDates;
-    })();
-
-    let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru});
 
     useEffect(() => {
         if (data && data[0]) {
@@ -107,31 +170,21 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 Job: data[0].Job || "",
                 Order: data[0]?.Order || '',
                 shiftType: [],
-                // MonthDataTonnaj: data[0]?.MonthDataTonnaj
-                //     ?.map(m => {
-                //         const [day, month, year] = m.MonthData.split('.').map(Number);
-                //         const dateObj = new Date(year, month - 1, day);
-                //         const itemDate = format(dateObj, 'MM.yyyy', { locale: ru });
-                //         if (itemDate === currentMonthYear) {
-                //             return {
-                //                 ...m, 
-                //                 MonthData: m.MonthData 
-                //             };
-                //         }
-                //         return null;
-                //     })
-                //     ?.filter(Boolean) || [], 
                 
                 MonthDataTonnaj: data[0]?.MonthDataTonnaj
                     ?.map(m => {
-                        const [day, month, year] = m.MonthData.split('.').map(Number);
-                        const dateObj = new Date(year, month - 1, day);
-                        const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
-                        if (itemDate) {
-                            return {
-                                ...m, 
-                                MonthData: m.MonthData 
-                            };
+                        if (m && m.MonthData !== '0' && m.MonthData !== undefined) {
+                            const [day, month, year] = m.MonthData.split('.').map(Number);
+                            const dateObj = new Date(year, month - 1, day);
+                            const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
+                            if (itemDate) {
+                                return {
+                                    ...m, 
+                                    MonthData: m.MonthData 
+                                };
+                            }
+                        } else {
+                            console.log(false)
                         }
                         return null;
                     })
@@ -213,71 +266,8 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             // console.log("Инициализация формы:", newFormDefault.MonthDataTonnaj);
 
         }
-        }, [data, reset]);
-
-    console.log('formValues!!!!', formValues.MonthDataTonnaj);
+    }, [data, reset]);
     
-    const name = useWatch({ control, name: 'Name' });
-    const order = useWatch({ control, name: 'Order' });
-    const job = useWatch({ control, name: 'Job' });
-    const amountData = useWatch({ control, name: 'AmountData' });
-    const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-    const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' }) || '-';
-    const TC = useWatch({ control, name: 'TC' }) || '-';
-    const note = useWatch({ control, name: 'note' }) || '-';
-    const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-    
-    const statusValues = useWatch({ control, name: 'statusWorker' });
-
-    useEffect(() => {
-        if (!shiftTypeArray) return;
-
-        let newShiftType = [];
-
-        shiftTypeArray.forEach((i, idx) => {
-            if (i === 'day') {
-                setValue(`btnNight.${idx}`, false);
-                newShiftType.push('day');
-            } else if (i === 'night') {
-                setValue(`btnDay.${idx}`, false);
-                newShiftType.push('night');
-            } else {
-                newShiftType.push('day');
-            }
-        });
-
-        setShiftType(newShiftType);
-
-    }, [shiftTypeArray, setValue]);
-
-    useEffect(() => {
-        if (data && data.length > 0) {
-            let itemsArray = [];
-            data[0].DayDataDetails.forEach(day => {
-                if (day.DayInfo) {
-                    itemsArray.push(day.DayInfo);
-                }
-                if (day.NightInfo) {
-                    itemsArray.push(day.NightInfo);
-                }
-            });
-
-            setItems(itemsArray);
-        }
-    }, [data]);
-
-    const handleClick = (e) => {
-        e.preventDefault();
-        setItems([...items, items.length + 1]);
-    };
-
-    const objectUUID = data[0]?.uuid
-
-    const dublicateDates = formattedDates.reduce((acc, d) => {
-        acc[d] = (acc[d] || 0) + 1;
-        return acc;
-    }, {})
 
     const onSubmit = async () => {
         setIsSending(true);
@@ -315,7 +305,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                 AmountData: item.AmountData 
                             };
                         }) || []),
-
+                       
+                    //    ...(formValues.MonthDataTonnaj?.filter(i => {
+                    //        const [month, year] = i.MonthData.split(".").map(Number)
+                    //        return `${String(month).padStart(2, "0")}.${year}` !== currentMonthYear}) || []),
+                       
                         ...(!formValues.MonthDataTonnaj?.some(item => {
                             const [month, year] = item.MonthData.split(".").map(Number);
                             return `${String(month).padStart(2, "0")}.${year}` === currentMonthYear;
@@ -463,11 +457,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     ],
                     
                    MonthDataTonnaj: [
-                        ...(formValues.MonthDataTonnaj?.map(item => {
-                            const [month, year] = item.MonthData.split(".").map(Number);
-                            const itemMonthYear = `${String(month).padStart(2, "0")}.${year}`;
+                       ...(formValues.MonthDataTonnaj?.map(item => {
+                           const [month, year] = item.MonthData.split(".").map(Number);
+                           const itemMonthYear = `${String(month) + String(year)}`
 
                             if (itemMonthYear === currentMonthYear) {
+                                console.log(true)
                                 return {
                                     MonthData: item.MonthData,
                                     AmountData: amountData || item.AmountData || "0"
@@ -569,7 +564,8 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     formData,
                     url
                 );
-                console.log('Данные обновлены:', response, formData);
+                console.log('Данные обновлены:', response);
+
             } else {
                 response = await saveUserDateService(formData, url);
                 console.log('Новая запись создана:', response, formData);
@@ -583,59 +579,63 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={styles.form_wrapper}>
-                <div className={styles.form_header}>
-                    <div>
-                        <h2 className={styles.form_title}>
-                            {title}
-                        </h2>
-                    </div>
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.form_wrapper}>
+                    <div className={styles.form_header}>
+                        <div>
+                            <h2 className={styles.form_title}>
+                                {title}
+                            </h2>
+                        </div>
 
-                    <div className={styles.form_title_info}>
-                        <div className={styles.btn_save_wrapper}>
-                            <BtnSave isSending={isSending} />
-                            <DeleteButton setActive={setActive} />
+                        <div className={styles.form_title_info}>
+                            <div className={styles.btn_save_wrapper}>
+                                <BtnSave isSending={isSending} />
+                                <DeleteButton setActive={setActive} />
+                            </div>
                         </div>
                     </div>
+
+                    {forWhat === 'people' && (
+                        <ComponentPeople
+                            handleClickBtn={handleClick}
+                            items={items}
+                            register={register}
+                            errors={errors}
+                            shiftType={shiftType}
+                            setItems={setItems}
+                            popupId={popupId}
+                        />
+                    )}
+
+                    {forWhat === 'tech' && (
+                        <ComponentTech
+                            handleClickBtn={handleClick}
+                            items={items}
+                            register={register}
+                            errors={errors}
+                            shiftType={shiftType}
+                            setItems={setItems}
+                            popupId={popupId}
+                        />
+                    )}
+
+                    {forWhat === 'drobilka' && (
+                        <ComponentDrobilka
+                            handleClickBtn={handleClick}
+                            items={items}
+                            register={register}
+                            errors={errors}
+                            shiftType={shiftType}
+                            setItems={setItems}
+                            popupId={popupId}
+                        />
+                    )}
                 </div>
-
-                {forWhat === 'people' && (
-                    <ComponentPeople
-                        handleClickBtn={handleClick}
-                        items={items}
-                        register={register}
-                        errors={errors}
-                        shiftType={shiftType}
-                        setItems={setItems}
-                        popupId={popupId}
-                    />
-                )}
-
-                {forWhat === 'tech' && (
-                    <ComponentTech
-                        handleClickBtn={handleClick}
-                        items={items}
-                        register={register}
-                        errors={errors}
-                        shiftType={shiftType}
-                        setItems={setItems}
-                        popupId={popupId}
-                    />
-                )}
-
-                {forWhat === 'drobilka' && (
-                    <ComponentDrobilka
-                        handleClickBtn={handleClick}
-                        items={items}
-                        register={register}
-                        errors={errors}
-                        shiftType={shiftType}
-                        setItems={setItems}
-                        popupId={popupId}
-                    />
-                )}
-            </div>
-        </form>
+            </form>
+            
+            <ModalNotification active={modalNotification} />
+        </>
     )
 }

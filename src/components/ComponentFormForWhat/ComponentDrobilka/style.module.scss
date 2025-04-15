@@ -162,6 +162,14 @@
     align-items: center;
 }
 
+.data_container .data:nth-child(2) {
+    max-width: 200px;
+}
+
+.data_container .data:nth-child(3) {
+    max-width: 200px;
+}
+
 .smena_btns {
     display: flex;
     gap: 10px;

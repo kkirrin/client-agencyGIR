@@ -77,7 +77,7 @@ const WorkerDetails = ({
   // Мемоизация рендера смены
   const renderShift = (shift, type, forWhat) => {
 
-    if (!shift) return <p className="notWorking"></p>
+    if (!shift) return <p className=""></p>
 
     let status;
     switch (pageId) {
@@ -97,6 +97,7 @@ const WorkerDetails = ({
     }
 
     const statusMap = {
+      "Default" : null,
       null: null,
       'Not working': { text: 'Не работал', className: 'notWorking' },
       'Day Off': { text: 'Выходной', className: 'dayOf' },
