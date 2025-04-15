@@ -61,6 +61,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const [items, setItems] = useState([]);
     const [formValues, setFormValues] = useState({});
     const [modalNotification, setModalNotification] = useState(false);
+    const [modalNotificationText, setModalNotificationText] = useState(false);
 
     let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
@@ -173,7 +174,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 
                 MonthDataTonnaj: data[0]?.MonthDataTonnaj
                     ?.map(m => {
-                        if (m && m.MonthData !== '0' && m.MonthData !== undefined) {
+                        if (m && m.MonthData !== '0' && m.MonthData !== undefined && m.MonthData !== null) {
                             const [day, month, year] = m.MonthData.split('.').map(Number);
                             const dateObj = new Date(year, month - 1, day);
                             const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
@@ -322,7 +323,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
                     const currentDate = formattedDates[idx];
                     const isDuplicate = dublicateDates[currentDate] >= 1;
-                    const status = statusValues[idx] || 'Default';
+
+                    const status = Array.isArray(statusValues[idx]) && statusValues[idx].some(item => item !== undefined) 
+                        ? statusValues[idx] 
+                        : ''; 
+
                 
                     if (!currentDate) {
                         console.error(`Дата не найдена для индекса ${idx}`);
@@ -333,7 +338,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         Note: note?.[idx] || formValues?.note[idx],
                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "При отправке не нашел ни записанного, ни default",
                         SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
-                        SmenaStatusWorker: status,
+                        SmenaStatusWorker: status === undefined ? 'default' : status,
                         TC: TC?.[idx] || formValues?.TC[idx] || "При отправке не нашел ни записанного, ни default"
                     };
                 
@@ -549,12 +554,17 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 );
                 if (response.status === 200) {
                     setModalNotification(true); 
-                    reset(); 
+                    setModalNotificationText('Данные обновлены');
+                    reset();
                 }
-                
+
+                setModalNotification(true); 
+                setModalNotificationText('Данные обновлены');
                 console.log('Данные обновлены:', formData);
 
             } else {
+                setModalNotification(true); 
+                setModalNotificationText('Создана новая сущность');
                 response = await saveUserDateService(formData, url);
                 console.log('Новая запись создана:', response, formData);
             }
@@ -623,7 +633,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 </div>
             </form>
             
-            <ModalNotification active={modalNotification} />
+            <ModalNotification active={modalNotification} text={setModalNotificationText} />
         </>
     )
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './style.module.scss';
 import { motion } from 'framer-motion';
 
-export default function ModalNotification({ active = false }) {
+export default function ModalNotification({ active = false, text }) {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export default function ModalNotification({ active = false }) {
 
         const reloadTimer = setTimeout(() => {
             window.location.reload();
-        }, 1000);
+        }, 3000);
 
         return () => {
             clearInterval(timer);
@@ -39,7 +39,7 @@ export default function ModalNotification({ active = false }) {
             transition={{ duration: 0.3 }}
         >
         <div className={styles.modalContent}>
-            Форма отправлена ✅
+                Форма отправлена ✅ {text}
             <motion.div
             className={styles.progressBar}
             initial={{ width: 0 }}

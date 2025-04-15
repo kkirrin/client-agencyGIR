@@ -16,6 +16,7 @@ export const updateUserDateService = async (recordId, data, url) => {
         };
         
     } catch (error) {
+        console.error('asdfasdfasdf')
         throw new Error(`Update failed: ${error.message}`);
     }
 };
