@@ -456,32 +456,25 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         }
                     ],
                     
-                   MonthDataTonnaj: [
-                       ...(formValues.MonthDataTonnaj?.map(item => {
-                           const [month, year] = item.MonthData.split(".").map(Number);
-                           const itemMonthYear = `${String(month) + String(year)}`
-
-                            if (itemMonthYear === currentMonthYear) {
-                                console.log(true)
-                                return {
-                                    MonthData: item.MonthData,
-                                    AmountData: amountData || item.AmountData || "0"
-                                };
-                            }
-                            return { 
-                                MonthData: item.MonthData,
-                                AmountData: item.AmountData 
-                            };
-                        }) || []),
-
-                        ...(!formValues.MonthDataTonnaj?.some(item => {
-                            const [month, year] = item.MonthData.split(".").map(Number);
-                            return `${String(month).padStart(2, "0")}.${year}` === currentMonthYear;
-                        }) ? [{
-                            AmountData: amountData || "0",
-                            MonthData: formattedDates[0] || "0"
+                  MonthDataTonnaj: [
+                        // 1. Удаляем записи ТОЛЬКО текущего месяца
+                        ...(formValues.MonthDataTonnaj?.filter(item => {
+                            const [day, month, year] = item.MonthData.split('.');
+                            return `${month}.${year}` !== currentMonthYear;
+                        }).map(({ id, ...rest }) => rest) || []),
+                        
+                        // 2. Добавляем новую запись текущего месяца
+                        ...(amountData !== "0" ? [{
+                            MonthData: formattedDates[0],
+                            AmountData: amountData
                         }] : [])
-                    ],
+                    ]
+                    // Сортировка по дате (если нужна)
+                    .sort((a, b) => new Date(
+                        a.MonthData.split('.').reverse().join('-')
+                    ) - new Date(
+                        b.MonthData.split('.').reverse().join('-')
+                    )),
 
                     DayDataOstatki: [
                         {
@@ -565,12 +558,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     url
                 );
                 if (response.status === 200) {
-                    console.log(true)
                     setModalNotification(true); 
                     reset(); 
                 }
                 
-                console.log('Данные обновлены:', response);
+                console.log('Данные обновлены:', formData);
 
             } else {
                 response = await saveUserDateService(formData, url);

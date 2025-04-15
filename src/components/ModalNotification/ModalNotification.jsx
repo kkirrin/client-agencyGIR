@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function ModalNotification({ active = false }) {
     const [progress, setProgress] = useState(0);
-    
+
     useEffect(() => {
         if (active) {
         const timer = setInterval(() => {
