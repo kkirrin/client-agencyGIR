@@ -99,7 +99,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     const TC = useWatch({ control, name: 'TC' }) || '-';
     const note = useWatch({ control, name: 'note' }) || '-';
     const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-    const statusValues = useWatch({ control, name: 'statusWorker' });
+    const statusValues = useWatch({ control, name: 'statusWorker' }) ?? "Default"
 
     const objectUUID = data[0]?.uuid
 
@@ -322,7 +322,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     formData.DayDataDetails = items.reduce((acc, item, idx) => {
                         const currentDate = formattedDates[idx];
                         const isDuplicate = dublicateDates[currentDate] >= 1;
-                        const status = statusValues[idx] || "Default"
+                        const status = statusValues[idx] ?? "Default"
                     
                         if (!currentDate) {
                             console.error(`Дата не найдена для индекса ${idx}`);
@@ -478,7 +478,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     formData.DayDataDetails = items.reduce((acc, item, idx) => {
                         const currentDate = formattedDates[idx];
                         const isDuplicate = dublicateDates[currentDate] >= 1;
-                        const status = statusValues[idx] || 'Default';
+                        const status = statusValues[idx] ?? 'Default';
                     
                         if (!currentDate) {
                             console.error(`Дата не найдена для индекса ${idx}`);

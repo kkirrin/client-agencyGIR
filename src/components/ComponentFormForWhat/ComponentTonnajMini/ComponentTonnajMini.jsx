@@ -2,6 +2,9 @@ import styles from './style.module.scss';
 import { CustomInput } from "../../../components";
 
 export default function ComponentTonnajMini({ data, errors, register }) {
+
+    console.log(data);
+
     return (
         <div className={`${styles.form_content} ${styles.mini}`}>
             <p className={styles.form_title_content}>Тоннаж месяц</p>
@@ -17,7 +20,7 @@ export default function ComponentTonnajMini({ data, errors, register }) {
                         data={data}
                         errors={errors}
                         register={register}
-                        name={'AmountData'}
+                        name={'AmountDataObject'}
                         id={1}
                         type="number"
                         placeholder="Введите тн."
@@ -35,7 +38,7 @@ export default function ComponentTonnajMini({ data, errors, register }) {
                         data={data}
                         errors={errors}
                         register={register}
-                        name={'DayDataOstatkiPORT'}
+                        name={'DayDataObjectOstatkiPORT'}
                         id={2}
                         type="number"
                         placeholder="Введите тн."
@@ -54,12 +57,29 @@ export default function ComponentTonnajMini({ data, errors, register }) {
                         errors={errors}
                         register={register}
                         id={3}
-                        name={'DayDataOstatkiGIR'}
+                        name={'DayDataObjectOstatkiGIR'}
                         type="number"
                         placeholder="Введите тн."
                     />
                 </div>
             </div>
+
+            {
+                data[0]?.MonthDataObjectTonnaj && (
+                    data[0]?.MonthDataObjectTonnaj?.map(el => {
+                        return (
+                            <div key={el} className={styles.wrapper_data}>
+                                <p>{el.AmountDataObject}</p>
+                                <p>{el.MonthDataObject}</p>
+                                <p>{el.DayDataObjectOstatkiGIR}</p>
+                                <p>{el.DayDataObjectOstatkiPORT}</p>
+                            </div>
+                          )
+                    })
+                )
+            }
+
+           
         </div>
     )
 }

@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
-import { updateUserDateService } from '../../services/update-service';
+import { updateDataTonnajService } from '../../services/update-object-service';
 import useDataObjectRequestStore from '../../store/DataObjectRequestStore';
 import { format } from 'date-fns';
-
 import { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 registerLocale('ru', ru);
@@ -48,540 +47,118 @@ export async function saveUserDateService(userData, url) {
     return { response, data };
 }
 
-export default function MiniForm() {
-    // const { dataObject } = useDataObjectRequestStore();
-    // const { dates } = useDateSingleStore();
-    // const { id } = useParams();
+export default function MiniForm({ title, forWhat, setActive, popupId }) {
 
-    // const [error, setError] = useState();
-    // const [isSending, setIsSending] = useState(false);
-    // const [shiftType, setShiftType] = useState([]);
-    // const [items, setItems] = useState([]);
-    // const [formValues, setFormValues] = useState({});
-    // const [modalNotification, setModalNotification] = useState(false);
-    // const [modalNotificationText, setModalNotificationText] = useState(false);
+    const { id } = useParams();
+    const [error, setError] = useState();
+    const { dates } = useDateSingleStore();
+    const [formValues, setFormValues] = useState({});
+    const [isSending, setIsSending] = useState(false);
+    const { dataObject } = useDataObjectRequestStore();
+    const [datesFromData, setDatesFromData] = useState([]);
+    const [modalNotification, setModalNotification] = useState(false);
+    const [modalNotificationText, setModalNotificationText] = useState(false);
+
+    console.log(dataObject)
 
     // let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
-    // const { register, control, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, reset, setValue } = useForm();
+    const { register, control, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, reset, setValue } = useForm();
 
     // Правильное определение формата
-    // const formatOptions = {
-    //     locale: 'ru-RU',
-    //     options: {
-    //         day: '2-digit',
-    //         month: '2-digit',
-    //         year: 'numeric'
-    //     }
-    // };
 
-    // const [datesFromData, setDatesFromData] = useState([]);
 
-    // const formattedDates = (() => {
+    const amountDataObject = useWatch({ control, name: 'AmountDataObject' });
+    const dayDataObjectOstatkiPORT = useWatch({ control, name: 'DayDataObjectOstatkiPORT' });
+    const dayDataObjectOstatkiGIR = useWatch({ control, name: 'DayDataObjectOstatkiGIR' });
 
-    //   const allDates = [
-    //     ...datesFromData,
-    //     ...Object.values(dates).filter(date => date instanceof Date && !isNaN(date)).map(date =>date.toLocaleDateString(formatOptions.locale,formatOptions.options))
-    //     ];
-        
-    // return allDates;
-    // })();
-    
-    // const name = useWatch({ control, name: 'Name' });
-    // const order = useWatch({ control, name: 'Order' });
-    // const job = useWatch({ control, name: 'Job' });
-    // const amountData = useWatch({ control, name: 'AmountData' });
-    // const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-    // const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
-    // const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' }) || '-';
-    // const TC = useWatch({ control, name: 'TC' }) || '-';
-    // const note = useWatch({ control, name: 'note' }) || '-';
-    // const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-    // const statusValues = useWatch({ control, name: 'statusWorker' });
+    const objectUUID = dataObject[0]?.documentId
 
-    // const objectUUID = data[0]?.uuid
-
-    // const handleClick = (e) => {
-    //     e.preventDefault();
-    //     setItems([...items, items.length + 1]);
-    // };
-
-    // const dublicateDates = formattedDates.reduce((acc, d) => {
-    //     acc[d] = (acc[d] || 0) + 1;
-    //     return acc;
-    // }, {})
-
-    // useEffect(() => {
-    //     if (!shiftTypeArray) return;
-
-    //     let newShiftType = [];
-
-    //     shiftTypeArray.forEach((i, idx) => {
-    //         if (i === 'day') {
-    //             setValue(`btnNight.${idx}`, false);
-    //             newShiftType.push('day');
-    //         } else if (i === 'night') {
-    //             setValue(`btnDay.${idx}`, false);
-    //             newShiftType.push('night');
-    //         } else {
-    //             newShiftType.push('day');
-    //         }
-    //     });
-
-    //     setShiftType(newShiftType);
-
-    // }, [shiftTypeArray, setValue]);
-
-    // useEffect(() => {
-    //     if (data && data.length > 0) {
-    //         let itemsArray = [];
-    //         data[0].DayDataDetails.forEach(day => {
-    //             if (day.DayInfo) {
-    //                 itemsArray.push(day.DayInfo);
-    //             }
-    //             if (day.NightInfo) {
-    //                 itemsArray.push(day.NightInfo);
-    //             }
-    //         });
-
-    //         setItems(itemsArray);
-    //     }
-    // }, [data]);
-
-    // useEffect(() => {
-
-    //     const dates = data[0]?.DayDataDetails?.flatMap(d => {
-    //         const dates = []
-    //         if (d?.DayInfo?.SmenaDetails?.SmenaDateDetails) dates.push(d.DayInfo.SmenaDetails.SmenaDateDetails)
-    //         if (d?.NightInfo?.SmenaDetails?.SmenaDateDetails) dates.push(d.NightInfo.SmenaDetails.SmenaDateDetails)
-    //         if (d?.DayInfo?.date) dates.push(d.DayInfo.date)
-    //         if (d?.NightInfo?.date) dates.push(d.NightInfo.date)
-    //         return dates
-    //     }) || [];
-
-    //     setDatesFromData(dates);
-    // }, [data]);
-
-    // useEffect(() => {
-    //     if (data && data[0]) {
-    //         const newFormDefault = {
-    //             Name: data[0].Name || "",
-    //             Job: data[0].Job || "",
-    //             Order: data[0]?.Order || '',
-    //             shiftType: [],
+    useEffect(() => {
+        if (dataObject && dataObject[0]) {
+            const newFormDefault = {
+                Name: dataObject[0].Name || "",
                 
-    //             MonthDataTonnaj: data[0]?.MonthDataTonnaj
-    //                 ?.map(m => {
-    //                     if (m && m.MonthData !== '0' && m.MonthData !== undefined && m.MonthData !== null) {
-    //                         const [day, month, year] = m.MonthData.split('.').map(Number);
-    //                         const dateObj = new Date(year, month - 1, day);
-    //                         const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
-    //                         if (itemDate) {
-    //                             return {
-    //                                 ...m, 
-    //                                 MonthData: m.MonthData 
-    //                             };
-    //                         }
-    //                     } else {
-    //                         console.log(false)
-    //                     }
-    //                     return null;
-    //                 })
-    //                 ?.filter(Boolean) || [], 
+                MonthDataTonnaj: dataObject[0]?.MonthDataObjectTonnaj
+                    ?.map(m => {
+                        if (m && m.MonthDataObject !== '0' && m.MonthDataObject !== undefined && m.MonthData !== null) {
+                            const [day, month, year] = m.MonthDataObject.split('.').map(Number);
+                            const dateObj = new Date(year, month - 1, day);
+                            const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
+                            if (itemDate) {
+                                return {
+                                    ...m,
+                                    MonthDataObject: m.MonthDataObject
+                                };
+                            }
+                        } else {
+                            console.log(false)
+                        }
+                        return null;
+                    })
+                    ?.filter(Boolean) || [],
+                 workers: dataObject[0]?.workers
+            }
+
+            reset(newFormDefault);
+            setFormValues(newFormDefault);
+
+        }
+    }, [dataObject, reset]);    
+
+
+
+    const onSubmit = async () => {
+        setIsSending(true);
+        setError(null);
+        let formData = {};
+        let url = '';
+        try {
+
+            url = 'http://89.104.67.119:1337/api/objects'
+
+            formData = {
+                MonthDataObjectTonnaj:
                 
-    //             statusWorker: data[0]?.DayDataDetails?.flatMap(i => {
-    //                 const result = [];
-    //                 if (i?.DayInfo) {
-    //                     result.push(
-    //                         i.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
-    //                         i.DayInfo?.statusTech ||
-    //                         ""
-    //                     );
-    //                 }
-    //                 if (i?.NightInfo) {
-    //                     result.push(
-    //                         i.NightInfo?.SmenaDetails?.SmenaStatusWorker || 
-    //                         i.NightInfo?.statusTech ||
-    //                         ""
-    //                     );
-    //                 }
-    //                 return result;
-    //             }) || [],
-
-    //             smenaDateDetails: data[0]?.DayDataDetails?.flatMap(i => {
-    //                 const result = [];
-    //                 if (i?.DayInfo) {
-    //                     result.push(
-    //                         i.DayInfo?.SmenaDetails?.SmenaDateDetails || "0"
-    //                     );
-    //                 }
-    //                 if (i?.NightInfo) {
-    //                     result.push(
-    //                         i.NightInfo?.SmenaDetails?.SmenaDateDetails || "0"
-    //                     );
-    //                 }
-    //                 return result;
-    //             }) || [],
-
-    //             shiftTypeArray: data[0]?.DayDataDetails?.flatMap(i => {
-    //                 const res = [];
-    //                 if (i?.DayInfo) res.push("day");
-    //                 if (i?.NightInfo) res.push("night");
-    //                 return res;
-    //             }) || [],
+                [{
+                    MonthDataObject: format(new Date(), 'dd.MM.yyyy', {locale: ru}),
+                    AmountDataObject: amountDataObject ?? '0',
+                    DayDataObjectOstatkiPORT: dayDataObjectOstatkiPORT ?? '0',
+                    DayDataObjectOstatkiGIR: dayDataObjectOstatkiGIR ?? '0',             
+                }],
+            };
 
 
-    //             dayDataTonnaj: data[0]?.DayDataDetails?.flatMap(i => {
-    //                 const result = [];
-    //                 if (i?.DayInfo) {
-    //                     result.push(
-    //                         i.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "0"
-    //                     );
-    //                 }
-    //                 if (i?.NightInfo) {
-    //                     result.push(
-    //                         i.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0"
-    //                     );
-    //                 }
-    //                 return result;
-    //             }) || [],
+            try {
+                let response;
+                response = await updateDataTonnajService(
+                    objectUUID,
+                    formData,
+                    url
+                );
+                if (response.status === 200) {
+                    setModalNotification(true);
+                    setModalNotificationText('Форма отправлена ✅ Данные обновлены');
+                    reset();
+                }
+                console.log('Данные обновлены:', formData);
 
-    //             TC: data[0]?.DayDataDetails?.flatMap(i => {
-    //                 const result = [];
-    //                 if (i?.DayInfo) result.push(i.DayInfo?.SmenaDetails?.TC)
-    //                 if (i?.NightInfo) result.push(i.NightInfo?.SmenaDetails?.TC);
-    //                 return result;
-    //             }) || [],
-                
-    //             note: data[0]?.DayDataDetails?.map(i => 
-    //                 i?.DayInfo?.SmenaDetails?.Note || 
-    //                 i?.NightInfo?.SmenaDetails?.Note || 
-    //                 i?.DayInfo?.note || 
-    //                 i?.NightInfo?.note) || []
-    //             };
-
-    //         reset(newFormDefault);
-    //         setFormValues(newFormDefault);
-    //         // console.log("Инициализация формы:", newFormDefault.MonthDataTonnaj);
-
-    //     }
-    // }, [data, reset]);    
-
-    // const onSubmit = async () => {
-    //     setIsSending(true);
-    //     setError(null);
-    //     let formData = {};
-    //     let url = '';
-    //     try {
-    //         switch (forWhat) {
-    //             case 'people':
-    //                 url = 'http://89.104.67.119:1337/api/people'
-    //                 formData = {
-
-    //                     uuid: objectUUID ? objectUUID : uuidv4(),
-    //                     Name: name || "",
-    //                     Job: job || "",
-    //                     Objects: [
-    //                         {
-    //                             id: id,
-    //                         }
-    //                     ],
-
-    //                     MonthDataTonnaj: [
-    //                         // 1. Удаляем записи ТОЛЬКО текущего месяца
-    //                         ...(formValues.MonthDataTonnaj?.filter(item => {
-    //                             const [day, month, year] = item.MonthData.split('.');
-    //                             return `${month}.${year}` !== currentMonthYear;
-    //                         }).map(({ id, ...rest }) => rest) || []),
-                            
-    //                         // 2. Добавляем новую запись текущего месяца
-    //                         ...(amountData !== "0" ? [{
-    //                             MonthData: formattedDates[0],
-    //                             AmountData: amountData
-    //                         }] : [])
-    //                     ]
-    //                     // Сортировка по дате (если нужна)
-    //                     .sort((a, b) => new Date(
-    //                         a.MonthData.split('.').reverse().join('-')
-    //                     ) - new Date(
-    //                         b.MonthData.split('.').reverse().join('-')
-    //                     )),
-
-    //                     DayDataOstatki: [
-    //                         {
-    //                             DayDataOstatki: formattedDates[0] || '0',
-    //                             DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-    //                             DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-    //                         },
-    //                     ],
-    //                 };
-                    
-                    
-    //                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
-    //                     const currentDate = formattedDates[idx];
-    //                     const isDuplicate = dublicateDates[currentDate] >= 1;
-    //                     const status = statusValues[idx] || "Default"
-                    
-    //                     if (!currentDate) {
-    //                         console.error(`Дата не найдена для индекса ${idx}`);
-    //                         return acc;
-    //                     }
-                    
-    //                     const commonDetails = {
-    //                         Note: note?.[idx] || formValues?.note[idx],
-    //                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "0",
-    //                         SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
-    //                         SmenaStatusWorker: status || 'Default',
-    //                         TC: TC?.[idx] || formValues?.TC[idx] || "0"
-    //                     };
-                    
-    //                     const existingEntry = acc.find(e => {
-    //                         return (
-    //                             e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
-    //                             e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
-    //                         );
-    //                     });
-                    
-    //                     if (isDuplicate && existingEntry) {
-    //                         const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
-                            
-    //                         if (shiftType === 'day') {
-
-    //                             existingEntry.DayInfo = { 
-    //                                 ...existingEntry.DayInfo,
-    //                                 Day: true, 
-    //                                 SmenaDetails: {
-    //                                     ...existingEntry.DayInfo?.SmenaDetails,
-    //                                     ...commonDetails
-    //                                 } 
-    //                             };
-    //                         } else if (shiftType === 'night') {
-    //                             existingEntry.NightInfo = { 
-    //                                 ...existingEntry.NightInfo,
-    //                                 Night: true, 
-    //                                 SmenaDetails: {
-    //                                     ...existingEntry.NightInfo?.SmenaDetails,
-    //                                     ...commonDetails
-    //                                 } 
-    //                             };
-    //                         }
-    //                     } else {
-    //                         const shiftType = shiftTypeArray[idx] || 'day';
-    //                         acc.push({
-    //                             ...(shiftType === 'day'
-    //                                 ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-    //                                 : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-    //                             )
-    //                         });
-    //                     }
-    //                     return acc;
-    //                 }, []);
-
-    //                 break;
-                
-    //             case 'tech':
-    //                 url = 'http://89.104.67.119:1337/api/techicas'
-    //                 formData = {
-
-    //                     uuid: objectUUID ? objectUUID : uuidv4(),
-    //                     Name: name || "",
-    //                     Order: order || data[0]?.Order,
-    //                     objects: [
-    //                         {
-    //                             id: id,
-    //                         }
-    //                     ],        
-    //                 };
-
-    //                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
-    //                     const currentDate = formattedDates[idx];
-    //                     const isDuplicate = dublicateDates[currentDate] > 1;
-    //                     const status = statusValues[idx] || 'In working';              
-                        
-    //                     const existingEntry = acc.find(e =>
-    //                         e.DayInfo?.date === currentDate ||
-    //                         e.NightInfo?.date === currentDate
-    //                     );
-
-    //                     if (isDuplicate && existingEntry) {
-    //                         if (shiftTypeArray[idx] === 'day') {
-    //                             existingEntry.DayInfo = { day: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
-    //                         } else {
-    //                             existingEntry.NightInfo = { night: true,  note: note?.[idx] || "-", date: currentDate || '0', statusTech: status, };
-    //                         }
-
-    //                     } else {
-    //                         const shiftType = shiftTypeArray[idx] ? shiftTypeArray[idx] : 'day';
-    //                         if (typeof shiftType === 'undefined') {
-    //                             console.error('shiftType равен undefined для индекса', idx);
-    //                             return acc;
-    //                         } else {
-
-    //                             acc.push({
-    //                                 ...(shiftType === 'day'
-    //                                     ? { DayInfo: { day: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status } }
-    //                                     : { NightInfo: { night: true, note: note?.[idx] || "-", date: currentDate || '0', statusTech: status } }
-    //                                 )
-    //                             }
-    //                             )
-    //                         }
-    //                     }
-    //                     return acc;
-    //                 }, []);
-
-    //                 break;
-
-    //             case 'drobilka':
-    //                 url = 'http://89.104.67.119:1337/api/drobilkas'
-
-    //                 formData = {
-
-    //                     uuid: objectUUID ? objectUUID : uuidv4(),
-    //                     Name: name || "",
-    //                     objects: [
-    //                         {
-    //                             id: id,
-    //                         }
-    //                     ],
-                        
-    //                     MonthDataTonnaj: [
-    //                         // 1. Удаляем записи ТОЛЬКО текущего месяца
-    //                         ...(formValues.MonthDataTonnaj?.filter(item => {
-    //                             const [day, month, year] = item.MonthData.split('.');
-    //                             return `${month}.${year}` !== currentMonthYear;
-    //                         }).map(({ id, ...rest }) => rest) || []),
-                            
-    //                         // 2. Добавляем новую запись текущего месяца
-    //                         ...(amountData !== "0" ? [{
-    //                             MonthData: formattedDates[0],
-    //                             AmountData: amountData
-    //                         }] : [])
-    //                     ]
-    //                         // Сортировка по дате (если нужна)
-    //                         .sort((a, b) => new Date(
-    //                             a.MonthData.split('.').reverse().join('-')
-    //                         ) - new Date(
-    //                             b.MonthData.split('.').reverse().join('-')
-    //                         )),
-
-    //                     DayDataOstatki: [
-    //                         {
-    //                             DayDataOstatki: formattedDates[0] || '0',
-    //                             DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-    //                             DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-    //                         },
-    //                     ],
-    //                 };
-
-    //                 formData.DayDataDetails = items.reduce((acc, item, idx) => {
-    //                     const currentDate = formattedDates[idx];
-    //                     const isDuplicate = dublicateDates[currentDate] >= 1;
-    //                     const status = statusValues[idx] || 'Default';
-                    
-    //                     if (!currentDate) {
-    //                         console.error(`Дата не найдена для индекса ${idx}`);
-    //                         return acc;
-    //                     }
-                    
-    //                     const commonDetails = {
-    //                         Note: note?.[idx] || formValues?.note[idx] || "default",
-    //                         SmenaDataTonnaj: dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "0",
-    //                         SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
-    //                         SmenaStatusWorker: status,
-    //                         TC: TC?.[idx] || formValues?.TC[idx] || "0"
-    //                     };
-                    
-    //                     const existingEntry = acc.find(e => {
-    //                         return (
-    //                             e.DayInfo?.SmenaDetails?.SmenaDateDetails === currentDate ||
-    //                             e.NightInfo?.SmenaDetails?.SmenaDateDetails === currentDate
-    //                         );
-    //                     });
-                    
-    //                     if (isDuplicate && existingEntry) {
-    //                         // console.log('Когда я отправляю первый раз - все работает, тут лежит два правильных объекта', existingEntry);
-    //                         const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
-                            
-    //                         if (shiftType === 'day') {
-    //                             existingEntry.DayInfo = {
-    //                                 ...existingEntry.DayInfo,
-    //                                 Day: true,
-    //                                 SmenaDetails: {
-    //                                     ...existingEntry.DayInfo?.SmenaDetails,
-    //                                     ...commonDetails
-    //                                 }
-    //                             };
-    //                         } else if (shiftType === 'night') {
-    //                             existingEntry.NightInfo = {
-    //                                 ...existingEntry.NightInfo,
-    //                                 Night: true,
-    //                                 SmenaDetails: {
-    //                                     ...existingEntry.NightInfo?.SmenaDetails,
-    //                                     ...commonDetails
-    //                                 }
-    //                             };
-    //                         }
-    //                     } else {
-    //                         const shiftType = shiftTypeArray[idx] || 'day';
-    //                         acc.push({
-    //                             ...(shiftType === 'day'
-    //                                 ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
-    //                                 : { NightInfo: { Night: true, SmenaDetails: commonDetails } }
-    //                             )
-    //                         });
-    //                     }
-    //                     return acc;
-    //                 }, []);
-
-    //                 break;
-        
-    //         }
-
-    //           try {
-    //                 const existingRecordId = await checkExistingRecord(objectUUID, url);
-    //                 let response;
-
-    //                 if (existingRecordId) {
-    //                     response = await updateUserDateService(
-
-    //                         existingRecordId,
-    //                         formData,
-    //                         url
-    //                     );
-    //                     if (response.status === 200) {
-    //                         setModalNotification(true); 
-    //                         setModalNotificationText('Форма отправлена ✅ Данные обновлены');
-    //                         reset();
-    //                     }
-    //                     console.log('Данные обновлены:', formData);
-
-    //                 } else {
-    //                     setModalNotification(true); 
-    //                     setModalNotificationText('Форма отправлена ✅ Создана новая сущность');
-    //                     response = await saveUserDateService(formData, url);
-    //                     console.log('Новая запись создана:', response, formData);
-    //                 }
-
-    //             } catch (error) {
-    //                 setError('Ошибка запроса, попробуйте позже', error);
-    //             } finally {
-    //                 setIsSending(false);
-    //             }
-    //     } catch (error) {
-    //         console.log(error)
-    //         setModalNotification(true); 
-    //         setModalNotificationText('Форма не будет отправлена ❌ Нужно заполнить статус');
-    //     }
-    // };
+            } catch (error) {
+                console.error(error)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <>
-            {/* <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.form_wrapper}>
                     <div className={styles.form_header}>
                         <div>
                             <h2 className={styles.form_title}>
-                                {title}
+                                {/* {title} */}
                             </h2>
                         </div>
 
@@ -594,7 +171,7 @@ export default function MiniForm() {
                     </div>
 
                     <ComponentTonnajMini
-                        data={data}
+                        data={dataObject}
                         errors={errors}
                         register={register}
                     />
@@ -602,7 +179,7 @@ export default function MiniForm() {
                 </div>
             </form>
             
-            <ModalNotification active={modalNotification} text={modalNotificationText} /> */}
+            <ModalNotification active={modalNotification} text={modalNotificationText} /> 
         </>
     )
 }

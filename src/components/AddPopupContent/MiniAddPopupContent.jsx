@@ -18,7 +18,7 @@ export default function MiniAddPopupContent({ id, active, setActive }) {
             if (active) {
                 const fetchAndSetData = async () => {
                     try {
-                        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`);
+                        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[MonthDataObjectTonnaj][populate]=*`);
                         setDataObjectRequest(data);
                         console.log(data)
                     } catch (error) {
@@ -31,7 +31,6 @@ export default function MiniAddPopupContent({ id, active, setActive }) {
                 clearDataObject();
             }
     }, [active, setDataObjectRequest, clearDataObject]);
-
     
     return (
         <div
