@@ -158,7 +158,7 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
                     <div className={styles.form_header}>
                         <div>
                             <h2 className={styles.form_title}>
-                                {/* {title} */}
+                               {dataObject[0]?.Name ?? ''}
                             </h2>
                         </div>
 
