@@ -446,7 +446,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                             }
                         ],
                         
-                    MonthDataTonnaj: [
+                        MonthDataTonnaj: [
                             // 1. Удаляем записи ТОЛЬКО текущего месяца
                             ...(formValues.MonthDataTonnaj?.filter(item => {
                                 const [day, month, year] = item.MonthData.split('.');
@@ -459,12 +459,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                 AmountData: amountData
                             }] : [])
                         ]
-                        // Сортировка по дате (если нужна)
-                        .sort((a, b) => new Date(
-                            a.MonthData.split('.').reverse().join('-')
-                        ) - new Date(
-                            b.MonthData.split('.').reverse().join('-')
-                        )),
+                            // Сортировка по дате (если нужна)
+                            .sort((a, b) => new Date(
+                                a.MonthData.split('.').reverse().join('-')
+                            ) - new Date(
+                                b.MonthData.split('.').reverse().join('-')
+                            )),
 
                         DayDataOstatki: [
                             {
@@ -505,22 +505,22 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                             const shiftType = shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
                             
                             if (shiftType === 'day') {
-                                existingEntry.DayInfo = { 
+                                existingEntry.DayInfo = {
                                     ...existingEntry.DayInfo,
-                                    Day: true, 
+                                    Day: true,
                                     SmenaDetails: {
                                         ...existingEntry.DayInfo?.SmenaDetails,
                                         ...commonDetails
-                                    } 
+                                    }
                                 };
                             } else if (shiftType === 'night') {
-                                existingEntry.NightInfo = { 
+                                existingEntry.NightInfo = {
                                     ...existingEntry.NightInfo,
-                                    Night: true, 
+                                    Night: true,
                                     SmenaDetails: {
                                         ...existingEntry.NightInfo?.SmenaDetails,
                                         ...commonDetails
-                                    } 
+                                    }
                                 };
                             }
                         } else {
@@ -534,6 +534,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         }
                         return acc;
                     }, []);
+
+                    break;
+        
             }
 
               try {

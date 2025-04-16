@@ -10,8 +10,6 @@ function App() {
   const domain = 'http://89.104.67.119:1337';
   const url = `${domain}/api/objects?populate=*`;
 
-  const dataGlobal = []; 
-
   useEffect(() => {
     const loadData = async () => {
       try {

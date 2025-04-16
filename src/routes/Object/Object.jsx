@@ -216,7 +216,7 @@ const Object = () => {
           <header className={styles.top}>
             <ObjectSelect setWorkers={setWorkers} />
             <div className={styles.top_wrapper}>
-              <ComponentTonnaj />
+              <ComponentTonnaj idObject={id}/>
               <ComponentSearch />
               <ComponentDate />
             </div>
