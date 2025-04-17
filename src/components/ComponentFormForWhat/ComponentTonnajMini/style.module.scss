@@ -179,7 +179,22 @@
 
 .wrapper_data {
     display: flex;
+    width: 100%;
     gap: 10px;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.tonnaj_data {
+    display: flex;
+    width: 100%;
+    gap: 16px;
+}
+
+.custom_wrapper {
+    width: 100%;
+    background-color: var(--light-gray);
+    padding: 12px 20px;
+    border-radius: 6px;
 }

@@ -27,9 +27,9 @@ export default function ComponentDate() {
             addDate(selectedDate);
         }
     };
-
+    
     return (
-        <div className='date-wrapper'>
+        <div id='main-date-picker' className='date-wrapper'>
             <DatePicker
                 // showIcon
                 toggleCalendarOnIconClick
@@ -43,6 +43,8 @@ export default function ComponentDate() {
                 isClearable
                 className='date-wrapper-input'
             />
+
+            
             <div className='date-wrapper__info'>
                 <div>
                     <p className='month'>{format(currentMouth, 'LLLL', { locale: ru })}</p>
@@ -52,6 +54,7 @@ export default function ComponentDate() {
                     <p className='year'>{format(currentMouth, 'yyyy', { locale: ru })}г</p>
                 </div>
             </div>
+
         </div>
     );
 }

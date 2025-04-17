@@ -156,11 +156,9 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.form_wrapper}>
                     <div className={styles.form_header}>
-                        <div>
-                            <h2 className={styles.form_title}>
-                               {dataObject[0]?.Name ?? ''}
-                            </h2>
-                        </div>
+                        <h2 className={styles.form_title}>
+                            {dataObject[0]?.Name ?? ''}
+                        </h2>
 
                         <div className={styles.form_title_info}>
                             <div className={styles.btn_save_wrapper}>
