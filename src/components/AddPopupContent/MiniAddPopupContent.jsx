@@ -6,7 +6,7 @@ import fetchData from '../../utils/fetchData';
 
 export default function MiniAddPopupContent({ id, active, setActive }) {
 
-    const { setDataObjectRequest, clearDataObject } = useDataObjectRequestStore();
+    const { dataObject, setDataObjectRequest, clearDataObject } = useDataObjectRequestStore();
 
     const handleKeyDown = (event) => {
         if (event.key === 'Escape' || event.key === 'Esc') {
@@ -31,6 +31,8 @@ export default function MiniAddPopupContent({ id, active, setActive }) {
                 clearDataObject();
             }
     }, [active, setDataObjectRequest, clearDataObject]);
+
+    console.log(dataObject)
     
     return (
         <div

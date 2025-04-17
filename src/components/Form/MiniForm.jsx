@@ -49,13 +49,10 @@ export async function saveUserDateService(userData, url) {
 
 export default function MiniForm({ title, forWhat, setActive, popupId }) {
 
-    const { id } = useParams();
     const [error, setError] = useState();
-    const { dates } = useDateSingleStore();
     const [formValues, setFormValues] = useState({});
     const [isSending, setIsSending] = useState(false);
     const { dataObject } = useDataObjectRequestStore();
-    const [datesFromData, setDatesFromData] = useState([]);
     const [modalNotification, setModalNotification] = useState(false);
     const [modalNotificationText, setModalNotificationText] = useState(false);
 
@@ -79,12 +76,15 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
             const newFormDefault = {
                 Name: dataObject[0].Name || "",
                 
-                MonthDataTonnaj: dataObject[0]?.MonthDataObjectTonnaj
+                MonthDataObjectTonnaj: dataObject[0]?.MonthDataObjectTonnaj
                     ?.map(m => {
+                        console.log(m)
                         if (m && m.MonthDataObject !== '0' && m.MonthDataObject !== undefined && m.MonthData !== null) {
                             const [day, month, year] = m.MonthDataObject.split('.').map(Number);
                             const dateObj = new Date(year, month - 1, day);
+                            console.log(dateObj);
                             const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
+                            console.log(itemDate)
                             if (itemDate) {
                                 return {
                                     ...m,
@@ -106,7 +106,9 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
         }
     }, [dataObject, reset]);    
 
+    console.log('formValuesformValuesformValues', formValues.MonthDataObjectTonnaj)
 
+    let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
     const onSubmit = async () => {
         setIsSending(true);
@@ -118,14 +120,29 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
             url = 'http://89.104.67.119:1337/api/objects'
 
             formData = {
-                MonthDataObjectTonnaj:
-                
-                [{
-                    MonthDataObject: format(new Date(), 'dd.MM.yyyy', {locale: ru}),
-                    AmountDataObject: amountDataObject ?? '0',
-                    DayDataObjectOstatkiPORT: dayDataObjectOstatkiPORT ?? '0',
-                    DayDataObjectOstatkiGIR: dayDataObjectOstatkiGIR ?? '0',             
-                }],
+                MonthDataObjectTonnaj: [
+                    // 1. Удаляем записи ТОЛЬКО текущего месяца
+                    ...(formValues.MonthDataObjectTonnaj?.filter(item => {
+                        console.log(item)
+                        const [day, month, year] = item.MonthDataObject.split('.');
+                        console.log(currentMonthYear);
+                        console.log(`${month}.${year}`);
+                        return `${month}.${year}` !== currentMonthYear;
+                    }).map(({ id, ...rest }) => rest) || []),
+
+                    ...(amountDataObject !== "0" ? [{
+                        MonthDataObject: format(new Date(), 'dd.MM.yyyy', { locale: ru }),
+                        AmountDataObject: amountDataObject ?? '0',
+                        DayDataObjectOstatkiPORT: dayDataObjectOstatkiPORT ?? '0',
+                        DayDataObjectOstatkiGIR: dayDataObjectOstatkiGIR ?? '0',
+                    }] : [])
+                ]
+                  // Сортировка по дате (если нужна)
+                    .sort((a, b) => new Date(
+                        a.MonthDataObject.split('.').reverse().join('-')
+                    ) - new Date(
+                        b.MonthDataObject.split('.').reverse().join('-')
+                    )),
             };
 
 
@@ -150,6 +167,7 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
             console.log(error)
         }
     }
+        
 
     return (
         <>
