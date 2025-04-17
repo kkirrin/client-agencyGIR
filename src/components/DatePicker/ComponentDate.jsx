@@ -13,6 +13,8 @@ export default function ComponentDate() {
     const [selectedDates, setSelectedDates] = useState([]);
     const [currentMouth, setCurrentMonth] = useState(new Date());
 
+    console.log(dates);
+
     // Обновление store
     useEffect(() => {
         setSelectedDates(dates);
@@ -47,7 +49,12 @@ export default function ComponentDate() {
             
             <div className='date-wrapper__info'>
                 <div>
-                    <p className='month'>{format(currentMouth, 'LLLL', { locale: ru })}</p>
+                    <p className='month'>
+                    {dates[0] 
+                        ? format(dates[0], 'LLL', {locale: ru}) 
+                        : format(currentMouth, 'LLLL', {locale: ru})
+                    }
+                    </p>
                 </div>
 
                 <div>
