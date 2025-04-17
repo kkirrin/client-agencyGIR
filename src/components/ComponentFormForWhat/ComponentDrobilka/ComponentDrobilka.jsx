@@ -129,9 +129,9 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
         <>
             <div>
                 <div className={styles.form_content}>
-                    <p className={styles.form_title_content}>Тоннаж месяц</p>
+                    {/* <p className={styles.form_title_content}>Тоннаж месяц</p> */}
                     <div className={styles.wrapper_input}>
-                        <div>
+                        {/* <div>
                             <label
                                 htmlFor="1"
                                 style={{ textAlign: 'start', fontWeight: 'medium' }}
@@ -147,9 +147,9 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                 type="number"
                                 placeholder="Введите тн."
                             />
-                        </div>
+                        </div> */}
 
-                        <div>
+                        {/* <div>
                             <label
                                 htmlFor="2"
                                 style={{ textAlign: 'start', fontWeight: 'medium' }}
@@ -183,7 +183,7 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                                 type="number"
                                 placeholder="Введите тн."
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

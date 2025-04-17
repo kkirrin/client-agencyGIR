@@ -307,34 +307,34 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                                 id: dataObject[0]?.id,
                             }
                         ],
-
-                        MonthDataTonnaj: [
-                            // 1. Удаляем записи ТОЛЬКО текущего месяца
-                            ...(formValues.MonthDataTonnaj?.filter(item => {
-                                const [day, month, year] = item.MonthData.split('.');
-                                return `${month}.${year}` !== currentMonthYear;
-                            }).map(({ id, ...rest }) => rest) || []),
+                        // РАССКОМЕНТИРОВАТЬ ЕСЛИ НУЖНО ОТРАВЛЯТЬ НА КАЖДОГО РАБОТНИКА (ТАКЖЕ НУЖНО РАССКОМЕНТИТЬ ИНПУТЫ)
+                        // MonthDataTonnaj: [
+                        //     // 1. Удаляем записи ТОЛЬКО текущего месяца
+                        //     ...(formValues.MonthDataTonnaj?.filter(item => {
+                        //         const [day, month, year] = item.MonthData.split('.');
+                        //         return `${month}.${year}` !== currentMonthYear;
+                        //     }).map(({ id, ...rest }) => rest) || []),
                             
-                            // 2. Добавляем новую запись текущего месяца
-                            ...(amountData !== "0" ? [{
-                                MonthData: formattedDates[0],
-                                AmountData: amountData
-                            }] : [])
-                        ]
-                        // Сортировка по дате (если нужна)
-                        .sort((a, b) => new Date(
-                            a.MonthData.split('.').reverse().join('-')
-                        ) - new Date(
-                            b.MonthData.split('.').reverse().join('-')
-                        )),
+                        //     // 2. Добавляем новую запись текущего месяца
+                        //     ...(amountData !== "0" ? [{
+                        //         MonthData: formattedDates[0],
+                        //         AmountData: amountData
+                        //     }] : [])
+                        // ]
+                        // // Сортировка по дате (если нужна)
+                        // .sort((a, b) => new Date(
+                        //     a.MonthData.split('.').reverse().join('-')
+                        // ) - new Date(
+                        //     b.MonthData.split('.').reverse().join('-')
+                        // )),
 
-                        DayDataOstatki: [
-                            {
-                                DayDataOstatki: formattedDates[0] || '0',
-                                DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-                                DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-                            },
-                        ],
+                        // DayDataOstatki: [
+                        //     {
+                        //         DayDataOstatki: formattedDates[0] || '0',
+                        //         DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
+                        //         DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
+                        //     },
+                        // ],
                     };
                     
                     
@@ -465,33 +465,34 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                             }
                         ],
                         
-                        MonthDataTonnaj: [
-                            // 1. Удаляем записи ТОЛЬКО текущего месяца
-                            ...(formValues.MonthDataTonnaj?.filter(item => {
-                                const [day, month, year] = item.MonthData.split('.');
-                                return `${month}.${year}` !== currentMonthYear;
-                            }).map(({ id, ...rest }) => rest) || []),
+                    // АНАЛОГИЧНО С СОТРУДНИКАМИ
+                    //     MonthDataTonnaj: [
+                    //         // 1. Удаляем записи ТОЛЬКО текущего месяца
+                    //         ...(formValues.MonthDataTonnaj?.filter(item => {
+                    //             const [day, month, year] = item.MonthData.split('.');
+                    //             return `${month}.${year}` !== currentMonthYear;
+                    //         }).map(({ id, ...rest }) => rest) || []),
                             
-                            // 2. Добавляем новую запись текущего месяца
-                            ...(amountData !== "0" ? [{
-                                MonthData: formattedDates[0],
-                                AmountData: amountData
-                            }] : [])
-                        ]
-                            // Сортировка по дате (если нужна)
-                            .sort((a, b) => new Date(
-                                a.MonthData.split('.').reverse().join('-')
-                            ) - new Date(
-                                b.MonthData.split('.').reverse().join('-')
-                            )),
+                    //         // 2. Добавляем новую запись текущего месяца
+                    //         ...(amountData !== "0" ? [{
+                    //             MonthData: formattedDates[0],
+                    //             AmountData: amountData
+                    //         }] : [])
+                    //     ]
+                    //         // Сортировка по дате (если нужна)
+                    //         .sort((a, b) => new Date(
+                    //             a.MonthData.split('.').reverse().join('-')
+                    //         ) - new Date(
+                    //             b.MonthData.split('.').reverse().join('-')
+                    //         )),
 
-                        DayDataOstatki: [
-                            {
-                                DayDataOstatki: formattedDates[0] || '0',
-                                DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
-                                DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
-                            },
-                        ],
+                    //     DayDataOstatki: [
+                    //         {
+                    //             DayDataOstatki: formattedDates[0] || '0',
+                    //             DayDataOstatkiGIR: dayDataOstatkiGIR || "0",
+                    //             DayDataOstatkiPORT: dayDataOstatkiPORT || "0",
+                    //         },
+                    //     ],
                     };
 
                     formData.DayDataDetails = items.reduce((acc, item, idx) => {

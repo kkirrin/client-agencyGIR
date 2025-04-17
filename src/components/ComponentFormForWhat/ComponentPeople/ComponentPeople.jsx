@@ -109,9 +109,9 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
         <>
             <div>
                 <div className={styles.form_content}>
-                    <p className={styles.form_title_content}>Тоннаж месяц</p>
+                    {/* <p className={styles.form_title_content}>Тоннаж месяц</p> */}
                     <div className={styles.wrapper_input}>
-                        <div>
+                        {/* <div>
                             <label
                                 htmlFor="1"
                                 style={{ textAlign: 'start', fontWeight: 'medium' }}
@@ -127,9 +127,9 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 type="number"
                                 placeholder="Введите тн."
                             />
-                        </div>
+                        </div> */}
 
-                        <div>
+                        {/* <div>
                             <label
                                 htmlFor="2"
                                 style={{ textAlign: 'start', fontWeight: 'medium' }}
@@ -163,7 +163,7 @@ export default function ComponentPeople({ handleClickBtn, items, register, error
                                 type="number"
                                 placeholder="Введите тн."
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

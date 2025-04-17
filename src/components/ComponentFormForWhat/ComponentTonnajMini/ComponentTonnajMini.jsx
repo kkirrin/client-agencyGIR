@@ -70,9 +70,9 @@ export default function ComponentTonnajMini({ data, errors, register }) {
                             <div key={el} className={styles.wrapper_data}>
                                 <p>{el.MonthDataObject}</p>
                                 <div className={styles.tonnaj_data}>
-                                    <p className={styles.custom_wrapper}>{Number(el.AmountDataObject)?.toLocaleString()}т </p>
-                                    <p className={styles.custom_wrapper}>{Number(el.DayDataObjectOstatkiGIR)?.toLocaleString()}т </p>
-                                    <p className={styles.custom_wrapper}>{Number(el.DayDataObjectOstatkiPORT)?.toLocaleString()}т </p>
+                                    <p className={styles.custom_wrapper}>{Number(el.AmountDataObject)?.toLocaleString()}</p>
+                                    <p className={styles.custom_wrapper}>{Number(el.DayDataObjectOstatkiGIR)?.toLocaleString()}</p>
+                                    <p className={styles.custom_wrapper}>{Number(el.DayDataObjectOstatkiPORT)?.toLocaleString()}</p>
                                 </div>
                             </div>
                           )

@@ -109,8 +109,8 @@ function TotalComponent({ object, allDates }) {
             arr = [
                 { label: 'Общий тоннаж', value: totalSumTonnaj },
                 { label: 'Выставили', value: totalSumTonnajPlan },
-                { label: 'Ост. Порт', value: totalSumOstatokGir },
-                { label: 'Ост. ГиР', value: totalSumOstatokPort },
+                // { label: 'Ост. Порт', value: totalSumOstatokGir },
+                // { label: 'Ост. ГиР', value: totalSumOstatokPort },
             ];
             break;
         }
@@ -120,9 +120,9 @@ function TotalComponent({ object, allDates }) {
                 { label: 'Ночные смены', value: totalAmountNightSmena },
                 { label: 'Всего смен', value: totalAmountDaySmena + totalAmountNightSmena },
                 { label: 'Общий тоннаж', value: totalSumTonnaj },
-                { label: 'Выставили', value: totalSumTonnajPlan },
-                { label: 'Ост. Порт', value: totalSumOstatokGir },
-                { label: 'Ост. ГиР', value: totalSumOstatokPort },
+                // { label: 'Выставили', value: totalSumTonnajPlan },
+                // { label: 'Ост. Порт', value: totalSumOstatokGir },
+                // { label: 'Ост. ГиР', value: totalSumOstatokPort },
             ];
         }
     }
