@@ -9,16 +9,12 @@ import { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 registerLocale('ru', ru);
 
-
-import { useParams } from 'react-router-dom';
 import {
     BtnSave,
     ComponentTonnajMini,
-    DeleteButton,
     ModalNotification,
 } from '../../components';
-
-import useDateSingleStore from '../../store/CalendarSingleStore';
+import { useParams } from 'react-router-dom';
 
 
 export async function checkExistingRecord(uuid, url) {
@@ -56,7 +52,6 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
     const [modalNotification, setModalNotification] = useState(false);
     const [modalNotificationText, setModalNotificationText] = useState(false);
 
-    console.log(dataObject)
 
     // let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
@@ -69,7 +64,7 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
     const dayDataObjectOstatkiPORT = useWatch({ control, name: 'DayDataObjectOstatkiPORT' });
     const dayDataObjectOstatkiGIR = useWatch({ control, name: 'DayDataObjectOstatkiGIR' });
 
-    const objectUUID = dataObject[0]?.documentId
+    const objectUUID = dataObject[0]?.uuid
 
     useEffect(() => {
         if (dataObject && dataObject[0]) {
@@ -78,13 +73,10 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
                 
                 MonthDataObjectTonnaj: dataObject[0]?.MonthDataObjectTonnaj
                     ?.map(m => {
-                        console.log(m)
                         if (m && m.MonthDataObject !== '0' && m.MonthDataObject !== undefined && m.MonthData !== null) {
                             const [day, month, year] = m.MonthDataObject.split('.').map(Number);
                             const dateObj = new Date(year, month - 1, day);
-                            console.log(dateObj);
                             const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
-                            console.log(itemDate)
                             if (itemDate) {
                                 return {
                                     ...m,
@@ -106,8 +98,6 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
         }
     }, [dataObject, reset]);    
 
-    console.log('formValuesformValuesformValues', formValues.MonthDataObjectTonnaj)
-
     let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
 
     const onSubmit = async () => {
@@ -123,10 +113,7 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
                 MonthDataObjectTonnaj: [
                     // 1. Удаляем записи ТОЛЬКО текущего месяца
                     ...(formValues.MonthDataObjectTonnaj?.filter(item => {
-                        console.log(item)
                         const [day, month, year] = item.MonthDataObject.split('.');
-                        console.log(currentMonthYear);
-                        console.log(`${month}.${year}`);
                         return `${month}.${year}` !== currentMonthYear;
                     }).map(({ id, ...rest }) => rest) || []),
 
@@ -147,21 +134,34 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
 
 
             try {
+                const existingRecordId = await checkExistingRecord(objectUUID, url);
                 let response;
-                response = await updateDataTonnajService(
-                    objectUUID,
-                    formData,
-                    url
-                );
-                if (response.status === 200) {
-                    setModalNotification(true);
-                    setModalNotificationText('Форма отправлена ✅ Данные обновлены');
-                    reset();
+
+                if (existingRecordId) {
+                    response = await updateDataTonnajService(
+
+                        existingRecordId,
+                        formData,
+                        url
+                    );
+                    if (response.status === 200) {
+                        setModalNotification(true); 
+                        setModalNotificationText('Форма отправлена ✅ Данные обновлены');
+                        reset();
+                    }
+                    console.log('Данные обновлены:', formData);
+
+                } else {
+                    setModalNotification(true); 
+                    setModalNotificationText('Форма отправлена ✅ Создана новая сущность');
+                    response = await saveUserDateService(formData, url);
+                    console.log('Новая запись создана:', response, formData);
                 }
-                console.log('Данные обновлены:', formData);
 
             } catch (error) {
-                console.error(error)
+                setError('Ошибка запроса, попробуйте позже', error);
+            } finally {
+                setIsSending(false);
             }
         } catch (error) {
             console.log(error)
@@ -181,7 +181,6 @@ export default function MiniForm({ title, forWhat, setActive, popupId }) {
                         <div className={styles.form_title_info}>
                             <div className={styles.btn_save_wrapper}>
                                 <BtnSave isSending={isSending} />
-                                <DeleteButton setActive={setActive} />
                             </div>
                         </div>
                     </div>

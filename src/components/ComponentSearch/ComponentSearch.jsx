@@ -16,7 +16,7 @@ const ComponentSearch = () => {
 
   const { data, setDataRequest, clearData } = useDataRequestStore();
 
-  const { id } = useParams();
+  const { slug } = useParams();
   const debounceTimeout = useRef(null)
 
   const handleChange = (e) => {
@@ -29,14 +29,27 @@ const ComponentSearch = () => {
     const name = objectsArray?.[0]?.Name;
     switch (name) {
       case 'Техника':
-        navigate(`/object/12`);
+        navigate(`/object/object_6`);
         break;
       case 'Дробильные установки':
-        navigate(`/object/10`);
+        navigate(`/object/object_5`);
         break;
+      
+      case 'ООО "Морской Порт "Суходол"':
+        navigate(`/object/object_4`);
+        break;
+      
+      case 'АО "Порт Вера"':
+        navigate(`/object/object_3`);
+        break;
+      
+      case 'АО "Находкинский морской торговый порт" (ГУТ-2)':
+        navigate(`/object/object_2`);
+        break;
+      
+      case 'АО "Находкинский морской торговый порт" (УТ-1)':
+        navigate(`/object/object_1`);
 
-      default:
-        navigate(`/object/2`);
         break;
     }
     setInputValue('');

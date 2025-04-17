@@ -3,17 +3,17 @@ import { useParams } from 'react-router-dom';
 import useDataRequestStore from './../../../store/DataRequestStore';
 
 export default function DeleteButton({ setActive }) {
-    const { data, clearData } = useDataRequestStore();
+    const { data } = useDataRequestStore();
     const userId = data[0]?.documentId;
-    const { id } = useParams();
+    const { slug } = useParams();
     let url;
 
-    switch (id) {
-        case '12': {
+    switch (slug) {
+        case 'object_6': {
             url = `http://89.104.67.119:1337/api/techicas/${userId}`;
         }
             break;
-        case '10': {
+        case 'object_5': {
             url = `http://89.104.67.119:1337/api/drobilkas/${userId}`;
         }
             break;

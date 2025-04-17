@@ -3,8 +3,10 @@ import { useForm, useWatch } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.scss';
 import { updateUserDateService } from '../../services/update-service';
+import useDataObjectRequestStore from '../../store/DataObjectRequestStore'
 import useDataRequestStore from '../../store/DataRequestStore';
 import { format } from 'date-fns';
+import fetchData from '../../utils/fetchData';
 
 import { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
@@ -53,7 +55,7 @@ export async function saveUserDateService(userData, url) {
 export default function Form({ title, forWhat, setActive, popupId }) {
     const { data } = useDataRequestStore();
     const { dates } = useDateSingleStore();
-    const { id } = useParams();
+    const { slug } = useParams();
 
     const [error, setError] = useState();
     const [isSending, setIsSending] = useState(false);
@@ -89,6 +91,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     return allDates;
     })();
     
+    const { dataObject, setDataObjectRequest } = useDataObjectRequestStore();
+
+
     const name = useWatch({ control, name: 'Name' });
     const order = useWatch({ control, name: 'Order' });
     const job = useWatch({ control, name: 'Job' });
@@ -113,6 +118,20 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         return acc;
     }, {})
 
+    useEffect(() => {
+            const fetchAndSetData = async () => {
+                try {
+                    const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[slug][$eq]=${slug}&populate=*`);
+                    setDataObjectRequest(data);
+                } catch (error) {
+                    console.error("Ошибка при получении данных:", error);
+                }
+            };
+
+            fetchAndSetData();
+            
+        }, []);
+    
     useEffect(() => {
         if (!shiftTypeArray) return;
 
@@ -285,7 +304,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         Job: job || "",
                         Objects: [
                             {
-                                id: id,
+                                id: dataObject[0]?.id,
                             }
                         ],
 
@@ -390,7 +409,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         Order: order || data[0]?.Order,
                         objects: [
                             {
-                                id: id,
+                                id: dataObject[0]?.id,
                             }
                         ],        
                     };
@@ -442,7 +461,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                         Name: name || "",
                         objects: [
                             {
-                                id: id,
+                                id: dataObject[0]?.id,
                             }
                         ],
                         

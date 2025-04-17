@@ -11,19 +11,19 @@ export default function AddPopupContent({
     setActive,
     title
 }) {
-
+    
     const params = useParams();
-    const pageId = params.id;
+    const slug = params.slug;
 
     let formName;
     let apiUrl;
-    switch (pageId) {
-        case '12': {
+    switch (slug) {
+        case 'object_6': {
             formName = "tech";
             apiUrl = `http://89.104.67.119:1337/api/techicas?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*`;
         }
             break;
-        case '10': {
+        case 'object_5': {
             formName = "drobilka";
             apiUrl = `http://89.104.67.119:1337/api/drobilkas?filters[id][$eq]=${id}&populate[DayDataDetails][populate][DayInfo][populate]=*&populate[DayDataDetails][populate][NightInfo][populate]=*&populate[MonthDataTonnaj][populate]=*&populate[DayDataOstatki][populate]=*`;
         }

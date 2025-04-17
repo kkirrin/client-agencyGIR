@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
  */
 
 function TotalComponent({ object, allDates }) {
-    const { id } = useParams();
+    const { slug } = useParams();
 
     // количество дневных смен, когда он работал (уточнить у заказчика)
     const totalAmountDaySmena = object?.DayDataDetails?.filter(item => {
@@ -95,8 +95,8 @@ function TotalComponent({ object, allDates }) {
     }
 
     let arr = [];
-    switch (id) {
-        case '12': {
+    switch (slug) {
+        case 'object_6': {
             arr = [
                 { label: 'Дневные смены', value: totalAmountDaySmenaTech },
                 { label: 'Ночные смены', value: totalAmountNightSmenaTech },
@@ -105,7 +105,7 @@ function TotalComponent({ object, allDates }) {
 
             break;
         }
-        case '10': {
+        case 'object_5': {
             arr = [
                 { label: 'Общий тоннаж', value: totalSumTonnaj },
                 { label: 'Выставили', value: totalSumTonnajPlan },

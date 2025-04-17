@@ -2,7 +2,7 @@ import styles from './style.module.scss';
 import { useState } from 'react';
 import { MiniAddPopupContent } from '../../components';
 
-export default function ComponentTonnaj({ idObject }) {
+export default function ComponentTonnaj({ slugObject }) {
 
     const [activeTonnajPopup, setActiveTonnajPopup] = useState(false);
 
@@ -13,11 +13,11 @@ export default function ComponentTonnaj({ idObject }) {
     return (
         <>
             <div>
-                <button onClick={handleClick}>
+                <button onClick={handleClick} style={{ cursor: 'pointer'}}>
                     Тоннаж
                 </button>
 
-                <MiniAddPopupContent active={activeTonnajPopup} setActive={setActiveTonnajPopup} id={idObject} />
+                <MiniAddPopupContent active={activeTonnajPopup} setActive={setActiveTonnajPopup} slug={slugObject} />
             </div>
         </>
     )

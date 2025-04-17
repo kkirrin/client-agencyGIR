@@ -4,7 +4,7 @@ import { MiniForm } from '../../components'
 import useDataObjectRequestStore from '../../store/DataObjectRequestStore';
 import fetchData from '../../utils/fetchData';
 
-export default function MiniAddPopupContent({ id, active, setActive }) {
+export default function MiniAddPopupContent({ slug, active, setActive }) {
 
     const { dataObject, setDataObjectRequest, clearDataObject } = useDataObjectRequestStore();
 
@@ -18,9 +18,8 @@ export default function MiniAddPopupContent({ id, active, setActive }) {
             if (active) {
                 const fetchAndSetData = async () => {
                     try {
-                        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[id][$eq]=${id}&populate[MonthDataObjectTonnaj][populate]=*`);
+                        const data = await fetchData(`http://89.104.67.119:1337/api/objects?filters[slug][$eq]=${slug}&populate[MonthDataObjectTonnaj][populate]=*`);
                         setDataObjectRequest(data);
-                        console.log(data)
                     } catch (error) {
                         console.error("Ошибка при получении данных:", error);
                     }
@@ -32,11 +31,10 @@ export default function MiniAddPopupContent({ id, active, setActive }) {
             }
     }, [active, setDataObjectRequest, clearDataObject]);
 
-    console.log(dataObject)
     
     return (
         <div
-            id={id}
+            id={slug}
             className={`${styles.popup} ${active ? styles.popupActive : styles.popupNone}`}
             onClick={() => setActive(false)}
             onKeyDown={handleKeyDown}
@@ -60,7 +58,7 @@ export default function MiniAddPopupContent({ id, active, setActive }) {
                 </div>
 
                 <MiniForm
-                    popupId={id}
+                    popupId={slug}
                 />
             </div>
         </div>

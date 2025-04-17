@@ -11,14 +11,10 @@ const EmptyWorkerItemData = ({ handleClickNote }) => {
       <div className={`${styles.worker_item_empty} ${styles.empty}`}>
         <div className={styles.item_table}>
           <div className={styles.item_data}>
-            <div className={styles.detail}></div>
-            <div className={styles.detail}></div>
             <CheckNoteBtn handleClick={handleClickNote} />
           </div>
           <div className='border_top_gray'></div>
           <div className={styles.item_data}>
-            <div className={styles.detail}>
-            </div>
             <CheckNoteBtn handleClick={handleClickNote} />
           </div>
         </div>
@@ -66,8 +62,10 @@ const WorkerDetails = ({
 
 }) => {
 
+  console.log(worker)
+
   const params = useParams();
-  const pageId = params.id;
+  const slug = params.slug;
 
   const [activeNote, setActiveNote] = useState(null);
 
@@ -80,12 +78,12 @@ const WorkerDetails = ({
     if (!shift) return <p className=""></p>
 
     let status;
-    switch (pageId) {
-      case '12':
+    switch (slug) {
+      case 'object_6':
         status = shift?.statusTech;
         break;
       
-      case '10': 
+      case 'object_5': 
         status = shift.SmenaDetails?.SmenaStatusWorker;
         break;
 
@@ -145,8 +143,8 @@ const WorkerDetails = ({
     const dayData = worker?.DayDataDetails?.find(d => {
       let dayDate;
       let nightDate;
-      switch (pageId) {
-        case '12': {
+      switch (slug) {
+        case 'object_6': {
           dayDate = parseInt(d?.DayInfo?.date?.split('.')[0] || '', 10);
           nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
         }
@@ -300,7 +298,6 @@ export default function WorkerItem({
               missingDates={missingDates}
               allDates={allDates}
               worker={worker} displayedDays={displayedDays}
-              // handleClickNote={handleClickNote} 
               handleClick={handleClick}
             />
           )}

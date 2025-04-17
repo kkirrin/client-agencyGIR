@@ -35,7 +35,7 @@ const Object = () => {
   const [days, setDays] = useState([]);
   const [daysFullDate, setDaysFullDate] = useState([]);
 
-  const { id } = useParams();
+  const { slug } = useParams();
 
   // Инициализация дней
   useEffect(() => {
@@ -102,9 +102,10 @@ const Object = () => {
 
   let description = {};
   let path;
-  switch (id) {
-    case '12': {
-      path = `?filters[id][$eq]=${id}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*`;
+
+  switch (slug) {
+    case 'object_6': {
+      path = `?filters[slug][$eq]=${slug}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]=*&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*`;
 
       description = {
         popupTitle: "Техника",
@@ -114,8 +115,8 @@ const Object = () => {
 
       break;
     }
-    case '10': {
-      path = `?filters[id][$eq]=${id}&populate[drobilkas][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[drobilkas][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[drobilkas][populate][MonthDataTonnaj]=*`;
+    case 'object_5': {
+      path = `?filters[slug][$eq]=${slug}&populate[drobilkas][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[drobilkas][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[drobilkas][populate][MonthDataTonnaj]=*`;
 
       description = {
         popupTitle: "Дробилка",
@@ -128,7 +129,7 @@ const Object = () => {
       /**
        * TODO: тут доработать получение остальных "объектов"
        */
-      path = `?filters[id][$eq]=${id}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`;
+      path = `?filters[slug][$eq]=${slug}&populate[workers][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[workers][populate][MonthDataTonnaj]=*`;
 
       description = {
         popupTitle: "Сотрудник",
@@ -153,14 +154,13 @@ const Object = () => {
         const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
         let workersData = [];
 
-        if (id == '12') {
+        if (slug === 'object_6') {
           workersData = data[0].techicas;
-        } else if (id == '10') {
+        } else if (slug === 'object_5') {
           workersData = data[0].drobilkas;
         } else {
           workersData = data[0].workers;
         }
-
         setWorkers(workersData);
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -168,7 +168,8 @@ const Object = () => {
     };
 
     fetchAndSetData();
-  }, [dates, currentPage, id]);
+  }, [dates, currentPage, slug]);
+
 
   useEffect(() => {
     if (storeDate && !Array.isArray(storeDate)) {
@@ -216,7 +217,7 @@ const Object = () => {
           <header className={styles.top}>
             <ObjectSelect setWorkers={setWorkers} />
             <div className={styles.top_wrapper}>
-              <ComponentTonnaj idObject={id}/>
+              <ComponentTonnaj slugObject={slug}/>
               <ComponentSearch />
               <ComponentDate />
             </div>
@@ -278,7 +279,8 @@ const Object = () => {
           </div>
         </div>
 
-        {workers.map((worker, idx) => (
+        
+        {workers?.map((worker, idx) => (
           <WorkerItem
             key={idx}
             id={worker.id}

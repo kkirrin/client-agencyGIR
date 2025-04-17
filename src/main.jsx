@@ -25,7 +25,8 @@ const router = createBrowserRouter([
     loader: requireAuth,
   },
   {
-    path: "/object/:id",
+    // path: "/object/:id",
+    path: "/object/:slug",
     element: (
       <Object />
     ),

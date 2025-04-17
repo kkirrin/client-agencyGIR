@@ -22,16 +22,16 @@ export default function ObjectSelect({ setWorkers }) {
     const { data, setDataRequest, clearData } = useDataRequestStore();
 
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { slug } = useParams();
 
     const handleChange = (event) => {
-        const id = event.target.value;
+        const slug = event.target.value;
         const selectedOption = event.target.options[event.target.selectedIndex];
         const name = selectedOption.getAttribute('data-name');
         setWorkers([]);
         clearData();
-        navigate(`/object/${id}`);
-        objectDataStore.getState().setData(id, name);
+        navigate(`/object/${slug}`);
+        objectDataStore.getState().setData(slug, name);
     };
 
     useEffect(() => {
@@ -48,12 +48,12 @@ export default function ObjectSelect({ setWorkers }) {
     }, []);
 
     return (
-        <select onChange={handleChange} value={id || ''} className={styles.select}>
+        <select onChange={handleChange} value={slug || ''} className={styles.select}>
             <option value="" disabled>
                 Выберите объект
             </option>
             {objectList.map((item) => (
-                <option key={item.id} value={item.id} data-name={item.Name} className={styles.option}>
+                <option key={item.slug} value={item.slug} data-name={item.Name} className={styles.option}>
                     {item.Name}
                 </option>
             ))}
