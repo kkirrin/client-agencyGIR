@@ -1,4 +1,5 @@
 .modalNotificationWrapper {
+  z-index: 10000;
   position: fixed;
   top: 0%;
   right: 75px;
@@ -24,5 +25,4 @@
 
 .modalContent {
   position: relative;
-  z-index: 100;
 }

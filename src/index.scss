@@ -330,6 +330,10 @@ legend {
   width: 100%;
 }
 
+.react-datepicker__input-container {
+  z-index: 10000;
+}
+
 .react-datepicker__input-container.react-datepicker__view-calendar-icon svg {
   scale: 1.7;
 }
@@ -372,6 +376,7 @@ legend {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 1;
 }
 
 .date-wrapper__info .month {

@@ -18,7 +18,7 @@ export default function ModalNotification({ active = false, text }) {
         }, 30);
 
         const reloadTimer = setTimeout(() => {
-            // window.location.reload();
+            window.location.reload();
         }, 3000);
 
         return () => {
