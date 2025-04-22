@@ -48,6 +48,14 @@
   max-width: 1480px;
   padding: 0 20px;
   margin: 0 auto;
+
+  @include tablet {
+    padding: 0 135px;
+  }
+
+  @include mobile {
+    padding: 0 20px;
+  }
 }
 
 
