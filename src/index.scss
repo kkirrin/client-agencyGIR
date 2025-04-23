@@ -65,7 +65,6 @@
   width: 1px;
 }
 
-
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -108,8 +107,6 @@
   src: local('Roboto'), url(./fonts/Roboto-Bold/Roboto-Bold.woff2) format('woff2');
 }
 
-
-
 html,
 body {
   scroll-behavior: smooth;
@@ -119,8 +116,17 @@ body {
 
   margin: 0;
   padding: 0;
-}
 
+  font-size: 16px;
+
+  @include tablet {
+    font-size: 14px;
+  }
+
+  @include mobile {
+    font-size: 12px;
+  }
+}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -129,12 +135,7 @@ body {
   }
 }
 
-
-
-
-
 /* Reset and base styles  */
-
 
 *,
 *::before,
@@ -206,8 +207,6 @@ input::-ms-clear {
   display: none;
 }
 
-
-
 label {
   cursor: pointer;
 }
@@ -215,7 +214,6 @@ label {
 legend {
   display: block;
 }
-
 
 .flex {
   display: flex;
@@ -264,7 +262,6 @@ legend {
   justify-content: center !important;
   gap: 10px !important
 }
-
 
 .react-datepicker__day-names>* {
   color: #687182 !important;
@@ -346,19 +343,15 @@ legend {
   scale: 1.7;
 }
 
-
-
 .react-datepicker__day--highlighted {
   border-radius: 50% !important;
   background-color: var(--another-gray) !important;
 }
 
-
 .react-datepicker__day--keyboard-selected {
   border-radius: 50% !important;
   background-color: var(--another-gray) !important;
 }
-
 
 .sticky-header {
   background-color: var(--white);
