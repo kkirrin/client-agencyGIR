@@ -1,20 +1,27 @@
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
-import { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import useDataRequestStore from '../../store/DataRequestStore';
+import { useState, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import useDataRequestStore from "../../store/DataRequestStore";
 
-import fetchData from '../../utils/fetchData';
+import fetchData from "../../utils/fetchData";
 
-import { AddMoreBtn, ComponentDate, ComponentSearch, WorkerItem, ComponentTonnaj, ObjectSelect } from '../../components';
+import {
+  AddMoreBtn,
+  ComponentDate,
+  ComponentSearch,
+  WorkerItem,
+  ComponentTonnaj,
+  ObjectSelect,
+} from "../../components";
 
-import useDateStore from '../../store/CalendarStore';
+import useDateStore from "../../store/CalendarStore";
 
-import { format } from 'date-fns';
-import { registerLocale } from 'react-datepicker';
-import ru from 'date-fns/locale/ru';
+import { format } from "date-fns";
+import { registerLocale } from "react-datepicker";
+import ru from "date-fns/locale/ru";
 
-registerLocale('ru', ru);
+registerLocale("ru", ru);
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
@@ -41,24 +48,28 @@ const Object = () => {
   useEffect(() => {
     if (dates.length > 0) {
       const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
-      setDays(sortedDates.map(date => date.getDate()));
-      setDaysFullDate(sortedDates.map(date => {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
+      setDays(sortedDates.map((date) => date.getDate()));
+      setDaysFullDate(
+        sortedDates.map((date) => {
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const year = date.getFullYear();
 
-        return `${day}.${month}.${year}`;
-      }));
+          return `${day}.${month}.${year}`;
+        })
+      );
     } else {
       const currentMonth = currentDate.getMonth() + 1;
       const currentYear = currentDate.getFullYear();
       const numDays = daysInMonth(currentMonth, currentYear);
       setDays(Array.from({ length: numDays }, (_, i) => i + 1));
-      setDaysFullDate(Array.from({ length: numDays }, (_, i) => {
-        const day = String(i + 1).padStart(2, '0');
-        const month = String(currentMonth).padStart(2, '0');
-        return `${day}.${month}.${currentYear}`;
-      }));
+      setDaysFullDate(
+        Array.from({ length: numDays }, (_, i) => {
+          const day = String(i + 1).padStart(2, "0");
+          const month = String(currentMonth).padStart(2, "0");
+          return `${day}.${month}.${currentYear}`;
+        })
+      );
     }
   }, [dates]);
 
@@ -74,7 +85,7 @@ const Object = () => {
     const start = (currentPage - 1) * daysPerPage;
     const end = start + daysPerPage;
     return days.slice(start, end);
-  }, [days, currentPage]); 
+  }, [days, currentPage]);
 
   useEffect(() => {
     if (dates.length === 0) {
@@ -87,13 +98,13 @@ const Object = () => {
   // Обработчики пагинации
   const handleNext = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(p => p + 1);
+      setCurrentPage((p) => p + 1);
     }
   };
 
   const handlePrevious = () => {
     if (currentPage > 1) {
-      setCurrentPage(p => p - 1);
+      setCurrentPage((p) => p - 1);
     }
   };
 
@@ -104,24 +115,24 @@ const Object = () => {
   let path;
 
   switch (slug) {
-    case 'object_6': {
+    case "object_6": {
       path = `?filters[slug][$eq]=${slug}&populate[techicas][populate][DayDataDetails][populate][DayInfo][populate]=*&populate[techicas][populate][DayDataDetails][populate][NightInfo][populate]=*`;
 
       description = {
         popupTitle: "Техника",
         addButtonText: "Добавить технику",
-        pageTitle: "Техника"
+        pageTitle: "Техника",
       };
 
       break;
     }
-    case 'object_5': {
+    case "object_5": {
       path = `?filters[slug][$eq]=${slug}&populate[drobilkas][populate][DayDataDetails][populate][DayInfo][populate][SmenaDetails]=*&populate[drobilkas][populate][DayDataDetails][populate][NightInfo][populate][SmenaDetails]=*&populate[workers][populate][DayDataOstatki]=*&populate[drobilkas][populate][MonthDataTonnaj]=*`;
 
       description = {
         popupTitle: "Дробилка",
         addButtonText: "Добавить дробилку",
-        pageTitle: "Дробилка"
+        pageTitle: "Дробилка",
       };
       break;
     }
@@ -134,14 +145,14 @@ const Object = () => {
       description = {
         popupTitle: "Сотрудник",
         addButtonText: "Добавить сотрудника",
-        pageTitle: "ФИО/должность"
+        pageTitle: "ФИО/должность",
       };
     }
   }
   // const { data: storeDate, clearData } = useDataRequestStore();
   // const { clearData } = useDataRequestStore();
   const storeDate = useDataRequestStore.getState().data;
-  
+
   // Эффект для загрузки данных
   useEffect(() => {
     const fetchAndSetData = async () => {
@@ -151,12 +162,14 @@ const Object = () => {
           return;
         }
 
-        const data = await fetchData(`http://89.104.67.119:1337/api/objects${path}`);
+        const data = await fetchData(
+          `http://89.104.67.119:1337/api/objects${path}`
+        );
         let workersData = [];
 
-        if (slug === 'object_6') {
+        if (slug === "object_6") {
           workersData = data[0].techicas;
-        } else if (slug === 'object_5') {
+        } else if (slug === "object_5") {
           workersData = data[0].drobilkas;
         } else {
           workersData = data[0].workers;
@@ -170,14 +183,12 @@ const Object = () => {
     fetchAndSetData();
   }, [dates, currentPage, slug]);
 
-
   useEffect(() => {
     if (storeDate && !Array.isArray(storeDate)) {
       setWorkers([storeDate]);
       return;
     }
   }, [storeDate]);
-
 
   useEffect(() => {
     setCurrentPage(1);
@@ -188,7 +199,8 @@ const Object = () => {
   useEffect(() => {
     if (dates.length > 0) {
       const newMonths = dates.map((date, idx) => ({
-        id: idx, month: format(date, 'LLL', { locale: ru })
+        id: idx,
+        month: format(date, "LLL", { locale: ru }),
       }));
 
       setMonths(newMonths);
@@ -206,9 +218,9 @@ const Object = () => {
    */
 
   const addWorkers = () => {
-    setWorkers([...workers, { id: workers.length + 1, name: '' }]);
+    setWorkers([...workers, { id: workers.length + 1, name: "" }]);
     // setWorkers(prevWorkers => [...prevWorkers, { id: prevWorkers.length + 1, name: '' }]);
-  }
+  };
 
   return (
     <section className={styles.main_section}>
@@ -217,7 +229,7 @@ const Object = () => {
           <header className={styles.top}>
             <ObjectSelect setWorkers={setWorkers} />
             <div className={styles.top_wrapper}>
-              <ComponentTonnaj slugObject={slug}/>
+              {/* <ComponentTonnaj slugObject={slug} /> */}
               <ComponentSearch />
               <ComponentDate />
             </div>
@@ -227,22 +239,20 @@ const Object = () => {
               <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
                 <li className={styles.title_table}>{description.pageTitle}</li>
                 {displayedDays.map((day, idx) => {
-                  const currentMonth = months.length > 0
-                    ? months[idx].month
-                    : format(new Date(), 'LLL', { locale: ru }
-                    );
+                  const currentMonth =
+                    months.length > 0
+                      ? months[idx].month
+                      : format(new Date(), "LLL", { locale: ru });
 
                   return (
                     <li className={styles.item_table} key={idx}>
                       {/* ТИПО ВРЕМЕННОЕ РЕШЕНИЕ (НЕТ) */}
                       <div>
                         {day} {currentMonth}
-
                       </div>
                     </li>
-                  )
-                }
-                )}
+                  );
+                })}
               </ul>
               <div className={styles.pagination}>
                 <button
@@ -250,7 +260,11 @@ const Object = () => {
                   disabled={currentPage === 1}
                   className={styles.button}
                 >
-                  <img style={{ rotate: '-180deg' }} src='/next.svg' alt='previous' />
+                  <img
+                    style={{ rotate: "-180deg" }}
+                    src="/next.svg"
+                    alt="previous"
+                  />
                 </button>
 
                 <button
@@ -258,7 +272,7 @@ const Object = () => {
                   disabled={currentPage === totalPages}
                   className={styles.button}
                 >
-                  <img src='/next.svg' alt='next' />
+                  <img src="/next.svg" alt="next" />
                 </button>
               </div>
 
@@ -267,10 +281,10 @@ const Object = () => {
                 {displayedDays.map((day, idx) => (
                   <li className={styles.item_table} key={idx}>
                     <div className={styles.time_item}>
-                      <img src='/sun.svg' alt='День' />
-                      <p style={{ color: '#F2B174' }}>День</p> |
-                      <img src='/moon.svg' alt='Ночь' />
-                      <p style={{ color: '#1F2433' }}>Ночь</p>
+                      <img src="/sun.svg" alt="День" />
+                      <p style={{ color: "#F2B174" }}>День</p> |
+                      <img src="/moon.svg" alt="Ночь" />
+                      <p style={{ color: "#1F2433" }}>Ночь</p>
                     </div>
                   </li>
                 ))}
@@ -279,7 +293,6 @@ const Object = () => {
           </div>
         </div>
 
-        
         {workers?.map((worker, idx) => (
           <WorkerItem
             key={idx}
@@ -305,7 +318,6 @@ const Object = () => {
           />
         </div>
       </div>
-
     </section>
   );
 };

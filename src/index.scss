@@ -49,13 +49,13 @@
   padding: 0 20px;
   margin: 0 auto;
 
-  @include tablet {
-    padding: 0 135px;
-  }
+  // @include tablet {
+  //   padding: 0 135px;
+  // }
 
-  @include mobile {
-    padding: 0 20px;
-  }
+  // @include mobile {
+  //   padding: 0 20px;
+  // }
 }
 
 
@@ -371,6 +371,22 @@ legend {
   background-image: url('/calendar.svg');
   background-repeat: no-repeat;
   background-position: left 20px center;
+
+  & {
+    @include tablet {
+      width: 180px;
+      padding: 8px 15px;
+      background-position: left 8px center;
+    }
+  }
+}
+
+.date-wrapper-input {
+  & {
+    @include tablet {
+
+    }
+  }
 }
 
 .date-wrapper__info {

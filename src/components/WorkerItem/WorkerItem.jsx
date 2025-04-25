@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import styles from './style.module.scss';
-import { AddPopupContent, TotalComponent } from '../../components';
-import { CheckNoteBtn, NoteBody } from '../../components';
-import { motion } from 'motion/react';
-import { useParams } from 'react-router-dom';
+import { useState } from "react";
+import styles from "./style.module.scss";
+import { AddPopupContent, TotalComponent } from "../../components";
+import { CheckNoteBtn, NoteBody } from "../../components";
+import { motion } from "motion/react";
+import { useParams } from "react-router-dom";
 
 const EmptyWorkerItemData = ({ handleClickNote }) => {
   return (
@@ -13,17 +13,22 @@ const EmptyWorkerItemData = ({ handleClickNote }) => {
           <div className={styles.item_data}>
             <CheckNoteBtn handleClick={handleClickNote} />
           </div>
-          <div className='border_top_gray'></div>
+          <div className="border_top_gray"></div>
           <div className={styles.item_data}>
             <CheckNoteBtn handleClick={handleClickNote} />
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }) => (
+const EmptyWorkerItem = ({
+  worker,
+  displayedDays,
+  handleClickNote,
+  handleClick,
+}) => (
   <div className={`${styles.workers_item} ${styles.empty}`}>
     <div className={styles.worker_data}>
       <p>{worker.name}</p>
@@ -36,17 +41,16 @@ const EmptyWorkerItem = ({ worker, displayedDays, handleClickNote, handleClick }
           <div className={styles.detail}></div>
           <CheckNoteBtn handleClick={handleClickNote} />
         </div>
-        <div className='border_top_gray'></div>
+        <div className="border_top_gray"></div>
         <div className={styles.item_data}>
-          <div className={styles.detail}>
-          </div>
+          <div className={styles.detail}></div>
           <CheckNoteBtn handleClick={handleClickNote} />
         </div>
       </div>
     ))}
 
     <a href="#popup" className={styles.edit} onClick={handleClick}>
-      <img src='/edit.svg' alt='' />
+      <img src="/edit.svg" alt="" />
     </a>
   </div>
 );
@@ -58,11 +62,9 @@ const WorkerDetails = ({
   allDates,
   handleClick,
   missingDates,
-  forWhat
-
+  forWhat,
 }) => {
-
-  console.log(worker)
+  console.log(worker);
 
   const params = useParams();
   const slug = params.slug;
@@ -70,20 +72,21 @@ const WorkerDetails = ({
   const [activeNote, setActiveNote] = useState(null);
 
   // Преобразуем missingDates в Set чисел для быстрого поиска
-  const missingDatesSet = new Set(missingDates.map(item => parseInt(item.split('.')[0], 10)))
+  const missingDatesSet = new Set(
+    missingDates.map((item) => parseInt(item.split(".")[0], 10))
+  );
 
   // Мемоизация рендера смены
   const renderShift = (shift, type, forWhat) => {
-
-    if (!shift) return <p className=""></p>
+    if (!shift) return <p className=""></p>;
 
     let status;
     switch (slug) {
-      case 'object_6':
+      case "object_6":
         status = shift?.statusTech;
         break;
-      
-      case 'object_5': 
+
+      case "object_5":
         status = shift.SmenaDetails?.SmenaStatusWorker;
         break;
 
@@ -91,23 +94,24 @@ const WorkerDetails = ({
         status = shift.SmenaDetails?.SmenaStatusWorker;
         break;
       }
-        
     }
 
     const statusMap = {
-      "Default" : null,
+      Default: null,
       null: null,
-      'Not working': { text: 'Не работал', className: 'notWorking' },
-      'Day Off': { text: 'Выходной', className: 'dayOf' },
-      'Empty': { text: '', className: '' },
-      'In working': { text: 'В работе', className: 'inworking' },
-      'Repair/to': { text: 'Ремонт/ТО', className: 'repair' },
-      'No Coal (OC)': { text: 'Отсутствие угля (О/У)', className: 'noCoal' },
-      'Stock': { text: 'Запас', className: 'stock' }
-    }
+      "Not working": { text: "Не работал", className: "notWorking" },
+      "Day Off": { text: "Выходной", className: "dayOf" },
+      Empty: { text: "", className: "" },
+      "In working": { text: "В работе", className: "inworking" },
+      "Repair/to": { text: "Ремонт/ТО", className: "repair" },
+      "No Coal (OC)": { text: "Отсутствие угля (О/У)", className: "noCoal" },
+      Stock: { text: "Запас", className: "stock" },
+    };
 
     if (statusMap[status]) {
-      return <p className={statusMap[status].className}>{statusMap[status].text}</p>
+      return (
+        <p className={statusMap[status].className}>{statusMap[status].text}</p>
+      );
     }
 
     return (
@@ -117,7 +121,7 @@ const WorkerDetails = ({
         <p className={`${styles.details_nostatic} working`}>
           {shift.SmenaDetails.SmenaDataTonnaj || "Данные отсутствуют"}
         </p>
-         {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
+        {shift?.SmenaDetails?.TC && forWhat === "Сотрудник" && (
           <>
             <p className={styles.details_static}>ТС</p>
             <p className={`${styles.details_nostatic} working`}>
@@ -126,65 +130,75 @@ const WorkerDetails = ({
           </>
         )}
       </>
-    )
-  }
+    );
+  };
 
   // Рендер одной даты
   const renderDate = (date) => {
-
-
-    const isMissing = missingDatesSet.has(date)
-    if (isMissing) return <EmptyWorkerItemData key={date} />
+    const isMissing = missingDatesSet.has(date);
+    if (isMissing) return <EmptyWorkerItemData key={date} />;
 
     const handleNoteClick = (id) => {
       setActiveNote(id);
     };
 
-    const dayData = worker?.DayDataDetails?.find(d => {
+    const dayData = worker?.DayDataDetails?.find((d) => {
       let dayDate;
       let nightDate;
       switch (slug) {
-        case 'object_6': {
-          dayDate = parseInt(d?.DayInfo?.date?.split('.')[0] || '', 10);
-          nightDate = parseInt(d?.NightInfo?.date?.split('.')[0] || '', 10);
-        }
+        case "object_6":
+          {
+            dayDate = parseInt(d?.DayInfo?.date?.split(".")[0] || "", 10);
+            nightDate = parseInt(d?.NightInfo?.date?.split(".")[0] || "", 10);
+          }
           break;
 
-        default: {
-          dayDate = parseInt(d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
-          nightDate = parseInt(d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split('.')[0] || '', 10);
-        }
+        default:
+          {
+            dayDate = parseInt(
+              d?.DayInfo?.SmenaDetails?.SmenaDateDetails?.split(".")[0] || "",
+              10
+            );
+            nightDate = parseInt(
+              d?.NightInfo?.SmenaDetails?.SmenaDateDetails?.split(".")[0] || "",
+              10
+            );
+          }
           break;
       }
 
       return dayDate === date || nightDate === date;
-    })
+    });
 
     return (
       <div className={styles.item_table} key={date}>
         {/* Дневная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {renderShift(dayData?.DayInfo, '', forWhat)}
+            {renderShift(dayData?.DayInfo, "", forWhat)}
           </div>
-          <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.DayInfo?.id)} />
+          <CheckNoteBtn
+            handleClick={() => handleNoteClick(dayData?.DayInfo?.id)}
+          />
           <NoteBody
             id={dayData?.DayInfo?.id}
-            active={activeNote === dayData?.DayInfo?.id}  // Проверяем соответствие ID
+            active={activeNote === dayData?.DayInfo?.id} // Проверяем соответствие ID
             setActive={setActiveNote}
             worker={worker}
             data={dayData?.DayInfo}
           />
         </div>
 
-        <div className='border_top_gray'></div>
+        <div className="border_top_gray"></div>
 
         {/* Ночная смена */}
         <div className={styles.item_data}>
           <div className={styles.detail}>
-            {renderShift(dayData?.NightInfo, '', forWhat)}
+            {renderShift(dayData?.NightInfo, "", forWhat)}
           </div>
-          <CheckNoteBtn handleClick={() => handleNoteClick(dayData?.NightInfo?.id)} />
+          <CheckNoteBtn
+            handleClick={() => handleNoteClick(dayData?.NightInfo?.id)}
+          />
 
           <NoteBody
             id={dayData?.NightInfo?.id}
@@ -195,37 +209,36 @@ const WorkerDetails = ({
           />
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
       <div className={styles.workers_item} id={id}>
         <div className={styles.worker_data}>
           <div>
-            <p style={{ fontWeight: '700' }}>{worker?.Name || "Данные отсутствуют"}</p>
+            <p style={{ fontWeight: "700" }}>
+              {worker?.Name || "Данные отсутствуют"}
+            </p>
             <p>{worker?.Job || worker?.Order}</p>
           </div>
-          {
+          {/* {
             worker.MonthDataTonnaj != undefined && (
-
               <p>Тоннаж <br /> {worker?.MonthDataTonnaj[0]?.AmountData ? worker?.MonthDataTonnaj[0]?.AmountData : ''} тонн
-                  
-            
-              </p>)}
+              </p>)} */}
         </div>
 
         {displayedDays.map(renderDate)}
 
         <a href="#popup" className={styles.edit} onClick={handleClick}>
-          <img src='/edit.svg' alt='' />
+          <img src="/edit.svg" alt="" />
         </a>
       </div>
 
       <TotalComponent object={worker} allDates={allDates} />
     </>
-  )
-}
+  );
+};
 
 export default function WorkerItem({
   daysFullDate,
@@ -237,39 +250,36 @@ export default function WorkerItem({
   worker,
   displayedDays,
   handleClick,
-  forWhat
+  forWhat,
 }) {
-
   // Все даты месяца
   const allDates = daysFullDate;
 
-  const workerDates = worker?.DayDataDetails?.reduce((acc, item) => {
-    // Добавляем дату дневной смены, если есть
-    if (item?.DayInfo?.SmenaDetails?.SmenaDateDetails) {
-      acc.push(item?.DayInfo?.SmenaDetails.SmenaDateDetails);
-    } else {
-      acc.push(item?.DayInfo?.date);
-    }
+  const workerDates =
+    worker?.DayDataDetails?.reduce((acc, item) => {
+      // Добавляем дату дневной смены, если есть
+      if (item?.DayInfo?.SmenaDetails?.SmenaDateDetails) {
+        acc.push(item?.DayInfo?.SmenaDetails.SmenaDateDetails);
+      } else {
+        acc.push(item?.DayInfo?.date);
+      }
 
-    // Добавляем дату ночной смены, если есть
-    if (item?.NightInfo?.SmenaDetails?.SmenaDateDetails) {
-      acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
-    } else {
-      acc.push(item?.NightInfo?.date);
-    }
+      // Добавляем дату ночной смены, если есть
+      if (item?.NightInfo?.SmenaDetails?.SmenaDateDetails) {
+        acc.push(item.NightInfo.SmenaDetails.SmenaDateDetails);
+      } else {
+        acc.push(item?.NightInfo?.date);
+      }
 
-    return acc;
-  }, [])?.filter((date, index, self) =>
-    date !== undefined &&
-    self.indexOf(date) === index
-  ) || [];
+      return acc;
+    }, [])?.filter(
+      (date, index, self) => date !== undefined && self.indexOf(date) === index
+    ) || [];
 
   // Даты, которые есть в workerDates, но отсутствуют в allDates
-  const missingDates = allDates?.filter(
-    (date) => !workerDates?.includes(date)
-  );
+  const missingDates = allDates?.filter((date) => !workerDates?.includes(date));
 
-  const isWorkerEmpty = worker.name === '';
+  const isWorkerEmpty = worker.name === "";
 
   return (
     <>
@@ -281,14 +291,16 @@ export default function WorkerItem({
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           key={worker.uuid}
-          className={`${styles.workers_item_wrapper} ${isWorkerEmpty ? styles.workers_item_wrapper_empty : ''}`}
+          className={`${styles.workers_item_wrapper} ${
+            isWorkerEmpty ? styles.workers_item_wrapper_empty : ""
+          }`}
         >
           {isWorkerEmpty ? (
             <EmptyWorkerItem
               id={worker.uuid ? worker.uuid : worker.id}
               worker={worker}
               displayedDays={displayedDays}
-              // handleClickNote={handleClickNote} 
+              // handleClickNote={handleClickNote}
               handleClick={handleClick}
             />
           ) : (
@@ -297,13 +309,13 @@ export default function WorkerItem({
               id={worker.uuid ? worker.uuid : worker.id}
               missingDates={missingDates}
               allDates={allDates}
-              worker={worker} displayedDays={displayedDays}
+              worker={worker}
+              displayedDays={displayedDays}
               handleClick={handleClick}
             />
           )}
         </motion.div>
-      )
-      }
+      )}
 
       <AddPopupContent
         id={id}
@@ -312,5 +324,5 @@ export default function WorkerItem({
         title={title}
       />
     </>
-  )
+  );
 }

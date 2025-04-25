@@ -10,20 +10,20 @@ function App() {
   const domain = 'http://89.104.67.119:1337';
   const url = `${domain}/api/objects?populate=*`;
 
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     try {
-  //       const fetchedData = await fetchData(url);
-  //       setData(fetchedData);
-  //     } catch (error) {
-  //       console.error("Ошибка загрузки Объектов:", error);
-  //     } finally {
-  //       setDataLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const fetchedData = await fetchData(url);
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Ошибка загрузки Объектов:", error);
+      } finally {
+        setDataLoading(false);
+      }
+    };
 
-  //   loadData();
-  // }, []);
+    loadData();
+  }, []);
 
   return (
     <div className='page-wrapper'>
