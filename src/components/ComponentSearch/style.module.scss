@@ -9,6 +9,9 @@
   border: 1px solid var(--another-gray);
   width: 100%;
   box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 110px repeat(5, 1fr);
+  gap: 10px;
 
   & {
     @include tablet {

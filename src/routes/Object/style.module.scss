@@ -112,6 +112,7 @@
 
   & {
     @include tablet {
+      grid-template-columns: 80px repeat(5, 1fr);
       gap: 15px;
     }
   }
