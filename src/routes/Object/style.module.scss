@@ -69,6 +69,14 @@
   }
 }
 
+.item_table {
+  & {
+    @include tablet {
+      font-size: 10px;
+    }
+  }
+}
+
 .wrapper_day {
   position: relative;
   background-color: var(--main);
@@ -100,6 +108,12 @@
   flex-direction: column;
   gap: 10px;
   color: var(--white);
+
+  & {
+    @include tablet {
+      gap: 5px;
+    }
+  }
 }
 
 .day_list {

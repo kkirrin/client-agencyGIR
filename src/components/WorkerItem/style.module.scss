@@ -70,7 +70,7 @@
 
   & {
     @include tablet {
-      gap: 15px;
+      gap: 11px;
     }
   }
 }
@@ -114,6 +114,15 @@
   right: 30px;
   width: 20px;
   height: 20px;
+
+  & {
+    @include tablet {
+      top: 15px;
+      right: 15px;
+      width: 9px;
+      height: 9px;
+    }
+  }
 }
 
 .item_table {
@@ -121,6 +130,12 @@
   display: flex;
   gap: 10px;
   width: 100%;
+
+  & {
+    @include tablet {
+      gap: 6px;
+    }
+  }
 }
 
 .day_item {
