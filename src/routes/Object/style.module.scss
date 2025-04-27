@@ -103,6 +103,7 @@
 }
 
 .table_header {
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -149,6 +150,13 @@
 
   display: flex;
   gap: 10px;
+
+  & {
+    @include tablet {
+      top: 14px;
+      right: 10px;
+    }
+  }
 }
 
 .time_item {

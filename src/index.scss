@@ -406,11 +406,24 @@ legend {
   text-transform: capitalize;
   font-size: 20px;
   transform: translateY(-45%);
+
+  & {
+    @include tablet {
+      font-size: 12px;
+      left: 40px;
+    }
+  }
 }
 
 .date-wrapper__info .year {
   font-weight: 400;
   color: var(--another-gray);
+
+  & {
+    @include tablet {
+      font-size: 12px;
+    }
+  }
 }
 
 .working {

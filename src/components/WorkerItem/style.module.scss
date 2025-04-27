@@ -31,6 +31,13 @@
   border-radius: 10px;
 
   margin-top: 20px;
+
+  & {
+    @include tablet {
+      margin-top: 12px;
+      padding: 12px;
+    }
+  }
 }
 
 .sum_detail {
@@ -70,6 +77,7 @@
 
   & {
     @include tablet {
+      grid-template-columns: 80px repeat(5, 1fr);
       gap: 11px;
     }
   }
