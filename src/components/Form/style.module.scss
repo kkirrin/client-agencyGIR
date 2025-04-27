@@ -1,29 +1,34 @@
-.form_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0 20px 0;
+@use '../../mixins' as *;
 
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    z-index: 1;
+.form_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0 20px 0;
+
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
 }
 
 .form_title {
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--main);
-    max-width: 400px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--main);
+  max-width: 400px;
+
+  @include tablet {
+    font-size: 13px;
+  }
 }
 
 .btn_save_wrapper {
-    display: flex;
-    gap: 10px;
-    min-width: 173px;
+  display: flex;
+  gap: 10px;
+  min-width: 173px;
 }
 
-
 .form_wrapper {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
