@@ -137,6 +137,17 @@
     color: var(--yellow);
 }
 
+.day svg {
+    fill: var(--yellow);
+  
+    & {
+      @include tablet {
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+
 .data {
     text-align: start;
     margin-top: 15px;

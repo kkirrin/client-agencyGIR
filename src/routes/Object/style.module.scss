@@ -9,6 +9,11 @@
       margin-top: 0;
     }
   }
+
+  @include mobile {
+    margin-top: 0;
+    padding: 0 4px;
+  }
 }
 
 .header_wrapper {
@@ -21,6 +26,11 @@
     @include tablet {
       margin-top: 0;
     }
+  }
+
+  @include mobile {
+    padding-top: 10px;
+    margin-top: 0;
   }
 }
 
@@ -38,6 +48,12 @@
       margin-bottom: 16px;
     }
   }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
 }
 
 .top_wrapper {
@@ -50,6 +66,12 @@
       gap: 18px;
     }
   }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
 }
 
 .name_object {
@@ -57,6 +79,12 @@
   text-transform: uppercase;
   @include adaptiv-value("font-size", 20, 15);
   color: var(--main);
+
+  @include mobile {
+    font-size: 10px;
+    text-align: left;
+    padding: 0 2px;
+  }
 }
 
 .title_table {
@@ -67,6 +95,11 @@
       font-size: 10px;
     }
   }
+
+  @include mobile {
+    font-size: 9px;
+    padding: 0 2px;
+  }
 }
 
 .item_table {
@@ -74,6 +107,11 @@
     @include tablet {
       font-size: 10px;
     }
+  }
+
+  @include mobile {
+    font-size: 9px;
+    padding: 0 2px;
   }
 }
 
@@ -88,6 +126,11 @@
       padding: 12px 18px;
     }
   }
+
+  @include mobile {
+    padding: 6px 4px;
+    border-radius: 6px;
+  }
 }
 
 .wrapper_time {
@@ -99,6 +142,11 @@
     @include tablet {
       padding: 7px 18px; 
     }
+  }
+
+  @include mobile {
+    padding: 4px 4px;
+    border-radius: 6px;
   }
 }
 
@@ -114,6 +162,10 @@
     @include tablet {
       gap: 5px;
     }
+  }
+
+  @include mobile {
+    gap: 2px;
   }
 }
 
@@ -131,6 +183,11 @@
       gap: 15px;
     }
   }
+
+  @include mobile {
+    grid-template-columns: 60px repeat(5, 1fr);
+    gap: 4px;
+  }
 }
 
 .day_list li {
@@ -141,6 +198,10 @@
 
 .workers_list {
   margin-top: 10px;
+
+  @include mobile {
+    margin-top: 4px;
+  }
 }
 
 .pagination {
@@ -156,6 +217,12 @@
       top: 14px;
       right: 10px;
     }
+  }
+
+  @include mobile {
+    top: 8px;
+    right: 4px;
+    gap: 4px;
   }
 }
 
@@ -179,6 +246,14 @@
       gap: 3px;
     }
   }
+
+  @include mobile {
+    max-width: 60px;
+    padding: 2px;
+    font-size: 8px;
+    gap: 2px;
+    border-radius: 10px;
+  }
 }
 
 .time_item img {
@@ -187,6 +262,11 @@
       width: 10px;
       height: 10px;
     }
+  }
+
+  @include mobile {
+    width: 8px;
+    height: 8px;
   }
 }
 
@@ -197,6 +277,26 @@
     @include tablet {
       width: 9px;
       height: 9px;
+    }
+  }
+
+  @include mobile {
+    width: 18px;
+    height: 18px;
+    img {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.add_workers {
+  @include mobile {
+    margin-top: 10px;
+    padding: 0 2px;
+    button {
+      font-size: 12px;
+      padding: 10px 0;
     }
   }
 }

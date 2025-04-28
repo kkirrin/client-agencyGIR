@@ -27,6 +27,19 @@ function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 
+
+function useIsMobile(breakpoint = 480) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= breakpoint);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 const Object = () => {
   const currentDate = useMemo(() => {
     const date = new Date();
@@ -222,6 +235,8 @@ const Object = () => {
     // setWorkers(prevWorkers => [...prevWorkers, { id: prevWorkers.length + 1, name: '' }]);
   };
 
+  const isMobile = useIsMobile();
+
   return (
     <section className={styles.main_section}>
       <div className='container'>
@@ -236,24 +251,45 @@ const Object = () => {
           </header>
           <div className={styles.table}>
             <div className={styles.table_header}>
-              <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
-                <li className={styles.title_table}>{description.pageTitle}</li>
-                {displayedDays.map((day, idx) => {
-                  const currentMonth =
-                    months.length > 0
-                      ? months[idx].month
-                      : format(new Date(), 'LLL', { locale: ru });
+              {isMobile ? (
+                <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
+                  <li className={styles.title_table}>{description.pageTitle}</li>
+                  {displayedDays.map((day, idx) => {
+                    const currentMonth =
+                      months.length > 0
+                        ? months[idx].month
+                        : format(new Date(), 'LLL', { locale: ru });
 
-                  return (
-                    <li className={styles.item_table} key={idx}>
-                      {/* ТИПО ВРЕМЕННОЕ РЕШЕНИЕ (НЕТ) */}
-                      <div>
-                        {day} {currentMonth}
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
+                    return (
+                      <li className={styles.item_table} key={idx}>
+                        <div>
+                          {day}
+                          <br />
+                          <span style={{ fontSize: 10 }}>{currentMonth}</span>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <ul className={`${styles.day_list} ${styles.wrapper_day}`}>
+                  <li className={styles.title_table}>{description.pageTitle}</li>
+                  {displayedDays.map((day, idx) => {
+                    const currentMonth =
+                      months.length > 0
+                        ? months[idx].month
+                        : format(new Date(), 'LLL', { locale: ru });
+
+                    return (
+                      <li className={styles.item_table} key={idx}>
+                        <div>
+                          {day} {currentMonth}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
               <div className={styles.pagination}>
                 <button
                   onClick={handlePrevious}
