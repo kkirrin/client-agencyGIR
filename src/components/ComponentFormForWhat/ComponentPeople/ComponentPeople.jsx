@@ -1,5 +1,5 @@
-import styles from "./style.module.scss";
-import deleteSVG from "/delete.svg";
+import styles from './style.module.scss';
+import deleteSVG from '/delete.svg';
 
 import {
   CustomInput,
@@ -7,10 +7,10 @@ import {
   CustomRadio,
   ChooseTimeBtn,
   ComponentDateSingle,
-} from "../../../components";
-import useDataRequestStore from "../../../store/DataRequestStore";
+} from '../../../components';
+import useDataRequestStore from '../../../store/DataRequestStore';
 
-import { STATUS_CHECKBOXES } from "../../../data.json";
+import { STATUS_CHECKBOXES } from '../../../data.json';
 
 const DeleteDateItem = ({ id }) => {
   const { data } = useDataRequestStore();
@@ -21,7 +21,7 @@ const DeleteDateItem = ({ id }) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    if (!window.confirm("Вы точно хотите удалить рабочую смену?")) return;
+    if (!window.confirm('Вы точно хотите удалить рабочую смену?')) return;
 
     // Создаем копию исходных данных
     const updatedDayDataDetails = [...dayDataDetails];
@@ -85,21 +85,21 @@ const DeleteDateItem = ({ id }) => {
 
     try {
       const response = await fetch(url, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           data: { DayDataDetails: cleanedDayDataDetails },
         }),
       });
 
-      if (!response.ok) throw new Error("Ошибка при обновлении компонента");
+      if (!response.ok) throw new Error('Ошибка при обновлении компонента');
 
-      alert("Рабочая смена удалена");
+      alert('Рабочая смена удалена');
       window.location.reload();
     } catch (error) {
-      console.error("Ошибка:", error);
+      console.error('Ошибка:', error);
     }
   };
 
@@ -109,7 +109,7 @@ const DeleteDateItem = ({ id }) => {
       aria-current
       onClick={handleClick}
     >
-      <img src={deleteSVG} alt="deleteSVG" width={15} height={15} />
+      <img src={deleteSVG} alt='deleteSVG' width={15} height={15} />
     </button>
   );
 };
@@ -188,8 +188,8 @@ export default function ComponentPeople({
         <div className={styles.wrapper_name}>
           <div>
             <label
-              htmlFor="4"
-              style={{ textAlign: "start", fontWeight: "medium" }}
+              htmlFor='4'
+              style={{ textAlign: 'start', fontWeight: 'medium' }}
               className={styles.label_name}
             >
               ФИО
@@ -199,16 +199,16 @@ export default function ComponentPeople({
               errors={errors}
               register={register}
               id={4}
-              name={"Name"}
-              type="text"
-              placeholder="Введите ФИО"
+              name={'Name'}
+              type='text'
+              placeholder='Введите ФИО'
             />
           </div>
 
           <div>
             <label
-              htmlFor="5"
-              style={{ textAlign: "start", fontWeight: "medium" }}
+              htmlFor='5'
+              style={{ textAlign: 'start', fontWeight: 'medium' }}
               className={styles.label_name}
             >
               Должность
@@ -218,9 +218,9 @@ export default function ComponentPeople({
               errors={errors}
               register={register}
               id={5}
-              name={"Job"}
-              type="text"
-              placeholder="Введите должность"
+              name={'Job'}
+              type='text'
+              placeholder='Введите должность'
             />
           </div>
         </div>
@@ -228,8 +228,7 @@ export default function ComponentPeople({
         {items.map((item, idx) => {
           return (
             <>
-              <div className="flex relative" id={`repeatable-${idx}`} key={idx}>
-                {data ? <DeleteDateItem id={item.id} /> : ""}
+              <div className='flex relative' id={`repeatable-${idx}`} key={idx}>
                 <div className={styles.date_wrapper}>
                   <div className={styles.date_content}>
                     <p>Дата</p>
@@ -252,6 +251,7 @@ export default function ComponentPeople({
                       />
                     </div>
                   </div>
+                  {data ? <DeleteDateItem id={item.id} /> : ''}
                 </div>
               </div>
 
@@ -263,9 +263,9 @@ export default function ComponentPeople({
                       <CustomRadio
                         data={data}
                         key={`${checkbox.id}-${index}`}
-                        name={`${"statusWorker"}.${idx}`}
+                        name={`${'statusWorker'}.${idx}`}
                         register={register}
-                        type="radio"
+                        type='radio'
                         value={checkbox.value}
                         label={checkbox.label}
                         checkboxId={`${checkbox.id}.${idx}`}
@@ -276,40 +276,36 @@ export default function ComponentPeople({
                 </div>
 
                 <div className={styles.data_wrapper}>
-                <div className={styles.data}>
-                  <p style={{ marginBottom: "10px" }}>Тоннаж</p>
-                  <CustomInput
-                    data={data}
-                    item={item}
-                    id={6}
-                    name={"DayDataTonnaj"}
-                    errors={errors}
-                    register={register}
-                    type="number"
-                    placeholder="Введите тн. "
-                    idx={idx}
-                  />
+                  <div className={styles.data}>
+                    <p style={{ marginBottom: '10px' }}>Тоннаж</p>
+                    <CustomInput
+                      data={data}
+                      item={item}
+                      id={6}
+                      name={'DayDataTonnaj'}
+                      errors={errors}
+                      register={register}
+                      type='number'
+                      placeholder='Введите тн. '
+                      idx={idx}
+                    />
+                  </div>
+
+                  <div className={styles.data}>
+                    <p style={{ marginBottom: '10px' }}>ТС</p>
+                    <CustomInput
+                      data={data}
+                      item={item}
+                      id={7}
+                      name={'TC'}
+                      errors={errors}
+                      register={register}
+                      type='text'
+                      placeholder='Введите ТС '
+                      idx={idx}
+                    />
+                  </div>
                 </div>
-
-                <div className={styles.data}>
-                  <p style={{ marginBottom: "10px" }}>ТС</p>
-                  <CustomInput
-                    data={data}
-                    item={item}
-                    id={7}
-                    name={"TC"}
-                    errors={errors}
-                    register={register}
-                    type="text"
-                    placeholder="Введите ТС "
-                    idx={idx}
-                  />
-                </div>
-
-
-                </div>
-
-
               </div>
 
               <div className={styles.note}>
@@ -318,11 +314,11 @@ export default function ComponentPeople({
                   data={data}
                   item={item}
                   id={8}
-                  name={"note"}
+                  name={'note'}
                   errors={errors}
                   register={register}
-                  type="text"
-                  placeholder="Введите примечание"
+                  type='text'
+                  placeholder='Введите примечание'
                   idx={idx}
                 />
               </div>
@@ -330,8 +326,8 @@ export default function ComponentPeople({
           );
         })}
 
-        <div style={{ height: "40px", marginTop: "20px" }}>
-          <AddMoreBtn onHandleClick={handleClickBtn} title={"Добавить смену"} />
+        <div style={{ height: '40px', marginTop: '20px' }}>
+          <AddMoreBtn onHandleClick={handleClickBtn} title={'Добавить смену'} />
         </div>
       </div>
     </>

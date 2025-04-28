@@ -1,3 +1,5 @@
+@use '../../../mixins' as *;
+
 .wrapper_input {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -6,10 +8,11 @@
 }
 
 .delete_section {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    // position: absolute;
+    // top: 20px;
+    // right: 20px;
     cursor: pointer;
+    margin-left: auto;
 }
 
 .form_content {
@@ -45,6 +48,12 @@
 
     padding-bottom: 15px;
     border-bottom: 1px solid var(--another-gray);
+
+    & {
+        @include tablet {
+          font-size: 9px;
+        }
+      }
 }
 
 .wrapper_name div {
@@ -58,7 +67,6 @@
 .date_wrapper {
     display: flex;
     gap: 30px;
-
     margin-top: 20px;
 }
 

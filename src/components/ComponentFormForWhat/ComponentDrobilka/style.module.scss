@@ -8,16 +8,8 @@
 }
 
 .delete_section {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     cursor: pointer;
-
-    & {
-        @include tablet {
-          width: 10px;
-        }
-      }
+    margin-left: auto;
 }
 
 .form_content {
@@ -64,6 +56,12 @@
 
 .label_name {
     font-weight: 500;
+
+    & {
+        @include tablet {
+          font-size: 9px;
+        }
+      }
 }
 
 .date_wrapper {
@@ -71,6 +69,12 @@
     gap: 30px;
 
     margin-top: 20px;
+
+    & {
+        @include tablet {
+          font-size: 9px;
+        }
+      }
 }
 
 .date_content {
@@ -100,6 +104,8 @@
 
 
     gap: 10px;
+
+
 }
 
 .smena_btns {
@@ -147,6 +153,12 @@
     gap: 18px;
 
     margin-top: 20px;
+
+    & {
+        @include tablet {
+          font-size: 9px;
+        }
+      }
 }
 
 .note {
@@ -159,6 +171,12 @@
 
     border-bottom: 1px solid var(--another-gray);
     padding-bottom: 20px;
+
+    & {
+        @include tablet {
+          font-size: 9px;
+        }
+      }
 }
 
 .note p {
@@ -173,6 +191,12 @@
 
     justify-content: space-between;
     align-items: center;
+
+    & {
+        @include tablet {
+          font-size: 9px;
+        }
+      }
 }
 
 .data_container .data:nth-child(2) {
