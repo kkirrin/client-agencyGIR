@@ -192,6 +192,7 @@ export default function ComponentDrobilka({ handleClickBtn, items, register, err
                         <label
                             htmlFor="4"
                             style={{ textAlign: 'start', fontWeight: 'medium' }}
+                            className={styles.label_name}
                         >
                             Наименование
                         </label>

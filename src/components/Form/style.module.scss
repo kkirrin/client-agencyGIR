@@ -10,6 +10,12 @@
   top: 0;
   background-color: #fff;
   z-index: 1;
+
+  & {
+    @include tablet {
+      padding: 0;
+    }
+  }
 }
 
 .form_title {
@@ -20,6 +26,7 @@
 
   @include tablet {
     font-size: 13px;
+    font-weight: 900;
   }
 }
 

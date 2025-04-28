@@ -1,3 +1,5 @@
+@use "../../../mixins" as *;
+
 .wrapper_input {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -10,6 +12,12 @@
     top: 20px;
     right: 20px;
     cursor: pointer;
+
+    & {
+        @include tablet {
+          width: 10px;
+        }
+      }
 }
 
 .form_content {
@@ -52,6 +60,10 @@
     gap: 10px;
     width: 100%;
     text-align: start;
+}
+
+.label_name {
+    font-weight: 500;
 }
 
 .date_wrapper {

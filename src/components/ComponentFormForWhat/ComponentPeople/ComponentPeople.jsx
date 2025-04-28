@@ -190,6 +190,7 @@ export default function ComponentPeople({
             <label
               htmlFor="4"
               style={{ textAlign: "start", fontWeight: "medium" }}
+              className={styles.label_name}
             >
               ФИО
             </label>
@@ -208,6 +209,7 @@ export default function ComponentPeople({
             <label
               htmlFor="5"
               style={{ textAlign: "start", fontWeight: "medium" }}
+              className={styles.label_name}
             >
               Должность
             </label>
@@ -273,6 +275,7 @@ export default function ComponentPeople({
                   </div>
                 </div>
 
+                <div className={styles.data_wrapper}>
                 <div className={styles.data}>
                   <p style={{ marginBottom: "10px" }}>Тоннаж</p>
                   <CustomInput
@@ -302,6 +305,11 @@ export default function ComponentPeople({
                     idx={idx}
                   />
                 </div>
+
+
+                </div>
+
+
               </div>
 
               <div className={styles.note}>

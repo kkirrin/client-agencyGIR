@@ -1,3 +1,5 @@
+@use "../../../mixins" as *;
+
 .smena_btn {
     cursor: pointer;
     display: flex;
@@ -11,6 +13,16 @@
     transition: all 0.3s ease-in-out;
     border: 1px solid transparent;
     /* Прозрачная граница по умолчанию */
+
+    & {
+        @include tablet {
+          width: auto;
+          min-width: unset;
+          max-width: unset;
+          padding: 7px 9px;
+          border-radius: 4px;
+        }
+      }
 }
 
 .hidden {
@@ -19,6 +31,8 @@
 
 .smena_btn svg path {
     transition: all 0.3s ease-in-out;
+
+
 }
 
 .night {
@@ -28,6 +42,13 @@
 
 .night svg {
     fill: #1F2433;
+
+    & {
+        @include tablet {
+            width: 10px;
+            height: 10px;
+        }
+    }
 }
 
 .day {
@@ -37,6 +58,14 @@
 
 .day svg {
     fill: var(--yellow);
+
+    & {
+        @include tablet {
+            width: 10px;
+            height: 10px;
+        }
+    }
+
 }
 
 .active_white {
