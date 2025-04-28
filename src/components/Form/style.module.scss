@@ -1,5 +1,12 @@
 @use '../../mixins' as *;
 
+
+.form_wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
 .form_header {
   display: flex;
   justify-content: space-between;
@@ -36,6 +43,3 @@
   min-width: 173px;
 }
 
-.form_wrapper {
-  margin-bottom: 20px;
-}

@@ -36,6 +36,12 @@
   align-items: center;
   justify-content: center;
   position: relative;
+
+  & {
+    @include tablet {
+      max-height: 90vh;
+    }
+  }
 }
 
 .popup__content {
