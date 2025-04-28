@@ -53,6 +53,8 @@ export default function ComponentDate({ dateForRender = "", idx = "" }) {
         shouldCloseOnSelect={false}
         withPortal
         isClearable={true}
+        // TODO: удалить
+        open={true}
       />
     </div>
   );

@@ -9,9 +9,6 @@ export default function AddPopupContent({ id, active, setActive, title }) {
   const params = useParams();
   const slug = params.slug;
 
-  // TODO: удалить
-  active = true;
-
   let formName;
   let apiUrl;
   switch (slug) {
