@@ -279,7 +279,7 @@ export default function ComponentPeople({
                   </div>
                 </div>
 
-                <div className={styles.data_wrapper}>
+                <div className={styles.data_wrapper_custom}>
                   <div className={styles.data}>
                     <p style={{ marginBottom: '10px' }}>Тоннаж</p>
                     <CustomInput
