@@ -87,7 +87,14 @@
     }
   }
 
-
+  & {
+    @include mobile {
+      width: 16px;
+      height: 16px;
+      top: -8%;
+      right: 1%;
+    }
+  }
 }
 
 .popup__close:hover {
