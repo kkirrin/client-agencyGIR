@@ -41,7 +41,7 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 500px;
-  min-height: 530px;
+  // min-height: 530px;
   padding: 40px;
   background: var(--white);
   color: var(--blue);
@@ -50,7 +50,14 @@
   & {
     @include tablet {
       width: 390px;
-      min-height: 380px;
+      // min-height: 380px;
+    }
+  }
+
+  & {
+    @include mobile {
+      width: 335px;
+      // min-height: 340px;
     }
   }
 }
@@ -79,6 +86,8 @@
       right: 1%;
     }
   }
+
+
 }
 
 .popup__close:hover {
@@ -170,6 +179,12 @@
   height: 250px;
   border-radius: 5px;
   background-color: var(--light-gray);
+
+  & {
+    @include mobile {
+      height: 150px;
+    }
+  }
 }
 
 .note_title {
