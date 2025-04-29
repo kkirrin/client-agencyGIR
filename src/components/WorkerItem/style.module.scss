@@ -81,6 +81,12 @@
       gap: 11px;
     }
   }
+
+  & {
+    @include mobile {
+      grid-template-columns: 60px repeat(5, 1fr);
+    }
+  }
 }
 
 .worker_item_empty {
@@ -100,7 +106,6 @@
 
   & {
     @include tablet {
-      width: 80px;;
     }
   }
 }
@@ -143,6 +148,10 @@
     @include tablet {
       gap: 6px;
     }
+  }
+
+  @include mobile {
+    
   }
 }
 

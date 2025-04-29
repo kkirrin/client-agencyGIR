@@ -1,5 +1,6 @@
 import styles from './style.module.scss';
 import deleteSVG from '/delete.svg';
+import useMobile from '../../../hooks/useMobile';
 
 import {
   CustomInput,
@@ -123,6 +124,9 @@ export default function ComponentPeople({
   popupId,
 }) {
   const { data } = useDataRequestStore();
+  const isMobile = useMobile();
+
+
   return (
     <>
       <div>

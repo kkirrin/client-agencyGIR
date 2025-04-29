@@ -68,7 +68,6 @@
   }
 
   @include mobile {
-    flex-direction: column;
     gap: 8px;
     align-items: stretch;
   }
@@ -185,7 +184,7 @@
   }
 
   @include mobile {
-    grid-template-columns: 60px repeat(5, 1fr);
+    grid-template-columns: 70px repeat(2, 1fr);
     gap: 4px;
   }
 }
@@ -240,7 +239,7 @@
 
   & {
     @include tablet {
-      max-width: 100px;
+      width: fit-content;
       padding: 5px;
       font-size: 10px;
       gap: 3px;
@@ -248,8 +247,8 @@
   }
 
   @include mobile {
-    max-width: 60px;
-    padding: 2px;
+    width: fit-content;
+    padding: 6px;
     font-size: 8px;
     gap: 2px;
     border-radius: 10px;

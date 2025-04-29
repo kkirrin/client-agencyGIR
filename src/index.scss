@@ -60,9 +60,9 @@
 
 
 .border_top_gray {
+  width: 1px;
   height: 100%;
   background-color: var(--another-gray);
-  width: 1px;
 }
 
 @font-face {
@@ -383,6 +383,7 @@ legend {
 
 .react-datepicker__input-container {
   z-index: 10000;
+  width: 100%;
 }
 
 .react-datepicker__input-container.react-datepicker__view-calendar-icon svg {
@@ -417,12 +418,12 @@ legend {
   background-image: url('/calendar.svg');
   background-repeat: no-repeat;
   background-position: left 20px center;
+  overflow: hidden;
 
   & {
     @include tablet {
       width: 180px;
       padding: 8px 15px 8px 30px;
-      background-position: left 8px center;
       border-radius: 4px;
       background-position: left 10px center;
       background-size: 13px;
@@ -433,45 +434,44 @@ legend {
 .date-wrapper-input {
   & {
     @include tablet {
-
+      width: 100%;
     }
   }
 }
 
 .date-wrapper__info {
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  z-index: 1;
+  gap: 5px;
+
+  @include tablet {
+    left: 30px;
+    gap: 10px;
+  }
 }
 
 .date-wrapper__info .month {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
-  font-size: 20px;
-  position: absolute;
-  top: 50%;
-  left: 55px;
+  font-size: 16px;
   text-transform: capitalize;
-  font-size: 20px;
-  transform: translateY(-45%);
 
-  & {
-    @include tablet {
-      font-size: 12px;
-      left: 40px;
-    }
+  @include tablet {
+    font-size: 12px;
   }
 }
 
 .date-wrapper__info .year {
   font-weight: 400;
+  font-size: 14px;
   color: var(--another-gray);
 
-  & {
-    @include tablet {
-      font-size: 12px;
-    }
+  @include tablet {
+    font-size: 11px;
   }
 }
 
