@@ -1,5 +1,14 @@
 @use "../../../mixins" as *;
 
+.input_container {
+  & {
+    @include mobile {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
 .custom_input {
   width: 100%;
   background-color: var(--light-gray);
@@ -12,6 +21,13 @@
       padding: 8px 10px;
       font-size: 9px;
       border-radius: 4px;
+    }
+  }
+
+  & {
+    @include mobile {
+      width: 100%;
+      padding: 12px 16px;
     }
   }
 }

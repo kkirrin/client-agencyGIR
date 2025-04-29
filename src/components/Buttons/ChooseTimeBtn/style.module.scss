@@ -1,4 +1,4 @@
-@use '../../../mixins' as *;
+@use "../../../mixins" as *;
 
 .smena_btn {
   cursor: pointer;
@@ -21,6 +21,12 @@
       max-width: unset;
       padding: 7px 9px;
       border-radius: 4px;
+    }
+  }
+
+  & {
+    @include mobile {
+      padding: 9px 24px;
     }
   }
 }
@@ -84,21 +90,21 @@
   fill: var(--white);
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   background-color: var(--main);
   color: var(--white);
   border-color: var(--main);
 }
 
 /* Активное состояние для ночи */
-input[type='checkbox']#night:checked + .night {
+input[type="checkbox"]#night:checked + .night {
   background-color: var(--main);
   color: var(--white);
   border-color: var(--main);
 }
 
 /* Активное состояние для дня */
-input[type='checkbox']#day:checked + .day {
+input[type="checkbox"]#day:checked + .day {
   background-color: var(--yellow);
   color: var(--white);
   border-color: var(--yellow);

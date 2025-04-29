@@ -1,5 +1,5 @@
 // @import './mixins.scss';
-@use './mixins' as *;
+@use "./mixins" as *;
 
 :root {
   color-scheme: light dark;
@@ -7,19 +7,19 @@
   --font-family: "Roboto", sans-serif;
 
   /* переменные панели */
-  --main: #1F2433;
-  --white: #FFFFFF;
+  --main: #1f2433;
+  --white: #ffffff;
   --blue: #063462;
-  --gray: #9FA9BC;
-  --light-gray: #E8ECF4;
-  --light-blue: #C9D5FF;
+  --gray: #9fa9bc;
+  --light-gray: #e8ecf4;
+  --light-blue: #c9d5ff;
   --dark-gray: #687182;
-  --another-gray: #BAC4D8;
-  --light-green: #D4F4C6;
+  --another-gray: #bac4d8;
+  --light-green: #d4f4c6;
   --green: #8ec376;
-  --light-yellow: #FFEED4;
-  --yellow: #F2B174;
-  --light-pink: #FFD5D5;
+  --light-yellow: #ffeed4;
+  --yellow: #f2b174;
+  --light-pink: #ffd5d5;
 
   /* текст шрифтов */
   --text-white: var(--white);
@@ -58,7 +58,6 @@
   // }
 }
 
-
 .border_top_gray {
   width: 1px;
   height: 100%;
@@ -66,45 +65,51 @@
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 300;
-  src: local('Roboto'), url(./fonts/Roboto-Thin/Roboto-Thin.woff2) format('woff2');
+  src: local("Roboto"),
+    url(./fonts/Roboto-Thin/Roboto-Thin.woff2) format("woff2");
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
-  src: local('Roboto'), url(./fonts/Roboto-Regular/Roboto-Regular.woff2) format('woff2');
+  src: local("Roboto"),
+    url(./fonts/Roboto-Regular/Roboto-Regular.woff2) format("woff2");
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
-  src: local('Roboto'), url(./fonts/Roboto-Medium/Roboto-Medium.woff2) format('woff2');
+  src: local("Roboto"),
+    url(./fonts/Roboto-Medium/Roboto-Medium.woff2) format("woff2");
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
-  src: local('Roboto'), url(./fonts/Roboto-Regular/Roboto-Regular.woff2) format('woff2');
+  src: local("Roboto"),
+    url(./fonts/Roboto-Regular/Roboto-Regular.woff2) format("woff2");
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 700;
-  src: local('Roboto'), url(./fonts/Roboto-Bold/Roboto-Bold.woff2) format('woff2');
+  src: local("Roboto"),
+    url(./fonts/Roboto-Bold/Roboto-Bold.woff2) format("woff2");
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 800;
-  src: local('Roboto'), url(./fonts/Roboto-Bold/Roboto-Bold.woff2) format('woff2');
+  src: local("Roboto"),
+    url(./fonts/Roboto-Bold/Roboto-Bold.woff2) format("woff2");
 }
 
 html,
@@ -244,7 +249,6 @@ legend {
   background: var(--light-gray);
   padding: 10px 10px !important;
   border-radius: 10px;
-
 }
 
 .react-datepicker-wrapper input {
@@ -273,10 +277,10 @@ legend {
 .react-datepicker__day-names {
   display: flex !important;
   justify-content: center !important;
-  gap: 10px !important
+  gap: 10px !important;
 }
 
-.react-datepicker__day-names>* {
+.react-datepicker__day-names > * {
   color: #687182 !important;
 }
 
@@ -315,7 +319,7 @@ legend {
   color: #687182 !important;
 }
 
-.react-datepicker__day:not([aria-disabled=true]):hover {
+.react-datepicker__day:not([aria-disabled="true"]):hover {
   background-color: var(--another-gray) !important;
   border-radius: 50% !important;
 }
@@ -352,8 +356,6 @@ legend {
       top: 8px !important;
     }
   }
-  
-  
 }
 
 .react-datepicker__navigation-icon--next::before {
@@ -371,7 +373,7 @@ legend {
 .react-datepicker__navigation--next,
 .react-datepicker__navigation--previous {
   border-radius: 50px !important;
-  background-color: #2E354E !important;
+  background-color: #2e354e !important;
 }
 
 .react-datepicker__view-calendar-icon input {
@@ -415,7 +417,7 @@ legend {
   border-radius: 10px;
   padding: 12px 24px;
   padding-left: 50px;
-  background-image: url('/calendar.svg');
+  background-image: url("/calendar.svg");
   background-repeat: no-repeat;
   background-position: left 20px center;
   overflow: hidden;
@@ -427,6 +429,13 @@ legend {
       border-radius: 4px;
       background-position: left 10px center;
       background-size: 13px;
+    }
+  }
+
+  & {
+    @include mobile {
+      width: 100%;
+      padding: 12px 16px 12px 26px;
     }
   }
 }

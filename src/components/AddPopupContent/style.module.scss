@@ -58,6 +58,12 @@
     padding: 16px 25px;
     font-size: 9px;
   }
+
+  & {
+    @include mobile {
+      margin: 40px 20px;
+    }
+  }
 }
 
 .mini__popup__content {

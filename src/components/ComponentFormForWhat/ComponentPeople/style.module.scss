@@ -102,6 +102,13 @@
       font-size: 9px;
     }
   }
+
+  
+  & {
+    @include mobile {
+      width: 100%;
+    }
+  }
 }
 
 .date_content p {
