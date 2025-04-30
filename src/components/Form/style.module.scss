@@ -43,3 +43,22 @@
   min-width: 173px;
 }
 
+.btn_save_mobile {
+  display: none;
+  width: 100%;
+  margin-top: 20px;
+  justify-content: center;
+
+  @include mobile {
+    display: flex;
+  }
+}
+
+.btn_save_desktop {
+  display: flex;
+
+  @include mobile {
+    display: none;
+  }
+}
+

@@ -207,7 +207,6 @@ export default function ComponentDrobilka({
         </div>
 
         <div className={styles.wrapper_name}>
-          <div>
             <label
               htmlFor='4'
               style={{ textAlign: 'start', fontWeight: 'medium' }}
@@ -224,7 +223,6 @@ export default function ComponentDrobilka({
               type='text'
               placeholder='Введите наименование'
             />
-          </div>
         </div>
 
         {items.map((item, idx) => {

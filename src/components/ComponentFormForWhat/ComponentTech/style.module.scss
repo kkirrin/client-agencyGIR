@@ -79,6 +79,13 @@
 
     width: 400px;
     // border: 1px solid var(--another-gray);
+
+    
+  & {
+    @include mobile {
+      width: 100%;
+    }
+  }
 }
 
 .date_content p {

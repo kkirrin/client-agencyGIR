@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
-import styles from './style.module.scss';
-import { updateUserDateService } from '../../services/update-service';
-import useDataObjectRequestStore from '../../store/DataObjectRequestStore';
-import useDataRequestStore from '../../store/DataRequestStore';
-import { format } from 'date-fns';
-import fetchData from '../../utils/fetchData';
+import { useState, useEffect } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
+import styles from "./style.module.scss";
+import { updateUserDateService } from "../../services/update-service";
+import useDataObjectRequestStore from "../../store/DataObjectRequestStore";
+import useDataRequestStore from "../../store/DataRequestStore";
+import { format } from "date-fns";
+import fetchData from "../../utils/fetchData";
+import useMobile from "../../hooks/useMobile";
 
-import { registerLocale } from 'react-datepicker';
-import ru from 'date-fns/locale/ru';
-registerLocale('ru', ru);
+import { registerLocale } from "react-datepicker";
+import ru from "date-fns/locale/ru";
+registerLocale("ru", ru);
 
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import {
   BtnSave,
   DeleteButton,
@@ -20,9 +21,9 @@ import {
   ComponentPeople,
   ComponentTech,
   ModalNotification,
-} from '../../components';
+} from "../../components";
 
-import useDateSingleStore from '../../store/CalendarSingleStore';
+import useDateSingleStore from "../../store/CalendarSingleStore";
 
 export async function checkExistingRecord(uuid, url) {
   try {
@@ -31,16 +32,16 @@ export async function checkExistingRecord(uuid, url) {
     // Для Strapi структура ответа: { data: [...] }
     return result.data?.length > 0 ? result.data[0]?.documentId : null;
   } catch (error) {
-    console.error('Ошибка:', error);
+    console.error("Ошибка:", error);
     return null;
   }
 }
 
 export async function saveUserDateService(userData, url) {
   const response = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ data: { ...userData } }),
   });
@@ -53,6 +54,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
   const { data } = useDataRequestStore();
   const { dates } = useDateSingleStore();
   const { slug } = useParams();
+  const isMobile = useMobile();
+
+  console.log("is mobile ", isMobile);
 
   const [error, setError] = useState();
   const [isSending, setIsSending] = useState(false);
@@ -62,7 +66,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
   const [modalNotification, setModalNotification] = useState(false);
   const [modalNotificationText, setModalNotificationText] = useState(false);
 
-  let currentMonthYear = format(new Date(), 'MM.yyyy', { locale: ru });
+  let currentMonthYear = format(new Date(), "MM.yyyy", { locale: ru });
 
   const {
     register,
@@ -75,11 +79,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
   // Правильное определение формата
   const formatOptions = {
-    locale: 'ru-RU',
+    locale: "ru-RU",
     options: {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     },
   };
 
@@ -100,17 +104,17 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
   const { dataObject, setDataObjectRequest } = useDataObjectRequestStore();
 
-  const name = useWatch({ control, name: 'Name' });
-  const order = useWatch({ control, name: 'Order' });
-  const job = useWatch({ control, name: 'Job' });
-  const amountData = useWatch({ control, name: 'AmountData' });
-  const dayDataOstatkiPORT = useWatch({ control, name: 'DayDataOstatkiPORT' });
-  const dayDataOstatkiGIR = useWatch({ control, name: 'DayDataOstatkiGIR' });
-  const dayDataTonnaj = useWatch({ control, name: 'DayDataTonnaj' }) || '-';
-  const TC = useWatch({ control, name: 'TC' }) || '-';
-  const note = useWatch({ control, name: 'note' }) || '-';
-  const shiftTypeArray = useWatch({ control, name: 'shiftType' });
-  const statusValues = useWatch({ control, name: 'statusWorker' }) ?? 'Default';
+  const name = useWatch({ control, name: "Name" });
+  const order = useWatch({ control, name: "Order" });
+  const job = useWatch({ control, name: "Job" });
+  const amountData = useWatch({ control, name: "AmountData" });
+  const dayDataOstatkiPORT = useWatch({ control, name: "DayDataOstatkiPORT" });
+  const dayDataOstatkiGIR = useWatch({ control, name: "DayDataOstatkiGIR" });
+  const dayDataTonnaj = useWatch({ control, name: "DayDataTonnaj" }) || "-";
+  const TC = useWatch({ control, name: "TC" }) || "-";
+  const note = useWatch({ control, name: "note" }) || "-";
+  const shiftTypeArray = useWatch({ control, name: "shiftType" });
+  const statusValues = useWatch({ control, name: "statusWorker" }) ?? "Default";
 
   const objectUUID = data[0]?.uuid;
 
@@ -132,7 +136,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         );
         setDataObjectRequest(data);
       } catch (error) {
-        console.error('Ошибка при получении данных:', error);
+        console.error("Ошибка при получении данных:", error);
       }
     };
 
@@ -145,14 +149,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     let newShiftType = [];
 
     shiftTypeArray.forEach((i, idx) => {
-      if (i === 'day') {
+      if (i === "day") {
         setValue(`btnNight.${idx}`, false);
-        newShiftType.push('day');
-      } else if (i === 'night') {
+        newShiftType.push("day");
+      } else if (i === "night") {
         setValue(`btnDay.${idx}`, false);
-        newShiftType.push('night');
+        newShiftType.push("night");
       } else {
-        newShiftType.push('day');
+        newShiftType.push("day");
       }
     });
 
@@ -194,22 +198,22 @@ export default function Form({ title, forWhat, setActive, popupId }) {
   useEffect(() => {
     if (data && data[0]) {
       const newFormDefault = {
-        Name: data[0].Name || '',
-        Job: data[0].Job || '',
-        Order: data[0]?.Order || '',
+        Name: data[0].Name || "",
+        Job: data[0].Job || "",
+        Order: data[0]?.Order || "",
         shiftType: [],
 
         MonthDataTonnaj:
           data[0]?.MonthDataTonnaj?.map((m) => {
             if (
               m &&
-              m.MonthData !== '0' &&
+              m.MonthData !== "0" &&
               m.MonthData !== undefined &&
               m.MonthData !== null
             ) {
-              const [day, month, year] = m.MonthData.split('.').map(Number);
+              const [day, month, year] = m.MonthData.split(".").map(Number);
               const dateObj = new Date(year, month - 1, day);
-              const itemDate = format(dateObj, 'dd.MM.yyyy', { locale: ru });
+              const itemDate = format(dateObj, "dd.MM.yyyy", { locale: ru });
               if (itemDate) {
                 return {
                   ...m,
@@ -229,14 +233,14 @@ export default function Form({ title, forWhat, setActive, popupId }) {
               result.push(
                 i.DayInfo?.SmenaDetails?.SmenaStatusWorker ||
                   i.DayInfo?.statusTech ||
-                  ''
+                  ""
               );
             }
             if (i?.NightInfo) {
               result.push(
                 i.NightInfo?.SmenaDetails?.SmenaStatusWorker ||
                   i.NightInfo?.statusTech ||
-                  ''
+                  ""
               );
             }
             return result;
@@ -246,10 +250,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
           data[0]?.DayDataDetails?.flatMap((i) => {
             const result = [];
             if (i?.DayInfo) {
-              result.push(i.DayInfo?.SmenaDetails?.SmenaDateDetails || '0');
+              result.push(i.DayInfo?.SmenaDetails?.SmenaDateDetails || "0");
             }
             if (i?.NightInfo) {
-              result.push(i.NightInfo?.SmenaDetails?.SmenaDateDetails || '0');
+              result.push(i.NightInfo?.SmenaDetails?.SmenaDateDetails || "0");
             }
             return result;
           }) || [],
@@ -257,8 +261,8 @@ export default function Form({ title, forWhat, setActive, popupId }) {
         shiftTypeArray:
           data[0]?.DayDataDetails?.flatMap((i) => {
             const res = [];
-            if (i?.DayInfo) res.push('day');
-            if (i?.NightInfo) res.push('night');
+            if (i?.DayInfo) res.push("day");
+            if (i?.NightInfo) res.push("night");
             return res;
           }) || [],
 
@@ -266,10 +270,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
           data[0]?.DayDataDetails?.flatMap((i) => {
             const result = [];
             if (i?.DayInfo) {
-              result.push(i.DayInfo?.SmenaDetails?.SmenaDataTonnaj || '0');
+              result.push(i.DayInfo?.SmenaDetails?.SmenaDataTonnaj || "0");
             }
             if (i?.NightInfo) {
-              result.push(i.NightInfo?.SmenaDetails?.SmenaDataTonnaj || '0');
+              result.push(i.NightInfo?.SmenaDetails?.SmenaDataTonnaj || "0");
             }
             return result;
           }) || [],
@@ -302,15 +306,15 @@ export default function Form({ title, forWhat, setActive, popupId }) {
     setIsSending(true);
     setError(null);
     let formData = {};
-    let url = '';
+    let url = "";
     try {
       switch (forWhat) {
-        case 'people':
-          url = 'http://89.104.67.119:1337/api/people';
+        case "people":
+          url = "http://89.104.67.119:1337/api/people";
           formData = {
             uuid: objectUUID ? objectUUID : uuidv4(),
-            Name: name || '',
-            Job: job || '',
+            Name: name || "",
+            Job: job || "",
             Objects: [
               {
                 id: dataObject[0]?.id,
@@ -349,7 +353,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
           formData.DayDataDetails = items.reduce((acc, item, idx) => {
             const currentDate = formattedDates[idx];
             const isDuplicate = dublicateDates[currentDate] >= 1;
-            const status = statusValues[idx] ?? 'Default';
+            const status = statusValues[idx] ?? "Default";
 
             if (!currentDate) {
               console.error(`Дата не найдена для индекса ${idx}`);
@@ -359,10 +363,10 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             const commonDetails = {
               Note: note?.[idx] || formValues?.note[idx],
               SmenaDataTonnaj:
-                dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || '0',
+                dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "0",
               SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
-              SmenaStatusWorker: status || 'Default',
-              TC: TC?.[idx] || formValues?.TC[idx] || '0',
+              SmenaStatusWorker: status || "Default",
+              TC: TC?.[idx] || formValues?.TC[idx] || "0",
             };
 
             const existingEntry = acc.find((e) => {
@@ -376,7 +380,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
               const shiftType =
                 shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
 
-              if (shiftType === 'day') {
+              if (shiftType === "day") {
                 existingEntry.DayInfo = {
                   ...existingEntry.DayInfo,
                   Day: true,
@@ -385,7 +389,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     ...commonDetails,
                   },
                 };
-              } else if (shiftType === 'night') {
+              } else if (shiftType === "night") {
                 existingEntry.NightInfo = {
                   ...existingEntry.NightInfo,
                   Night: true,
@@ -396,9 +400,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 };
               }
             } else {
-              const shiftType = shiftTypeArray[idx] || 'day';
+              const shiftType = shiftTypeArray[idx] || "day";
               acc.push({
-                ...(shiftType === 'day'
+                ...(shiftType === "day"
                   ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
                   : {
                       NightInfo: { Night: true, SmenaDetails: commonDetails },
@@ -410,11 +414,11 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
           break;
 
-        case 'tech':
-          url = 'http://89.104.67.119:1337/api/techicas';
+        case "tech":
+          url = "http://89.104.67.119:1337/api/techicas";
           formData = {
             uuid: objectUUID ? objectUUID : uuidv4(),
-            Name: name || '',
+            Name: name || "",
             Order: order || data[0]?.Order,
             objects: [
               {
@@ -426,7 +430,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
           formData.DayDataDetails = items.reduce((acc, item, idx) => {
             const currentDate = formattedDates[idx];
             const isDuplicate = dublicateDates[currentDate] > 1;
-            const status = statusValues[idx] || 'In working';
+            const status = statusValues[idx] || "In working";
 
             const existingEntry = acc.find(
               (e) =>
@@ -435,44 +439,44 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             );
 
             if (isDuplicate && existingEntry) {
-              if (shiftTypeArray[idx] === 'day') {
+              if (shiftTypeArray[idx] === "day") {
                 existingEntry.DayInfo = {
                   day: true,
-                  note: note?.[idx] || '-',
-                  date: currentDate || '0',
+                  note: note?.[idx] || "-",
+                  date: currentDate || "0",
                   statusTech: status,
                 };
               } else {
                 existingEntry.NightInfo = {
                   night: true,
-                  note: note?.[idx] || '-',
-                  date: currentDate || '0',
+                  note: note?.[idx] || "-",
+                  date: currentDate || "0",
                   statusTech: status,
                 };
               }
             } else {
               const shiftType = shiftTypeArray[idx]
                 ? shiftTypeArray[idx]
-                : 'day';
-              if (typeof shiftType === 'undefined') {
-                console.error('shiftType равен undefined для индекса', idx);
+                : "day";
+              if (typeof shiftType === "undefined") {
+                console.error("shiftType равен undefined для индекса", idx);
                 return acc;
               } else {
                 acc.push({
-                  ...(shiftType === 'day'
+                  ...(shiftType === "day"
                     ? {
                         DayInfo: {
                           day: true,
-                          note: note?.[idx] || '-',
-                          date: currentDate || '0',
+                          note: note?.[idx] || "-",
+                          date: currentDate || "0",
                           statusTech: status,
                         },
                       }
                     : {
                         NightInfo: {
                           night: true,
-                          note: note?.[idx] || '-',
-                          date: currentDate || '0',
+                          note: note?.[idx] || "-",
+                          date: currentDate || "0",
                           statusTech: status,
                         },
                       }),
@@ -484,12 +488,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
 
           break;
 
-        case 'drobilka':
-          url = 'http://89.104.67.119:1337/api/drobilkas';
+        case "drobilka":
+          url = "http://89.104.67.119:1337/api/drobilkas";
 
           formData = {
             uuid: objectUUID ? objectUUID : uuidv4(),
-            Name: name || '',
+            Name: name || "",
             objects: [
               {
                 id: dataObject[0]?.id,
@@ -529,7 +533,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
           formData.DayDataDetails = items.reduce((acc, item, idx) => {
             const currentDate = formattedDates[idx];
             const isDuplicate = dublicateDates[currentDate] >= 1;
-            const status = statusValues[idx] ?? 'Default';
+            const status = statusValues[idx] ?? "Default";
 
             if (!currentDate) {
               console.error(`Дата не найдена для индекса ${idx}`);
@@ -537,12 +541,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             }
 
             const commonDetails = {
-              Note: note?.[idx] || formValues?.note[idx] || 'default',
+              Note: note?.[idx] || formValues?.note[idx] || "default",
               SmenaDataTonnaj:
-                dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || '0',
+                dayDataTonnaj?.[idx] || formValues?.dayDataTonnaj[idx] || "0",
               SmenaDateDetails: currentDate || formValues.smenaDateDetails[idx],
               SmenaStatusWorker: status,
-              TC: TC?.[idx] || formValues?.TC[idx] || '0',
+              TC: TC?.[idx] || formValues?.TC[idx] || "0",
             };
 
             const existingEntry = acc.find((e) => {
@@ -557,7 +561,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
               const shiftType =
                 shiftTypeArray[idx] || formValues.shiftTypeArray[idx];
 
-              if (shiftType === 'day') {
+              if (shiftType === "day") {
                 existingEntry.DayInfo = {
                   ...existingEntry.DayInfo,
                   Day: true,
@@ -566,7 +570,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                     ...commonDetails,
                   },
                 };
-              } else if (shiftType === 'night') {
+              } else if (shiftType === "night") {
                 existingEntry.NightInfo = {
                   ...existingEntry.NightInfo,
                   Night: true,
@@ -577,9 +581,9 @@ export default function Form({ title, forWhat, setActive, popupId }) {
                 };
               }
             } else {
-              const shiftType = shiftTypeArray[idx] || 'day';
+              const shiftType = shiftTypeArray[idx] || "day";
               acc.push({
-                ...(shiftType === 'day'
+                ...(shiftType === "day"
                   ? { DayInfo: { Day: true, SmenaDetails: commonDetails } }
                   : {
                       NightInfo: { Night: true, SmenaDetails: commonDetails },
@@ -604,20 +608,20 @@ export default function Form({ title, forWhat, setActive, popupId }) {
           );
           if (response.status === 200) {
             setModalNotification(true);
-            setModalNotificationText('Форма отправлена ✅ Данные обновлены');
+            setModalNotificationText("Форма отправлена ✅ Данные обновлены");
             reset();
           }
-          console.log('Данные обновлены:', formData);
+          console.log("Данные обновлены:", formData);
         } else {
           setModalNotification(true);
           setModalNotificationText(
-            'Форма отправлена ✅ Создана новая сущность'
+            "Форма отправлена ✅ Создана новая сущность"
           );
           response = await saveUserDateService(formData, url);
-          console.log('Новая запись создана:', response, formData);
+          console.log("Новая запись создана:", response, formData);
         }
       } catch (error) {
-        setError('Ошибка запроса, попробуйте позже', error);
+        setError("Ошибка запроса, попробуйте позже", error);
       } finally {
         setIsSending(false);
       }
@@ -625,7 +629,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
       console.log(error);
       setModalNotification(true);
       setModalNotificationText(
-        'Форма не будет отправлена ❌ Нужно заполнить статус'
+        "Форма не будет отправлена ❌ Нужно заполнить статус"
       );
     }
   };
@@ -639,15 +643,17 @@ export default function Form({ title, forWhat, setActive, popupId }) {
               <h2 className={styles.form_title}>{title}</h2>
             </div>
 
-            <div className={styles.form_title_info}>
-              <div className={styles.btn_save_wrapper}>
-                <BtnSave isSending={isSending} />
-                <DeleteButton setActive={setActive} />
+            {!isMobile && (
+              <div className={styles.form_title_info}>
+                <div className={styles.btn_save_wrapper}>
+                  <BtnSave isSending={isSending} />
+                  <DeleteButton setActive={setActive} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
-          {forWhat === 'people' && (
+          {forWhat === "people" && (
             <ComponentPeople
               handleClickBtn={handleClick}
               items={items}
@@ -659,7 +665,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             />
           )}
 
-          {forWhat === 'tech' && (
+          {forWhat === "tech" && (
             <ComponentTech
               handleClickBtn={handleClick}
               items={items}
@@ -671,7 +677,7 @@ export default function Form({ title, forWhat, setActive, popupId }) {
             />
           )}
 
-          {forWhat === 'drobilka' && (
+          {forWhat === "drobilka" && (
             <ComponentDrobilka
               handleClickBtn={handleClick}
               items={items}
@@ -681,6 +687,12 @@ export default function Form({ title, forWhat, setActive, popupId }) {
               setItems={setItems}
               popupId={popupId}
             />
+          )}
+
+          {isMobile && (
+            <div className={styles.btn_save_wrapper}>
+              <BtnSave isSending={isSending} />
+            </div>
           )}
         </div>
       </form>
