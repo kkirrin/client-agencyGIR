@@ -237,6 +237,10 @@
 .button {
   cursor: pointer;
 
+  &:hover {
+    opacity: 0.8;
+  }
+
   & {
     @include tablet {
       width: 9px;
