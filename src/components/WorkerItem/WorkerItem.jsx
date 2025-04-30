@@ -64,7 +64,6 @@ const WorkerDetails = ({
   missingDates,
   forWhat,
 }) => {
-  console.log(worker);
 
   const params = useParams();
   const slug = params.slug;

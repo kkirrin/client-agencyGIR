@@ -56,8 +56,6 @@ export default function Form({ title, forWhat, setActive, popupId }) {
   const { slug } = useParams();
   const isMobile = useMobile();
 
-  console.log("is mobile ", isMobile);
-
   const [error, setError] = useState();
   const [isSending, setIsSending] = useState(false);
   const [shiftType, setShiftType] = useState([]);

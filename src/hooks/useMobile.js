@@ -5,10 +5,10 @@ export default function useMobile() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth < 768);
 
       const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
+        setIsMobile(window.innerWidth < 768);
       };
 
       window.addEventListener("resize", handleResize);

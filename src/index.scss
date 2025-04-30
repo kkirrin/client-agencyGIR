@@ -429,6 +429,10 @@ legend {
       background-size: 13px;
     }
   }
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .date-wrapper-input {

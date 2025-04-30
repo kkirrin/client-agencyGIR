@@ -13,9 +13,17 @@
 
   & {
     @include tablet {
+      margin-top: 15px;
       font-size: 12px;
       padding: 5px 17px;
     }
+  }
+
+  @media (max-width: 767px) and (min-width: 480px) {
+    font-size: 13px;
+    padding: 8px 25px;
+    margin-top: 10px;
+    border-radius: 4px;
   }
 
   & {
@@ -24,8 +32,7 @@
       font-weight: 500;
       margin-top: 7px;
       padding: 12px 0;
-      border-radius: 4px;;
-
+      border-radius: 4px;
     }
   }
 }
