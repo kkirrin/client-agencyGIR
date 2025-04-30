@@ -306,27 +306,31 @@ const Object = () => {
                   })}
                 </ul>
               )}
-              <div className={styles.pagination}>
-                <button
-                  onClick={handlePrevious}
-                  disabled={currentPage === 1}
-                  className={styles.button}
-                >
-                  <img
-                    style={{ rotate: "-180deg" }}
-                    src="/next.svg"
-                    alt="previous"
-                  />
-                </button>
 
-                <button
-                  onClick={handleNext}
-                  disabled={currentPage === totalPages}
-                  className={styles.button}
-                >
-                  <img src="/next.svg" alt="next" />
-                </button>
-              </div>
+              {/* Пагинация */}
+              {!isMobile && (
+                <div className={styles.pagination}>
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentPage === 1}
+                    className={styles.button}
+                  >
+                    <img
+                      style={{ rotate: "-180deg" }}
+                      src="/next.svg"
+                      alt="previous"
+                    />
+                  </button>
+
+                  <button
+                    onClick={handleNext}
+                    disabled={currentPage === totalPages}
+                    className={styles.button}
+                  >
+                    <img src="/next.svg" alt="next" />
+                  </button>
+                </div>
+              )}
 
               <ul className={`${styles.day_list} ${styles.wrapper_time}`}>
                 <li className={styles.title_table}></li>
@@ -369,6 +373,25 @@ const Object = () => {
             title={description.addButtonText}
           />
         </div>
+        {isMobile && (
+          <div className={styles.pagination_wrapper}>
+              <button
+                onClick={handlePrevious}
+                disabled={currentPage === 1}
+                className={styles.button}
+              >
+                <img src="/next-mobile-left.svg" alt="previous" />
+              </button>
+
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className={styles.button}
+              >
+                <img src="/next-mobile-right.svg" alt="next" />
+              </button>
+          </div>
+        )}
       </div>
     </section>
   );

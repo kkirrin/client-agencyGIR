@@ -218,10 +218,42 @@
     }
   }
 
+  // @include mobile {
+  //   position: relative;
+  //   // top: 8px;
+  //   // right: 4px;
+  //   gap: 4px;
+  // }
+}
+
+.pagination_wrapper {
+  position: relative;
+  margin-top: 13px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.button {
+  cursor: pointer;
+
+  & {
+    @include tablet {
+      width: 9px;
+      height: 9px;
+    }
+  }
+
   @include mobile {
-    top: 8px;
-    right: 4px;
-    gap: 4px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    img {
+      width: 12px;
+      height: 12px;
+    }
   }
 }
 
@@ -266,26 +298,6 @@
   @include mobile {
     width: 8px;
     height: 8px;
-  }
-}
-
-.button {
-  cursor: pointer;
-
-  & {
-    @include tablet {
-      width: 9px;
-      height: 9px;
-    }
-  }
-
-  @include mobile {
-    width: 18px;
-    height: 18px;
-    img {
-      width: 12px;
-      height: 12px;
-    }
   }
 }
 
