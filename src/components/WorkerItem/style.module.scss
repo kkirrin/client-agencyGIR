@@ -136,6 +136,14 @@
       height: 9px;
     }
   }
+
+  & {
+    @include mobile {
+      position: relative;
+      top: -12px;
+      right: 8px;
+    }
+  }
 }
 
 .item_table {

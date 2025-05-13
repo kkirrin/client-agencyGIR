@@ -64,7 +64,6 @@ const WorkerDetails = ({
   missingDates,
   forWhat,
 }) => {
-
   const params = useParams();
   const slug = params.slug;
 
@@ -294,6 +293,8 @@ export default function WorkerItem({
             isWorkerEmpty ? styles.workers_item_wrapper_empty : ""
           }`}
         >
+          {/* --------------------------------- */}
+
           {isWorkerEmpty ? (
             <EmptyWorkerItem
               id={worker.uuid ? worker.uuid : worker.id}
